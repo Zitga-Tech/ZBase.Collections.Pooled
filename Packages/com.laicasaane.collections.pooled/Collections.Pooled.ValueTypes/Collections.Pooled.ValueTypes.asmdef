@@ -1,0 +1,16 @@
+{
+    "name": "Collections.Pooled.ValueTypes",
+    "rootNamespace": "Collections.Pooled.ValueTypes",
+    "references": [
+        "Collections.Pooled"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": true,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

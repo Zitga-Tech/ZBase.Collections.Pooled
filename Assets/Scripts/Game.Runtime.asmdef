@@ -1,0 +1,17 @@
+{
+    "name": "Game.Runtime",
+    "rootNamespace": "Game.Runtime",
+    "references": [
+        "Collections.Pooled",
+        "Collections.Pooled.Generic"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": true,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
