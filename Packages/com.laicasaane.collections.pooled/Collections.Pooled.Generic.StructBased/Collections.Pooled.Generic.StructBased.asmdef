@@ -1,6 +1,6 @@
 {
-    "name": "Collections.Pooled.ValueTypes",
-    "rootNamespace": "Collections.Pooled.ValueTypes",
+    "name": "Collections.Pooled.Generic.StructBased",
+    "rootNamespace": "Collections.Pooled.Generic",
     "references": [
         "Collections.Pooled"
     ],

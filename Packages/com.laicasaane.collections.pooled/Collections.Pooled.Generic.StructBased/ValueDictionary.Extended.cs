@@ -5,7 +5,7 @@ using System.Buffers;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 
-namespace Collections.Pooled.ValueTypes
+namespace Collections.Pooled.Generic
 {
     partial struct ValueDictionary<TKey, TValue> : IDisposable
     {

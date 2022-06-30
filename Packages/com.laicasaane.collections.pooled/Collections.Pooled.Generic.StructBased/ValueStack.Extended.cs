@@ -2,7 +2,7 @@
 using System.Buffers;
 using System.Runtime.CompilerServices;
 
-namespace Collections.Pooled.ValueTypes
+namespace Collections.Pooled.Generic
 {
     partial struct ValueStack<T> : IDisposable
     {

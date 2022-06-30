@@ -3,7 +3,7 @@
 // See the LICENSE file in the project root for more information.
 
 
-// This file defines an internal class used to throw exceptions in BCL code.
+// This file defines an public class used to throw exceptions in BCL code.
 // The main purpose is to reduce code size.
 //
 // The old way to throw an exception generates quite a lot IL code and assembly code.
@@ -46,120 +46,120 @@ using ER = Collections.Pooled.ExceptionResource;
 
 namespace Collections.Pooled
 {
-    internal static class ThrowHelper
+    public static class ThrowHelper
     {
-        internal static void ThrowArrayTypeMismatchException()
+        public static void ThrowArrayTypeMismatchException()
         {
             throw new ArrayTypeMismatchException();
         }
 
-        internal static void ThrowIndexOutOfRangeException()
+        public static void ThrowIndexOutOfRangeException()
         {
             throw new IndexOutOfRangeException();
         }
 
-        internal static void ThrowArgumentOutOfRangeException()
+        public static void ThrowArgumentOutOfRangeException()
         {
             throw new ArgumentOutOfRangeException();
         }
 
-        internal static void ThrowArgumentException_DestinationTooShort()
+        public static void ThrowArgumentException_DestinationTooShort()
         {
             throw new ArgumentException("Destination too short.");
         }
 
-        internal static void ThrowArgumentException_OverlapAlignmentMismatch()
+        public static void ThrowArgumentException_OverlapAlignmentMismatch()
         {
             throw new ArgumentException("Overlap alignment mismatch.");
         }
 
-        internal static void ThrowArgumentOutOfRange_IndexException()
+        public static void ThrowArgumentOutOfRange_IndexException()
         {
             throw GetArgumentOutOfRangeException(EA.index, ER.ArgumentOutOfRange_Index);
         }
 
-        internal static void ThrowCapacityArgumentOutOfRange_NeedNonNegNumException()
+        public static void ThrowCapacityArgumentOutOfRange_NeedNonNegNumException()
         {
             throw GetArgumentOutOfRangeException(EA.capacity, ER.ArgumentOutOfRange_NeedNonNegNum);
         }
 
-        internal static void ThrowArgumentOutOfRange_IndexMustBeLessException()
+        public static void ThrowArgumentOutOfRange_IndexMustBeLessException()
         {
             throw GetArgumentOutOfRangeException(EA.index, ER.ArgumentOutOfRange_IndexMustBeLess);
         }
 
-        internal static void ThrowArgumentOutOfRange_IndexMustBeLessOrEqualException()
+        public static void ThrowArgumentOutOfRange_IndexMustBeLessOrEqualException()
         {
             throw GetArgumentOutOfRangeException(EA.index, ER.ArgumentOutOfRange_IndexMustBeLessOrEqual);
         }
 
-        internal static void ThrowStartIndexArgumentOutOfRange_ArgumentOutOfRange_IndexMustBeLess()
+        public static void ThrowStartIndexArgumentOutOfRange_ArgumentOutOfRange_IndexMustBeLess()
         {
             throw GetArgumentOutOfRangeException(EA.startIndex, ER.ArgumentOutOfRange_IndexMustBeLess);
         }
 
-        internal static void ThrowCountArgumentOutOfRange_ArgumentOutOfRange_NeedNonNegNum()
+        public static void ThrowCountArgumentOutOfRange_ArgumentOutOfRange_NeedNonNegNum()
         {
             throw GetArgumentOutOfRangeException(EA.count, ER.ArgumentOutOfRange_NeedNonNegNum);
         }
 
-        internal static void ThrowArrayIndexArgumentOutOfRange_ArgumentOutOfRange_NeedNonNegNum()
+        public static void ThrowArrayIndexArgumentOutOfRange_ArgumentOutOfRange_NeedNonNegNum()
         {
             throw GetArgumentOutOfRangeException(EA.arrayIndex, ER.ArgumentOutOfRange_NeedNonNegNum);
         }
 
-        internal static void ThrowDestIndexArgumentOutOfRange_ArgumentOutOfRange_NeedNonNegNum()
+        public static void ThrowDestIndexArgumentOutOfRange_ArgumentOutOfRange_NeedNonNegNum()
         {
             throw GetArgumentOutOfRangeException(EA.destIndex, ER.ArgumentOutOfRange_NeedNonNegNum);
         }
 
-        internal static void ThrowArrayIndexArgumentOutOfRange_ArgumentOutOfRange_IndexMustBeLessOrEqual()
+        public static void ThrowArrayIndexArgumentOutOfRange_ArgumentOutOfRange_IndexMustBeLessOrEqual()
         {
             throw GetArgumentOutOfRangeException(EA.arrayIndex, ER.ArgumentOutOfRange_IndexMustBeLessOrEqual);
         }
 
-        internal static void ThrowDestIndexArgumentOutOfRange_ArgumentOutOfRange_IndexMustBeLessOrEqual()
+        public static void ThrowDestIndexArgumentOutOfRange_ArgumentOutOfRange_IndexMustBeLessOrEqual()
         {
             throw GetArgumentOutOfRangeException(EA.destIndex, ER.ArgumentOutOfRange_IndexMustBeLessOrEqual);
         }
 
-        internal static void ThrowStartIndexArgumentOutOfRange_ArgumentOutOfRange_IndexMustBeLessOrEqual()
+        public static void ThrowStartIndexArgumentOutOfRange_ArgumentOutOfRange_IndexMustBeLessOrEqual()
         {
             throw GetArgumentOutOfRangeException(EA.startIndex, ER.ArgumentOutOfRange_IndexMustBeLessOrEqual);
         }
 
-        internal static void ThrowIndexArgumentOutOfRange_NeedNonNegNumException()
+        public static void ThrowIndexArgumentOutOfRange_NeedNonNegNumException()
         {
             throw GetArgumentOutOfRangeException(EA.index, ER.ArgumentOutOfRange_NeedNonNegNum);
         }
 
-        internal static void ThrowValueArgumentOutOfRange_NeedNonNegNumException()
+        public static void ThrowValueArgumentOutOfRange_NeedNonNegNumException()
         {
             throw GetArgumentOutOfRangeException(EA.value, ER.ArgumentOutOfRange_NeedNonNegNum);
         }
 
-        internal static void ThrowLengthArgumentOutOfRange_ArgumentOutOfRange_NeedNonNegNum()
+        public static void ThrowLengthArgumentOutOfRange_ArgumentOutOfRange_NeedNonNegNum()
         {
             throw GetArgumentOutOfRangeException(EA.length, ER.ArgumentOutOfRange_NeedNonNegNum);
         }
 
-        internal static void ThrowStartIndexArgumentOutOfRange_ArgumentOutOfRange_Index()
+        public static void ThrowStartIndexArgumentOutOfRange_ArgumentOutOfRange_Index()
         {
             throw GetArgumentOutOfRangeException(EA.startIndex, ER.ArgumentOutOfRange_Index);
         }
 
-        internal static void ThrowCountArgumentOutOfRange_ArgumentOutOfRange_Count()
+        public static void ThrowCountArgumentOutOfRange_ArgumentOutOfRange_Count()
         {
             throw GetArgumentOutOfRangeException(EA.count, ER.ArgumentOutOfRange_Count);
         }
 
-        internal static void ThrowWrongKeyTypeArgumentException<T>(T key, Type targetType)
+        public static void ThrowWrongKeyTypeArgumentException<T>(T key, Type targetType)
         {
             // Generic key to move the boxing to the right hand side of throw
             throw GetWrongKeyTypeArgumentException((object)key, targetType);
         }
 
-        internal static void ThrowWrongValueTypeArgumentException<T>(T value, Type targetType)
+        public static void ThrowWrongValueTypeArgumentException<T>(T value, Type targetType)
         {
             // Generic key to move the boxing to the right hand side of throw
             throw GetWrongValueTypeArgumentException((object)value, targetType);
@@ -170,24 +170,24 @@ namespace Collections.Pooled
             return new ArgumentException($"Error adding duplicate with key: {key}.");
         }
 
-        internal static void ThrowAddingDuplicateWithKeyArgumentException<T>(T key)
+        public static void ThrowAddingDuplicateWithKeyArgumentException<T>(T key)
         {
             // Generic key to move the boxing to the right hand side of throw
             throw GetAddingDuplicateWithKeyArgumentException((object)key);
         }
 
-        internal static void ThrowKeyNotFoundException<T>(T key)
+        public static void ThrowKeyNotFoundException<T>(T key)
         {
             // Generic key to move the boxing to the right hand side of throw
             throw GetKeyNotFoundException((object)key);
         }
 
-        internal static void ThrowArgumentException(ER resource)
+        public static void ThrowArgumentException(ER resource)
         {
             throw GetArgumentException(resource);
         }
 
-        internal static void ThrowArgumentException(ER resource, EA argument)
+        public static void ThrowArgumentException(ER resource, EA argument)
         {
             throw GetArgumentException(resource, argument);
         }
@@ -197,157 +197,157 @@ namespace Collections.Pooled
             return new ArgumentNullException(GetArgumentName(argument));
         }
 
-        internal static void ThrowArgumentNullException(EA argument)
+        public static void ThrowArgumentNullException(EA argument)
         {
             throw GetArgumentNullException(argument);
         }
 
-        internal static void ThrowArgumentNullException(ER resource)
+        public static void ThrowArgumentNullException(ER resource)
         {
             throw new ArgumentNullException(GetResourceString(resource));
         }
 
-        internal static void ThrowArgumentNullException(EA argument, ER resource)
+        public static void ThrowArgumentNullException(EA argument, ER resource)
         {
             throw new ArgumentNullException(GetArgumentName(argument), GetResourceString(resource));
         }
 
-        internal static void ThrowArgumentOutOfRangeException(EA argument)
+        public static void ThrowArgumentOutOfRangeException(EA argument)
         {
             throw new ArgumentOutOfRangeException(GetArgumentName(argument));
         }
 
-        internal static void ThrowArgumentOutOfRangeException(EA argument, ER resource)
+        public static void ThrowArgumentOutOfRangeException(EA argument, ER resource)
         {
             throw GetArgumentOutOfRangeException(argument, resource);
         }
 
-        internal static void ThrowArgumentOutOfRangeException(EA argument, int paramNumber, ER resource)
+        public static void ThrowArgumentOutOfRangeException(EA argument, int paramNumber, ER resource)
         {
             throw GetArgumentOutOfRangeException(argument, paramNumber, resource);
         }
 
-        internal static void ThrowInvalidOperationException(ER resource)
+        public static void ThrowInvalidOperationException(ER resource)
         {
             throw GetInvalidOperationException(resource);
         }
 
-        internal static void ThrowInvalidOperationException(ER resource, Exception e)
+        public static void ThrowInvalidOperationException(ER resource, Exception e)
         {
             throw new InvalidOperationException(GetResourceString(resource), e);
         }
 
-        internal static void ThrowSerializationException(ER resource)
+        public static void ThrowSerializationException(ER resource)
         {
             throw new SerializationException(GetResourceString(resource));
         }
 
-        internal static void ThrowSecurityException(ER resource)
+        public static void ThrowSecurityException(ER resource)
         {
             throw new System.Security.SecurityException(GetResourceString(resource));
         }
 
-        internal static void ThrowRankException(ER resource)
+        public static void ThrowRankException(ER resource)
         {
             throw new RankException(GetResourceString(resource));
         }
 
-        internal static void ThrowNotSupportedException(ER resource)
+        public static void ThrowNotSupportedException(ER resource)
         {
             throw new NotSupportedException(GetResourceString(resource));
         }
 
-        internal static void ThrowUnauthorizedAccessException(ER resource)
+        public static void ThrowUnauthorizedAccessException(ER resource)
         {
             throw new UnauthorizedAccessException(GetResourceString(resource));
         }
 
-        internal static void ThrowObjectDisposedException(string objectName, ER resource)
+        public static void ThrowObjectDisposedException(string objectName, ER resource)
         {
             throw new ObjectDisposedException(objectName, GetResourceString(resource));
         }
 
-        internal static void ThrowObjectDisposedException(ER resource)
+        public static void ThrowObjectDisposedException(ER resource)
         {
             throw new ObjectDisposedException(null, GetResourceString(resource));
         }
 
-        internal static void ThrowNotSupportedException()
+        public static void ThrowNotSupportedException()
         {
             throw new NotSupportedException();
         }
 
-        internal static void ThrowAggregateException(List<Exception> exceptions)
+        public static void ThrowAggregateException(List<Exception> exceptions)
         {
             throw new AggregateException(exceptions);
         }
 
-        internal static void ThrowOutOfMemoryException()
+        public static void ThrowOutOfMemoryException()
         {
             throw new OutOfMemoryException();
         }
 
-        internal static void ThrowArgumentException_Argument_InvalidArrayType()
+        public static void ThrowArgumentException_Argument_InvalidArrayType()
         {
             throw new ArgumentException("Invalid array type.");
         }
 
-        internal static void ThrowInvalidOperationException_InvalidOperation_EmptyQueue()
+        public static void ThrowInvalidOperationException_InvalidOperation_EmptyQueue()
         {
             throw new InvalidOperationException("Queue empty.");
         }
 
-        internal static void ThrowInvalidOperationException_InvalidOperation_EmptyStack()
+        public static void ThrowInvalidOperationException_InvalidOperation_EmptyStack()
         {
             throw new InvalidOperationException("Stack empty.");
         }
 
-        internal static void ThrowInvalidOperationException_InvalidOperation_EnumNotStarted()
+        public static void ThrowInvalidOperationException_InvalidOperation_EnumNotStarted()
         {
             throw new InvalidOperationException("Enumeration has not started.");
         }
 
-        internal static void ThrowInvalidOperationException_InvalidOperation_EnumEnded()
+        public static void ThrowInvalidOperationException_InvalidOperation_EnumEnded()
         {
             throw new InvalidOperationException("Enumeration has ended.");
         }
 
-        internal static void ThrowInvalidOperationException_EnumCurrent(int index)
+        public static void ThrowInvalidOperationException_EnumCurrent(int index)
         {
             throw GetInvalidOperationException_EnumCurrent(index);
         }
 
-        internal static void ThrowInvalidOperationException_InvalidOperation_EnumFailedVersion()
+        public static void ThrowInvalidOperationException_InvalidOperation_EnumFailedVersion()
         {
             throw new InvalidOperationException("Collection was modified during enumeration.");
         }
 
-        internal static void ThrowInvalidOperationException_InvalidOperation_EnumOpCantHappen()
+        public static void ThrowInvalidOperationException_InvalidOperation_EnumOpCantHappen()
         {
             throw new InvalidOperationException("Invalid enumerator state: enumeration cannot proceed.");
         }
 
-        internal static void ThrowInvalidOperationException_InvalidOperation_NoValue()
+        public static void ThrowInvalidOperationException_InvalidOperation_NoValue()
         {
             throw new InvalidOperationException("No value provided.");
         }
 
-        internal static void ThrowInvalidOperationException_InvalidOperation_SpanOverlappedOperation()
+        public static void ThrowInvalidOperationException_InvalidOperation_SpanOverlappedOperation()
         {
             throw new InvalidOperationException("This operation is invalid on overlapping buffers.");
         }
 
-        internal static void ThrowInvalidOperationException_ConcurrentOperationsNotSupported()
+        public static void ThrowInvalidOperationException_ConcurrentOperationsNotSupported()
         {
             throw new InvalidOperationException("Concurrent operations are not supported.");
         }
 
-        internal static void ThrowInvalidOperationException_HandleIsNotInitialized()
+        public static void ThrowInvalidOperationException_HandleIsNotInitialized()
         {
             throw new InvalidOperationException("Handle is not initialized.");
         }
 
-        internal static void ThrowFormatException_BadFormatSpecifier()
+        public static void ThrowFormatException_BadFormatSpecifier()
         {
             throw new FormatException("Bad format specifier.");
         }
@@ -405,7 +405,7 @@ namespace Collections.Pooled
         // Aggressively inline so the jit evaluates the if in place and either drops the call altogether
         // Or just leaves null test and call to the Non-returning ThrowHelper.ThrowArgumentNullException
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal static void IfNullAndNullsAreIllegalThenThrow<T>(object value, EA argName)
+        public static void IfNullAndNullsAreIllegalThenThrow<T>(object value, EA argName)
         {
             // Note that default(T) is not equal to null for value types except when T is Nullable<U>.
             if (!(default(T) == null) && value == null)
@@ -413,7 +413,7 @@ namespace Collections.Pooled
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal static void ThrowForUnsupportedVectorBaseType<T>() where T : struct
+        public static void ThrowForUnsupportedVectorBaseType<T>() where T : struct
         {
             if (typeof(T) != typeof(byte) && typeof(T) != typeof(sbyte) &&
                 typeof(T) != typeof(short) && typeof(T) != typeof(ushort) &&
@@ -686,7 +686,7 @@ namespace Collections.Pooled
     //
     // The convention for this enum is using the argument name as the enum name
     //
-    internal enum ExceptionArgument
+    public enum ExceptionArgument
     {
         obj,
         dictionary,
@@ -758,7 +758,7 @@ namespace Collections.Pooled
     //
     // The convention for this enum is using the resource name as the enum name
     //
-    internal enum ExceptionResource
+    public enum ExceptionResource
     {
         ArgumentOutOfRange_Index,
         ArgumentOutOfRange_IndexMustBeLess,

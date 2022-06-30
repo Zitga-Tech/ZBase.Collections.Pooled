@@ -14,7 +14,7 @@ using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Runtime.Serialization;
 
-namespace Collections.Pooled.ValueTypes
+namespace Collections.Pooled.Generic
 {
     // Implements a variable-size List that uses an array of objects to store the
     // elements. A List has a capacity, which is the allocated length

@@ -22,7 +22,7 @@ using System.Runtime.CompilerServices;
 using System.Runtime.Serialization;
 using System.Diagnostics.CodeAnalysis;
 
-namespace Collections.Pooled.ValueTypes
+namespace Collections.Pooled.Generic
 {
     // A simple stack of objects.  Internally it is implemented as an array,
     // so Push can be O(n).  Pop is O(1).

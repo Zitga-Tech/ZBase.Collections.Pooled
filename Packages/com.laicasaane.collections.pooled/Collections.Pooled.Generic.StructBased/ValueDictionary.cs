@@ -14,7 +14,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 using System.Runtime.Serialization;
 
-namespace Collections.Pooled.ValueTypes
+namespace Collections.Pooled.Generic
 {
     [DebuggerTypeProxy(typeof(IDictionaryDebugView<,>))]
     [DebuggerDisplay("Count = {Count}")]
@@ -261,13 +261,13 @@ namespace Collections.Pooled.ValueTypes
             get => _count - _freeCount;
         }
 
-        public DictionaryKeyCollection<TKey, TValue> Keys => new DictionaryKeyCollection<TKey, TValue>(this);
+        public ValueDictionaryKeyCollection<TKey, TValue> Keys => new ValueDictionaryKeyCollection<TKey, TValue>(this);
 
         ICollection<TKey> IDictionary<TKey, TValue>.Keys => Keys;
 
         IEnumerable<TKey> IReadOnlyDictionary<TKey, TValue>.Keys => Keys;
 
-        public DictionaryValueCollection<TKey, TValue> Values => new DictionaryValueCollection<TKey, TValue>(this);
+        public ValueDictionaryValueCollection<TKey, TValue> Values => new ValueDictionaryValueCollection<TKey, TValue>(this);
 
         ICollection<TValue> IDictionary<TKey, TValue>.Values => Values;
 

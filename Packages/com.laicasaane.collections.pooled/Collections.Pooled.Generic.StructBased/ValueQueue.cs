@@ -22,7 +22,7 @@ using System.Runtime.CompilerServices;
 using System.Runtime.Serialization;
 using System.Diagnostics.CodeAnalysis;
 
-namespace Collections.Pooled.ValueTypes
+namespace Collections.Pooled.Generic
 {
     // A simple Queue of generic objects.  Internally it is implemented as a
     // circular buffer, so Enqueue can be O(n).  Dequeue is O(1).

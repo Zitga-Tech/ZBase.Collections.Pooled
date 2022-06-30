@@ -16,7 +16,7 @@ using System.Diagnostics.CodeAnalysis;
 
 using SCG = System.Collections.Generic;
 
-namespace Collections.Pooled.ValueTypes
+namespace Collections.Pooled.Generic
 {
     [DebuggerTypeProxy(typeof(ICollectionDebugView<>))]
     [DebuggerDisplay("Count = {Count}")]
@@ -1184,7 +1184,7 @@ namespace Collections.Pooled.ValueTypes
         #region Helper methods
 
         /// <summary>Returns an <see cref="IEqualityComparer"/> object that can be used for equality testing of a <see cref="ValueHashSet{T}"/> object.</summary>
-        public static IEqualityComparer<ValueHashSet<T>> CreateSetComparer() => new HashSetEqualityComparer<T>();
+        public static IEqualityComparer<ValueHashSet<T>> CreateSetComparer() => new ValueHashSetEqualityComparer<T>();
 
         /// <summary>
         /// Initializes buckets and slots arrays. Uses suggested capacity by finding next prime

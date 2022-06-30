@@ -3,18 +3,15 @@
 // See the LICENSE file in the project root for more information.
 
 using System;
-using System.Runtime.CompilerServices;
-
-[assembly: InternalsVisibleTo("Collections.Pooled.Tests")]
 
 namespace Collections.Pooled
 {
-    internal ref struct BitHelper
+    public ref struct BitHelper
     {
         private const int IntSize = sizeof(int) * 8;
         private readonly Span<int> _span;
 
-        internal BitHelper(Span<int> span, bool clear)
+        public BitHelper(Span<int> span, bool clear)
         {
             if (clear)
             {
@@ -23,7 +20,7 @@ namespace Collections.Pooled
             _span = span;
         }
 
-        internal void MarkBit(int bitPosition)
+        public void MarkBit(int bitPosition)
         {
             int bitArrayIndex = bitPosition / IntSize;
             if ((uint)bitArrayIndex < (uint)_span.Length)
@@ -32,7 +29,7 @@ namespace Collections.Pooled
             }
         }
 
-        internal bool IsMarked(int bitPosition)
+        public bool IsMarked(int bitPosition)
         {
             int bitArrayIndex = bitPosition / IntSize;
             return
@@ -40,7 +37,7 @@ namespace Collections.Pooled
                 (_span[bitArrayIndex] & (1 << (bitPosition % IntSize))) != 0;
         }
 
-        internal int FindFirstUnmarked(int startPosition = 0)
+        public int FindFirstUnmarked(int startPosition = 0)
         {
             int i = startPosition;
             for (int bi = i / IntSize; (uint)bi < (uint)_span.Length; bi = ++i / IntSize)
@@ -51,7 +48,7 @@ namespace Collections.Pooled
             return -1;
         }
 
-        internal int FindFirstMarked(int startPosition = 0)
+        public int FindFirstMarked(int startPosition = 0)
         {
             int i = startPosition;
             for (int bi = i / IntSize; (uint)bi < (uint)_span.Length; bi = ++i / IntSize)
@@ -63,6 +60,6 @@ namespace Collections.Pooled
         }
 
         /// <summary>How many ints must be allocated to represent n bits. Returns (n+31)/32, but avoids overflow.</summary>
-        internal static int ToIntArrayLength(int n) => n > 0 ? ((n - 1) / IntSize + 1) : 0;
+        public static int ToIntArrayLength(int n) => n > 0 ? ((n - 1) / IntSize + 1) : 0;
     }
 }

@@ -5,7 +5,7 @@
 
 using System.Diagnostics;
 
-namespace Collections.Pooled.ValueTypes
+namespace Collections.Pooled.Generic
 {
     internal sealed class ValueQueueDebugView<T>
     {

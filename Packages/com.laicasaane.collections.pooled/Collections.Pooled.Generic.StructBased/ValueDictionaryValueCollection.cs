@@ -9,29 +9,29 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 
-namespace Collections.Pooled.ValueTypes
+namespace Collections.Pooled.Generic
 {
-    [DebuggerTypeProxy(typeof(DictionaryKeyCollectionDebugView<,>))]
+    [DebuggerTypeProxy(typeof(DictionaryValueCollectionDebugView<,>))]
     [DebuggerDisplay("Count = {Count}")]
-    public readonly struct DictionaryKeyCollection<TKey, TValue> : ICollection<TKey>, IReadOnlyCollection<TKey>
+    public readonly struct ValueDictionaryValueCollection<TKey, TValue> : ICollection<TValue>, IReadOnlyCollection<TValue>
     {
         private readonly ValueDictionary<TKey, TValue> _dictionary;
 
-        public DictionaryKeyCollection(ValueDictionary<TKey, TValue> dictionary)
+        public ValueDictionaryValueCollection(ValueDictionary<TKey, TValue> dictionary)
         {
             _dictionary = dictionary;
         }
 
         public Enumerator GetEnumerator() => new Enumerator(_dictionary);
 
-        public void CopyTo(TKey[] array, int index)
+        public void CopyTo(TValue[] array, int index)
         {
             if (array == null)
             {
                 ThrowHelper.ThrowArgumentNullException(ExceptionArgument.array);
             }
 
-            if (index < 0 || index > array.Length)
+            if ((uint)index > array.Length)
             {
                 ThrowHelper.ThrowIndexArgumentOutOfRange_NeedNonNegNumException();
             }
@@ -45,46 +45,45 @@ namespace Collections.Pooled.ValueTypes
             Entry<TKey, TValue>[]? entries = _dictionary._entries;
             for (int i = 0; i < count; i++)
             {
-                if (entries![i].Next >= -1) array[index++] = entries[i].Key;
+                if (entries![i].Next >= -1) array[index++] = entries[i].Value;
             }
         }
 
         public int Count => _dictionary.Count;
 
-        bool ICollection<TKey>.IsReadOnly => true;
+        bool ICollection<TValue>.IsReadOnly => true;
 
-        void ICollection<TKey>.Add(TKey item) =>
-            ThrowHelper.ThrowNotSupportedException(ExceptionResource.NotSupported_KeyCollectionSet);
+        void ICollection<TValue>.Add(TValue item) =>
+            ThrowHelper.ThrowNotSupportedException(ExceptionResource.NotSupported_ValueCollectionSet);
 
-        void ICollection<TKey>.Clear() =>
-            ThrowHelper.ThrowNotSupportedException(ExceptionResource.NotSupported_KeyCollectionSet);
-
-        bool ICollection<TKey>.Contains(TKey item) =>
-            _dictionary.ContainsKey(item);
-
-        bool ICollection<TKey>.Remove(TKey item)
+        bool ICollection<TValue>.Remove(TValue item)
         {
-            ThrowHelper.ThrowNotSupportedException(ExceptionResource.NotSupported_KeyCollectionSet);
+            ThrowHelper.ThrowNotSupportedException(ExceptionResource.NotSupported_ValueCollectionSet);
             return false;
         }
 
-        IEnumerator<TKey> IEnumerable<TKey>.GetEnumerator() => new Enumerator(_dictionary);
+        void ICollection<TValue>.Clear() =>
+            ThrowHelper.ThrowNotSupportedException(ExceptionResource.NotSupported_ValueCollectionSet);
+
+        bool ICollection<TValue>.Contains(TValue item) => _dictionary.ContainsValue(item);
+
+        IEnumerator<TValue> IEnumerable<TValue>.GetEnumerator() => new Enumerator(_dictionary);
 
         IEnumerator IEnumerable.GetEnumerator() => new Enumerator(_dictionary);
 
-        public struct Enumerator : IEnumerator<TKey>, IEnumerator
+        public struct Enumerator : IEnumerator<TValue>, IEnumerator
         {
             private readonly ValueDictionary<TKey, TValue> _dictionary;
             private int _index;
             private readonly int _version;
-            private TKey? _currentKey;
+            private TValue? _currentValue;
 
             internal Enumerator(ValueDictionary<TKey, TValue> dictionary)
             {
                 _dictionary = dictionary;
                 _version = dictionary._version;
                 _index = 0;
-                _currentKey = default;
+                _currentValue = default;
             }
 
             public void Dispose() { }
@@ -102,17 +101,16 @@ namespace Collections.Pooled.ValueTypes
 
                     if (entry.Next >= -1)
                     {
-                        _currentKey = entry.Key;
+                        _currentValue = entry.Value;
                         return true;
                     }
                 }
-
                 _index = _dictionary._count + 1;
-                _currentKey = default;
+                _currentValue = default;
                 return false;
             }
 
-            public TKey Current => _currentKey!;
+            public TValue Current => _currentValue!;
 
             object? IEnumerator.Current
             {
@@ -123,7 +121,7 @@ namespace Collections.Pooled.ValueTypes
                         ThrowHelper.ThrowInvalidOperationException_InvalidOperation_EnumOpCantHappen();
                     }
 
-                    return _currentKey;
+                    return _currentValue;
                 }
             }
 
@@ -135,7 +133,7 @@ namespace Collections.Pooled.ValueTypes
                 }
 
                 _index = 0;
-                _currentKey = default;
+                _currentValue = default;
             }
         }
     }

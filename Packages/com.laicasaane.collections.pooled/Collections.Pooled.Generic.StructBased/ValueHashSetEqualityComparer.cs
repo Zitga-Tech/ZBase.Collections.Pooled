@@ -8,10 +8,10 @@
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 
-namespace Collections.Pooled.ValueTypes
+namespace Collections.Pooled.Generic
 {
     /// <summary>Equality comparer for hashsets of hashsets</summary>
-    public readonly struct HashSetEqualityComparer<T> : IEqualityComparer<ValueHashSet<T>>
+    public readonly struct ValueHashSetEqualityComparer<T> : IEqualityComparer<ValueHashSet<T>>
     {
         public bool Equals(ValueHashSet<T> x, ValueHashSet<T> y)
         {
@@ -77,7 +77,7 @@ namespace Collections.Pooled.ValueTypes
         }
 
         // Equals method for the comparer itself.
-        public override bool Equals([NotNullWhen(true)] object? obj) => obj is HashSetEqualityComparer<T>;
+        public override bool Equals([NotNullWhen(true)] object? obj) => obj is ValueHashSetEqualityComparer<T>;
 
         public override int GetHashCode() => EqualityComparer<T>.Default.GetHashCode();
     }
