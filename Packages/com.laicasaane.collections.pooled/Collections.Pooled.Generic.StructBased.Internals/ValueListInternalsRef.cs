@@ -10,7 +10,7 @@ namespace Collections.Pooled.Generic.Internals
         [NonSerialized] public readonly bool ClearItems;
         [NonSerialized] public readonly ReadOnlySpan<T> Items;
 
-        public ValueListInternalsRef(ValueList<T> source)
+        public ValueListInternalsRef(in ValueList<T> source)
         {
             Size = source._size;
             Version = source._version;

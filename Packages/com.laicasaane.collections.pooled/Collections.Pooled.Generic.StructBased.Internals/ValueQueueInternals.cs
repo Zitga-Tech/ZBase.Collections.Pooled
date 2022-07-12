@@ -13,7 +13,7 @@ namespace Collections.Pooled.Generic.Internals
         [NonSerialized] public readonly T[] Array;
         [NonSerialized] public readonly ArrayPool<T> Pool;
 
-        public ValueQueueInternals(ValueQueue<T> source)
+        public ValueQueueInternals(in ValueQueue<T> source)
         {
             Head = source._head;
             Tail = source._tail;

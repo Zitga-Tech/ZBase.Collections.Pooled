@@ -12,7 +12,7 @@ namespace Collections.Pooled.Generic.Internals
         [NonSerialized] public readonly bool ClearArray;
         [NonSerialized] public readonly ReadOnlySpan<T> Array;
 
-        public ValueQueueInternalsRef(ValueQueue<T> source)
+        public ValueQueueInternalsRef(in ValueQueue<T> source)
         {
             Head = source._head;
             Tail = source._tail;

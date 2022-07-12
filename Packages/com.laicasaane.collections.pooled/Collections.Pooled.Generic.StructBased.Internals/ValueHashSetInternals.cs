@@ -24,7 +24,7 @@ namespace Collections.Pooled.Generic.Internals
         [NonSerialized] public readonly ArrayPool<int> BucketPool;
         [NonSerialized] public readonly ArrayPool<Entry<T>> EntryPool;
 
-        public ValueHashSetInternals(ValueHashSet<T> source)
+        public ValueHashSetInternals(in ValueHashSet<T> source)
         {
 #if TARGET_64BIT || PLATFORM_ARCH_64 || UNITY_64
             FastModMultiplier = source._fastModMultiplier;

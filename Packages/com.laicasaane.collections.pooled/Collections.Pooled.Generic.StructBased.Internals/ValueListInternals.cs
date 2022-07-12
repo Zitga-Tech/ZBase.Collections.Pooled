@@ -12,7 +12,7 @@ namespace Collections.Pooled.Generic.Internals
         [NonSerialized] public readonly T[] Items;
         [NonSerialized] public readonly ArrayPool<T> Pool;
 
-        public ValueListInternals(ValueList<T> source)
+        public ValueListInternals(in ValueList<T> source)
         {
             Size = source._size;
             Version = source._version;

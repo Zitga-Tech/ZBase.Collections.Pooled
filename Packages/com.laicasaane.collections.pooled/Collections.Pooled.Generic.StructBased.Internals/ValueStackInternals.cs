@@ -11,7 +11,7 @@ namespace Collections.Pooled.Generic.Internals
         [NonSerialized] public readonly T[] Array;
         [NonSerialized] public readonly ArrayPool<T> Pool;
 
-        public ValueStackInternals(ValueStack<T> source)
+        public ValueStackInternals(in ValueStack<T> source)
         {
             Size = source._size;
             Version = source._version;

@@ -20,7 +20,7 @@ namespace Collections.Pooled.Generic.Internals
         [NonSerialized] public readonly ReadOnlySpan<Entry<T>> Entries;
         [NonSerialized] public readonly IEqualityComparer<T> Comparer;
 
-        public ValueHashSetInternalsRef(ValueHashSet<T> source)
+        public ValueHashSetInternalsRef(in ValueHashSet<T> source)
         {
 #if TARGET_64BIT || PLATFORM_ARCH_64 || UNITY_64
             FastModMultiplier = source._fastModMultiplier;

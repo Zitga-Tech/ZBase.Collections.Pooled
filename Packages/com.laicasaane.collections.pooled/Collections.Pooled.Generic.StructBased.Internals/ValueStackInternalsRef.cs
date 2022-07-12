@@ -10,7 +10,7 @@ namespace Collections.Pooled.Generic.Internals
         [NonSerialized] public readonly bool ClearArray;
         [NonSerialized] public readonly ReadOnlySpan<T> Array;
 
-        public ValueStackInternalsRef(ValueStack<T> source)
+        public ValueStackInternalsRef(in ValueStack<T> source)
         {
             Size = source._size;
             Version = source._version;

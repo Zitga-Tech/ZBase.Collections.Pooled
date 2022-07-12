@@ -20,7 +20,7 @@ namespace Collections.Pooled.Generic.Internals
         [NonSerialized] public readonly ReadOnlySpan<Entry<TKey, TValue>> Entries;
         [NonSerialized] public readonly IEqualityComparer<TKey> Comparer;
 
-        public ValueDictionaryInternalsRef(ValueDictionary<TKey, TValue> source)
+        public ValueDictionaryInternalsRef(in ValueDictionary<TKey, TValue> source)
         {
 #if TARGET_64BIT || PLATFORM_ARCH_64 || UNITY_64
             FastModMultiplier = source._fastModMultiplier;

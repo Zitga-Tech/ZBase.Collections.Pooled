@@ -26,7 +26,7 @@ namespace Collections.Pooled.Generic.Internals
         [NonSerialized] public readonly ArrayPool<int> BucketPool;
         [NonSerialized] public readonly ArrayPool<Entry<TKey, TValue>> EntryPool;
 
-        public ValueDictionaryInternals(ValueDictionary<TKey, TValue> source)
+        public ValueDictionaryInternals(in ValueDictionary<TKey, TValue> source)
         {
 #if TARGET_64BIT || PLATFORM_ARCH_64 || UNITY_64
             FastModMultiplier = source._fastModMultiplier;
