@@ -6,11 +6,11 @@ using System.Runtime.CompilerServices;
 
 namespace Collections.Pooled.Generic
 {
-    public readonly struct KVPairValueDictionary<TKey, TValue> : IEnumerable<KVPair<TKey, TValue>>
+    public readonly struct ValueKVPairDictionary<TKey, TValue> : IEnumerable<KVPair<TKey, TValue>>
     {
         private readonly ValueDictionary<TKey, TValue> _dictionary;
 
-        public KVPairValueDictionary(in ValueDictionary<TKey, TValue> dictionary)
+        public ValueKVPairDictionary(in ValueDictionary<TKey, TValue> dictionary)
         {
             _dictionary = dictionary;
         }
@@ -104,9 +104,9 @@ namespace Collections.Pooled.Generic
     public static partial class ValueDictionaryExtensions
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static KVPairValueDictionary<TKey, TValue> ToKVPairValueDictionary<TKey, TValue>(
+        public static ValueKVPairDictionary<TKey, TValue> ToValueKVPairDictionary<TKey, TValue>(
                 in this ValueDictionary<TKey, TValue> dictionary
             )
-            => new KVPairValueDictionary<TKey, TValue>(dictionary);
+            => new ValueKVPairDictionary<TKey, TValue>(dictionary);
     }
 }

@@ -2,11 +2,11 @@
 
 namespace Collections.Pooled.Generic
 {
-    public readonly ref struct KVPairTempDictionary<TKey, TValue>
+    public readonly ref struct TempKVPairDictionary<TKey, TValue>
     {
         private readonly TempDictionary<TKey, TValue> _dictionary;
 
-        public KVPairTempDictionary(in TempDictionary<TKey, TValue> dictionary)
+        public TempKVPairDictionary(in TempDictionary<TKey, TValue> dictionary)
         {
             _dictionary = dictionary;
         }
@@ -68,9 +68,9 @@ namespace Collections.Pooled.Generic
     public static partial class TempDictionaryExtensions
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static KVPairTempDictionary<TKey, TValue> ToKVPairTempDictionary<TKey, TValue>(
+        public static TempKVPairDictionary<TKey, TValue> ToTempKVPairDictionary<TKey, TValue>(
                 in this TempDictionary<TKey, TValue> dictionary
             )
-            => new KVPairTempDictionary<TKey, TValue>(dictionary);
+            => new TempKVPairDictionary<TKey, TValue>(dictionary);
     }
 }
