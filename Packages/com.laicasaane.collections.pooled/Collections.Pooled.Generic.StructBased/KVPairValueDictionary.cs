@@ -6,11 +6,11 @@ using System.Runtime.CompilerServices;
 
 namespace Collections.Pooled.Generic
 {
-    public readonly struct KVPairDictionary<TKey, TValue> : IEnumerable<KVPair<TKey, TValue>>
+    public readonly struct KVPairValueDictionary<TKey, TValue> : IEnumerable<KVPair<TKey, TValue>>
     {
-        private readonly Dictionary<TKey, TValue> _dictionary;
+        private readonly ValueDictionary<TKey, TValue> _dictionary;
 
-        public KVPairDictionary(Dictionary<TKey, TValue> dictionary)
+        public KVPairValueDictionary(in ValueDictionary<TKey, TValue> dictionary)
         {
             _dictionary = dictionary;
         }
@@ -29,12 +29,12 @@ namespace Collections.Pooled.Generic
 
         public struct Enumerator : IEnumerator<KVPair<TKey, TValue>>
         {
-            private readonly Dictionary<TKey, TValue> _dictionary;
+            private readonly ValueDictionary<TKey, TValue> _dictionary;
             private readonly int _version;
             private int _index;
             private KVPair<TKey, TValue> _current;
 
-            internal Enumerator(Dictionary<TKey, TValue> dictionary)
+            internal Enumerator(in ValueDictionary<TKey, TValue> dictionary)
             {
                 _dictionary = dictionary;
                 _version = dictionary._version;
@@ -101,12 +101,12 @@ namespace Collections.Pooled.Generic
         }
     }
 
-    public static partial class DictionaryExtensions
+    public static partial class ValueDictionaryExtensions
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static KVPairDictionary<TKey, TValue> ToKVPairDictionary<TKey, TValue>(
-                this Dictionary<TKey, TValue> dictionary
+        public static KVPairValueDictionary<TKey, TValue> ToKVPairValueDictionary<TKey, TValue>(
+                in this ValueDictionary<TKey, TValue> dictionary
             )
-            => new KVPairDictionary<TKey, TValue>(dictionary);
+            => new KVPairValueDictionary<TKey, TValue>(dictionary);
     }
 }
