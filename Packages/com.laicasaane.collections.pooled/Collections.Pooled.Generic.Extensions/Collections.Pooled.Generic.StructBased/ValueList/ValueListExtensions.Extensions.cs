@@ -2,19 +2,21 @@
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 
+using CPG = Collections.Pooled.Generic;
+
 namespace Collections.Pooled.Generic
 {
-    partial struct TempList<T>
+    public static partial class ValueListExtensions
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Extensions GetExtensions()
-            => new Extensions(this);
+        public static Extensions<T> GetExtensions<T>(in this CPG.ValueList<T> self)
+            => new Extensions<T>(self);
 
-        public ref struct Extensions
+        public ref struct Extensions<T>
         {
-            private TempList<T> _list;
+            private ValueList<T> _list;
 
-            internal Extensions(TempList<T> list)
+            internal Extensions(ValueList<T> list)
             {
                 _list = list;
             }
@@ -52,14 +54,14 @@ namespace Collections.Pooled.Generic
                 }
             }
 
-            public TempList<TOut> ConvertAll<TOut, TConverter>(TConverter converter) where TConverter : IConverter<T, TOut>
+            public CPG.ValueList<TOut> ConvertAll<TOut, TConverter>(TConverter converter) where TConverter : IConverter<T, TOut>
             {
                 if (converter == null)
                 {
                     ThrowHelper.ThrowArgumentNullException(ExceptionArgument.converter);
                 }
 
-                TempList<TOut> list = new TempList<TOut>(_list._size);
+                CPG.ValueList<TOut> list = new CPG.ValueList<TOut>(_list._size);
                 for (int i = 0; i < _list._size; i++)
                 {
                     list._items[i] = converter.Convert(_list._items[i]);
@@ -88,14 +90,14 @@ namespace Collections.Pooled.Generic
                 return default;
             }
 
-            public TempList<T> FindAll<TPredicate>(TPredicate match) where TPredicate : IPredicate<T>
+            public CPG.ValueList<T> FindAll<TPredicate>(TPredicate match) where TPredicate : IPredicate<T>
             {
                 if (match == null)
                 {
                     ThrowHelper.ThrowArgumentNullException(ExceptionArgument.match);
                 }
 
-                TempList<T> list = new TempList<T>();
+                CPG.ValueList<T> list = new CPG.ValueList<T>();
                 for (int i = 0; i < _list._size; i++)
                 {
                     if (match.Predicate(_list._items[i]))
@@ -285,7 +287,7 @@ namespace Collections.Pooled.Generic
                     }
                 }
 
-                if (TempList<T>.s_clearItems)
+                if (ValueList<T>.s_clearItems)
                 {
                     Array.Clear(_list._items, freeIndex, _list._size - freeIndex); // Clear the elements so that the gc can reclaim the references.
                 }
