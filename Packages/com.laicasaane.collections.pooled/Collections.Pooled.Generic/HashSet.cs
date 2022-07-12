@@ -205,8 +205,8 @@ namespace Collections.Pooled.Generic
             {
                 Initialize(source.Count);
 
-                Entry<T>[]? entries = source._entries;
-                for (int i = 0; i < source._count; i++)
+                Entry<T>[]? entries = source.GetEntries();
+                for (int i = 0, len = entries.Length; i < len; i++)
                 {
                     ref Entry<T> entry = ref entries![i];
                     if (entry.Next >= -1)
@@ -1168,6 +1168,10 @@ namespace Collections.Pooled.Generic
             return size;
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        internal Entry<T>[] GetEntries()
+            => _entries ?? s_emptyEntries;
+
         /// <summary>Adds the specified element to the set if it's not already contained.</summary>
         /// <param name="value">The element to add to the set.</param>
         /// <param name="location">The index into <see cref="_entries"/> of the element.</param>
@@ -1337,11 +1341,46 @@ namespace Collections.Pooled.Generic
         /// </summary>
         internal bool IsSubsetOfHashSetWithSameComparer(HashSet<T> other)
         {
-            foreach (T item in this)
+            Entry<T>[]? entries = _entries;
+            for (int i = 0; i < _count; i++)
             {
-                if (!other.Contains(item))
+                ref Entry<T> entry = ref entries![i];
+                if (entry.Next >= -1)
                 {
-                    return false;
+                    T item = entry.Value;
+                    if (!other.Contains(item))
+                    {
+                        return false;
+                    }
+                }
+            }
+
+            return true;
+        }
+
+        /// <summary>
+        /// Implementation Notes:
+        /// If other is a hashset and is using same equality comparer, then checking subset is
+        /// faster. Simply check that each element in this is in other.
+        ///
+        /// Note: if other doesn't use same equality comparer, then Contains check is invalid,
+        /// which is why callers must take are of this.
+        ///
+        /// If callers are concerned about whether this is a proper subset, they take care of that.
+        /// </summary>
+        internal bool IsSubsetOfHashSetWithSameComparer(SCG.HashSet<T> other)
+        {
+            Entry<T>[]? entries = _entries;
+            for (int i = 0; i < _count; i++)
+            {
+                ref Entry<T> entry = ref entries![i];
+                if (entry.Next >= -1)
+                {
+                    T item = entry.Value;
+                    if (!other.Contains(item))
+                    {
+                        return false;
+                    }
                 }
             }
 
@@ -1367,29 +1406,6 @@ namespace Collections.Pooled.Generic
                     }
                 }
             }
-        }
-
-        /// <summary>
-        /// Implementation Notes:
-        /// If other is a hashset and is using same equality comparer, then checking subset is
-        /// faster. Simply check that each element in this is in other.
-        ///
-        /// Note: if other doesn't use same equality comparer, then Contains check is invalid,
-        /// which is why callers must take are of this.
-        ///
-        /// If callers are concerned about whether this is a proper subset, they take care of that.
-        /// </summary>
-        internal bool IsSubsetOfHashSetWithSameComparer(SCG.HashSet<T> other)
-        {
-            foreach (T item in this)
-            {
-                if (!other.Contains(item))
-                {
-                    return false;
-                }
-            }
-
-            return true;
         }
 
         /// <summary>
@@ -1465,11 +1481,18 @@ namespace Collections.Pooled.Generic
         /// <param name="other"></param>
         private void SymmetricExceptWithUniqueHashSet(HashSet<T> other)
         {
-            foreach (T item in other)
+            var otherEntries = other.GetEntries();
+            
+            for (int i = 0, len = otherEntries.Length; i < len; i++)
             {
-                if (!Remove(item))
+                ref Entry<T> entry = ref otherEntries![i];
+                if (entry.Next >= -1)
                 {
-                    AddIfNotPresent(item, out _);
+                    T item = entry.Value;
+                    if (!Remove(item))
+                    {
+                        AddIfNotPresent(item, out _);
+                    }
                 }
             }
         }
