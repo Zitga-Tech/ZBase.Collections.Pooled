@@ -1,0 +1,17 @@
+{
+    "name": "Collections.Pooled.Generic.Temporary.Internals",
+    "rootNamespace": "Collections.Pooled.Generic.Internals",
+    "references": [
+        "Collections.Pooled",
+        "Collections.Pooled.Generic.Temporary"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": true,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
