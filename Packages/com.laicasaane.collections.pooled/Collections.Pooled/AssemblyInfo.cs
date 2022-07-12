@@ -5,3 +5,5 @@
 
 [assembly: InternalsVisibleTo("Collections.Pooled.Generic.StructBased")]
 [assembly: InternalsVisibleTo("Collections.Pooled.Generic.StructBased.Internals")]
+
+[assembly: InternalsVisibleTo("Collections.Pooled.Generic.Extensions")]
