@@ -30,7 +30,7 @@ namespace Collections.Pooled.Generic.Internals
         }
     }
 
-    public static partial class CollectionInternals
+    public static partial class TempCollectionInternals
     {
         /// <summary>
         /// Returns a structure that holds ownership of internal fields of <paramref name="source"/>.
