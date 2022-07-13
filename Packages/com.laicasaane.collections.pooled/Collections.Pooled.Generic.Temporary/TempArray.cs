@@ -10,6 +10,7 @@ namespace Collections.Pooled.Generic
         private static readonly T[] s_emptyArray = new T[0];
 
         internal T[] _array; // Do not rename (binary serialization)
+        internal int _length; // Do not rename (binary serialization)
 
         [NonSerialized]
         internal ArrayPool<T> _pool;
@@ -21,10 +22,17 @@ namespace Collections.Pooled.Generic
         public TempArray(int length, ArrayPool<T> pool)
         {
             _pool = pool ?? ArrayPool<T>.Shared;
+            _length = length;
             _array = pool.Rent(length);
         }
 
         public int Length
+        {
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            get => _length;
+        }
+
+        public int Capacity
         {
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             get => _array.Length;
@@ -53,10 +61,11 @@ namespace Collections.Pooled.Generic
         public void Dispose()
         {
             ReturnArray(s_emptyArray);
+            _length = 0;
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public Span<T>.Enumerator GetEnumerator()
-            => _array.AsSpan().GetEnumerator();
+            => _array.AsSpan(0, _length).GetEnumerator();
     }
 }

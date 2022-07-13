@@ -5,11 +5,13 @@ namespace Collections.Pooled.Generic.Internals
 {
     public readonly ref struct TempArrayInternalsRef<T>
     {
+        [NonSerialized] public readonly int Length;
         [NonSerialized] public readonly bool ClearArray;
         [NonSerialized] public readonly ReadOnlySpan<T> Array;
 
         public TempArrayInternalsRef(in TempArray<T> source)
         {
+            Length = source._length;
             ClearArray = TempArray<T>.s_clearArray;
             Array = source._array;
         }
