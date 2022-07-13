@@ -6,16 +6,7 @@ namespace Collections.Pooled.Generic
 {
     partial struct ValueList<T> : IDisposable
     {
-        public ValueList(T[] items) : this(items.AsSpan(), ArrayPool<T>.Shared)
-        { }
-
-        public ValueList(T[] items, ArrayPool<T> pool) : this(items.AsSpan(), pool)
-        { }
-
-        public ValueList(in ReadOnlySpan<T> span) : this(span, ArrayPool<T>.Shared)
-        { }
-
-        public ValueList(in ReadOnlySpan<T> span, ArrayPool<T> pool)
+        internal ValueList(in ReadOnlySpan<T> span, ArrayPool<T> pool)
         {
             _pool = pool ?? ArrayPool<T>.Shared;
 

@@ -44,25 +44,9 @@ namespace Collections.Pooled.Generic
 
         internal static readonly bool s_clearArray = RuntimeHelpers.IsReferenceOrContainsReferences<T>();
 
-        public ValueQueue(int capacity) : this(capacity, ArrayPool<T>.Shared) { }
-
-        public ValueQueue(IEnumerable<T> collection) : this(collection, ArrayPool<T>.Shared) { }
-
-        // Creates a queue with room for capacity objects. The default initial
-        // capacity and grow factor are used.
-        public ValueQueue(ArrayPool<T> pool)
-        {
-            _head = default;
-            _tail = default;
-            _size = default;
-            _version = default;
-            _pool = pool ?? ArrayPool<T>.Shared;
-            _array = s_emptyArray;
-        }
-
         // Creates a queue with room for capacity objects. The default grow factor
         // is used.
-        public ValueQueue(int capacity, ArrayPool<T> pool)
+        internal ValueQueue(int capacity, ArrayPool<T> pool)
         {
             if (capacity < 0)
                 ThrowHelper.ThrowCapacityArgumentOutOfRange_NeedNonNegNumException();
@@ -77,7 +61,7 @@ namespace Collections.Pooled.Generic
 
         // Fills a Queue with the elements of an ICollection.  Uses the enumerator
         // to get each of the elements.
-        public ValueQueue(IEnumerable<T> collection, ArrayPool<T> pool)
+        internal ValueQueue(IEnumerable<T> collection, ArrayPool<T> pool)
         {
             if (collection == null)
                 ThrowHelper.ThrowArgumentNullException(ExceptionArgument.collection);

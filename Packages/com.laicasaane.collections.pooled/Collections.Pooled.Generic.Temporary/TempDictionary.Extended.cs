@@ -9,31 +9,7 @@ namespace Collections.Pooled.Generic
 {
     partial struct TempDictionary<TKey, TValue>
     {
-        public TempDictionary((TKey Key, TValue Value)[] array, IEqualityComparer<TKey>? comparer)
-            : this(array.AsSpan(), comparer, ArrayPool<int>.Shared, ArrayPool<Entry<TKey, TValue>>.Shared)
-        { }
-
-        public TempDictionary((TKey Key, TValue Value)[] array, IEqualityComparer<TKey>? comparer, ArrayPool<int> bucketPool, ArrayPool<Entry<TKey, TValue>> entryPool)
-            : this(array.AsSpan(), comparer, bucketPool, entryPool)
-        { }
-
-        public TempDictionary(KeyValuePair<TKey, TValue>[] array, IEqualityComparer<TKey>? comparer)
-            : this(array.AsSpan(), comparer, ArrayPool<int>.Shared, ArrayPool<Entry<TKey, TValue>>.Shared)
-        { }
-
-        public TempDictionary(KeyValuePair<TKey, TValue>[] array, IEqualityComparer<TKey>? comparer, ArrayPool<int> bucketPool, ArrayPool<Entry<TKey, TValue>> entryPool)
-            : this(array.AsSpan(), comparer, bucketPool, entryPool)
-        { }
-
-        public TempDictionary(KVPair<TKey, TValue>[] array, IEqualityComparer<TKey>? comparer)
-            : this(array.AsSpan(), comparer, ArrayPool<int>.Shared, ArrayPool<Entry<TKey, TValue>>.Shared)
-        { }
-
-        public TempDictionary(KVPair<TKey, TValue>[] array, IEqualityComparer<TKey>? comparer, ArrayPool<int> bucketPool, ArrayPool<Entry<TKey, TValue>> entryPool)
-            : this(array.AsSpan(), comparer, bucketPool, entryPool)
-        { }
-
-        public TempDictionary(in ReadOnlySpan<(TKey Key, TValue Value)> span, IEqualityComparer<TKey>? comparer, ArrayPool<int> bucketPool, ArrayPool<Entry<TKey, TValue>> entryPool)
+        internal TempDictionary(in ReadOnlySpan<(TKey Key, TValue Value)> span, IEqualityComparer<TKey>? comparer, ArrayPool<int> bucketPool, ArrayPool<Entry<TKey, TValue>> entryPool)
             : this(span.Length, comparer, bucketPool, entryPool)
         {
             foreach (var pair in span)
@@ -42,7 +18,7 @@ namespace Collections.Pooled.Generic
             }
         }
 
-        public TempDictionary(in ReadOnlySpan<KeyValuePair<TKey, TValue>> span, IEqualityComparer<TKey>? comparer, ArrayPool<int> bucketPool, ArrayPool<Entry<TKey, TValue>> entryPool)
+        internal TempDictionary(in ReadOnlySpan<KeyValuePair<TKey, TValue>> span, IEqualityComparer<TKey>? comparer, ArrayPool<int> bucketPool, ArrayPool<Entry<TKey, TValue>> entryPool)
             : this(span.Length, comparer, bucketPool, entryPool)
         {
             foreach (var pair in span)
@@ -51,7 +27,7 @@ namespace Collections.Pooled.Generic
             }
         }
 
-        public TempDictionary(in ReadOnlySpan<KVPair<TKey, TValue>> span, IEqualityComparer<TKey>? comparer, ArrayPool<int> bucketPool, ArrayPool<Entry<TKey, TValue>> entryPool)
+        internal TempDictionary(in ReadOnlySpan<KVPair<TKey, TValue>> span, IEqualityComparer<TKey>? comparer, ArrayPool<int> bucketPool, ArrayPool<Entry<TKey, TValue>> entryPool)
             : this(span.Length, comparer, bucketPool, entryPool)
         {
             foreach (var pair in span)

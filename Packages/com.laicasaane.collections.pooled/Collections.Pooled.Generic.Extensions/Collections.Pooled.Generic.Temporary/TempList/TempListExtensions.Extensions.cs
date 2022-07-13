@@ -61,7 +61,7 @@ namespace Collections.Pooled.Generic
                     ThrowHelper.ThrowArgumentNullException(ExceptionArgument.converter);
                 }
 
-                CPG.TempList<TOut> list = new CPG.TempList<TOut>(_list._size);
+                CPG.TempList<TOut> list = CPG.TempList<TOut>.Create(_list._size);
                 for (int i = 0; i < _list._size; i++)
                 {
                     list._items[i] = converter.Convert(_list._items[i]);

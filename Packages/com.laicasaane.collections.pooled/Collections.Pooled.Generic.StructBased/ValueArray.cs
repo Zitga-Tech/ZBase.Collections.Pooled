@@ -11,7 +11,7 @@ namespace Collections.Pooled.Generic
     [DebuggerTypeProxy(typeof(ICollectionDebugView<>))]
     [DebuggerDisplay("Count = {Length}")]
     [Serializable]
-    public struct ValueArray<T> : IEnumerable<T>, IDisposable, IDeserializationCallback
+    public partial struct ValueArray<T> : IEnumerable<T>, IDisposable, IDeserializationCallback
     {
         internal static readonly bool s_clearArray = RuntimeHelpers.IsReferenceOrContainsReferences<T>();
         private static readonly T[] s_emptyArray = new T[0];
@@ -22,11 +22,7 @@ namespace Collections.Pooled.Generic
         [NonSerialized]
         internal ArrayPool<T> _pool;
 
-        public ValueArray(int length)
-            : this(length, ArrayPool<T>.Shared)
-        { }
-
-        public ValueArray(int length, ArrayPool<T> pool)
+        internal ValueArray(int length, ArrayPool<T> pool)
         {
             _pool = pool ?? ArrayPool<T>.Shared;
             _length = length;

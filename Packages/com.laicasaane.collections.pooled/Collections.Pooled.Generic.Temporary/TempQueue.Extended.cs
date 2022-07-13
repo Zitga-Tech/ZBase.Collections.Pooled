@@ -6,16 +6,7 @@ namespace Collections.Pooled.Generic
 {
     partial struct TempQueue<T>
     {
-        public TempQueue(T[] items) : this(items.AsSpan(), ArrayPool<T>.Shared)
-        { }
-
-        public TempQueue(T[] items, ArrayPool<T> pool) : this(items.AsSpan(), pool)
-        { }
-
-        public TempQueue(in ReadOnlySpan<T> span) : this(span, ArrayPool<T>.Shared)
-        { }
-
-        public TempQueue(in ReadOnlySpan<T> span, ArrayPool<T> pool)
+        internal TempQueue(in ReadOnlySpan<T> span, ArrayPool<T> pool)
         {
             _head = default;
             _tail = default;
@@ -35,24 +26,6 @@ namespace Collections.Pooled.Generic
                 span.CopyTo(_array);
                 _size = count;
             }
-        }
-
-        /// <summary>
-        /// Gets a <see cref="System.Span{T}"/> for the items currently in the collection.
-        /// </summary>
-        internal Span<T> Span
-        {
-            [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            get => _array.AsSpan(0, _size);
-        }
-
-        /// <summary>
-        /// Gets a <see cref="System.ReadOnlySpan{T}"/> for the items currently in the collection.
-        /// </summary>
-        public ReadOnlySpan<T> ReadOnlySpan
-        {
-            [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            get => _array.AsSpan(0, _size);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]

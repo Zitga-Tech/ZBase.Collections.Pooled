@@ -35,15 +35,6 @@ namespace Collections.Pooled.Generic
             }
         }
 
-        /// <summary>
-        /// Gets a <see cref="System.ReadOnlySpan{T}"/> for the items currently in the collection.
-        /// </summary>
-        public ReadOnlySpan<T> ReadOnlySpan
-        {
-            [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            get => _array.AsSpan(0, _size);
-        }
-
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void CopyTo(in Span<T> dest)
             => CopyTo(dest, 0, _size);

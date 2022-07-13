@@ -45,23 +45,9 @@ namespace Collections.Pooled.Generic
 
         private const int DefaultCapacity = 4;
 
-        public ValueStack(int capacity) : this(capacity, ArrayPool<T>.Shared)
-        { }
-
-        public ValueStack(IEnumerable<T> collection) : this(collection, ArrayPool<T>.Shared)
-        { }
-
-        public ValueStack(ArrayPool<T> pool)
-        {
-            _size = default;
-            _version = default;
-            _pool = pool ?? ArrayPool<T>.Shared;
-            _array = s_emptyArray;
-        }
-
         // Create a stack with a specific initial capacity.  The initial capacity
         // must be a non-negative number.
-        public ValueStack(int capacity, ArrayPool<T> pool)
+        internal ValueStack(int capacity, ArrayPool<T> pool)
         {
             if (capacity < 0)
                 ThrowHelper.ThrowCapacityArgumentOutOfRange_NeedNonNegNumException();
@@ -74,7 +60,7 @@ namespace Collections.Pooled.Generic
 
         // Fills a Stack with the contents of a particular collection.  The items are
         // pushed onto the stack in the same order they are read by the enumerator.
-        public ValueStack(IEnumerable<T> collection, ArrayPool<T> pool)
+        internal ValueStack(IEnumerable<T> collection, ArrayPool<T> pool)
         {
             if (collection == null)
                 ThrowHelper.ThrowArgumentNullException(ExceptionArgument.collection);

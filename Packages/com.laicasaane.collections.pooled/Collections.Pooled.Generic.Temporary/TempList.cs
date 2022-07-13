@@ -34,29 +34,11 @@ namespace Collections.Pooled.Generic
 
         internal static readonly bool s_clearItems = RuntimeHelpers.IsReferenceOrContainsReferences<T>();
 
-        // Constructs a List. The list is initially empty and has a capacity
-        // of zero. Upon adding the first element to the list the capacity is
-        // increased to DefaultCapacity, and then increased in multiples of two
-        // as required.
-        public TempList(int capacity) : this(capacity, ArrayPool<T>.Shared)
-        { }
-
-        public TempList(IEnumerable<T> collection) : this(collection, ArrayPool<T>.Shared)
-        { }
-
-        public TempList(ArrayPool<T> pool)
-        {
-            _size = 0;
-            _items = s_emptyArray;
-            _pool = pool ?? ArrayPool<T>.Shared;
-            _version = 0;
-        }
-
         // Constructs a List with a given initial capacity. The list is
         // initially empty, but will have room for the given number of elements
         // before any reallocations are required.
         //
-        public TempList(int capacity, ArrayPool<T> pool)
+        internal TempList(int capacity, ArrayPool<T> pool)
         {
             if (capacity < 0)
                 ThrowHelper.ThrowArgumentOutOfRangeException(ExceptionArgument.capacity, ExceptionResource.ArgumentOutOfRange_NeedNonNegNum);
@@ -71,7 +53,7 @@ namespace Collections.Pooled.Generic
         // size and capacity of the new list will both be equal to the size of the
         // given collection.
         //
-        public TempList(IEnumerable<T> collection, ArrayPool<T> pool)
+        internal TempList(IEnumerable<T> collection, ArrayPool<T> pool)
         {
             if (collection == null)
                 ThrowHelper.ThrowArgumentNullException(ExceptionArgument.collection);
@@ -310,14 +292,14 @@ namespace Collections.Pooled.Generic
             return _size != 0 && IndexOf(item) >= 0;
         }
 
-        public TempList<TOut> ConvertAll<TOut>(Converter<T, TOut> converter)
+        public TempList<TOut> ConvertAll<TOut>(Converter<T, TOut> converter, ArrayPool<TOut> pool = null)
         {
             if (converter == null)
             {
                 ThrowHelper.ThrowArgumentNullException(ExceptionArgument.converter);
             }
 
-            TempList<TOut> list = new TempList<TOut>(_size);
+            TempList<TOut> list = new TempList<TOut>(_size, pool ?? ArrayPool<TOut>.Shared);
             for (int i = 0; i < _size; i++)
             {
                 list._items[i] = converter(_items[i]);
@@ -556,7 +538,7 @@ namespace Collections.Pooled.Generic
         public Enumerator GetEnumerator()
             => new Enumerator(this);
 
-        public TempList<T> GetRange(int index, int count)
+        public TempList<T> GetRange(int index, int count, ArrayPool<T> pool = null)
         {
             if (index < 0)
             {
@@ -573,7 +555,7 @@ namespace Collections.Pooled.Generic
                 ThrowHelper.ThrowArgumentException(ExceptionResource.Argument_InvalidOffLen);
             }
 
-            TempList<T> list = new TempList<T>(count);
+            TempList<T> list = new TempList<T>(count, pool ?? ArrayPool<T>.Shared);
             Array.Copy(_items, index, list._items, 0, count);
             list._size = count;
             return list;

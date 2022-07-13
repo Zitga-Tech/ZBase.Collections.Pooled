@@ -10,22 +10,6 @@ namespace Collections.Pooled.Generic
 {
     partial struct ValueHashSet<T> : IDisposable
     {
-        public ValueHashSet(T[] items)
-            : this(items.AsSpan(), null)
-        { }
-
-        public ValueHashSet(T[] items, IEqualityComparer<T>? comparer)
-            : this(items.AsSpan(), comparer, ArrayPool<int>.Shared, ArrayPool<Entry<T>>.Shared)
-        { }
-
-        public ValueHashSet(T[] items, IEqualityComparer<T>? comparer, ArrayPool<int> bucketPool, ArrayPool<Entry<T>> entryPool)
-            : this(items.AsSpan(), comparer, bucketPool, entryPool)
-        { }
-
-        public ValueHashSet(in ReadOnlySpan<T> span)
-            : this(span, null)
-        { }
-
         public ValueHashSet(in ReadOnlySpan<T> span, IEqualityComparer<T>? comparer)
             : this(span, comparer, ArrayPool<int>.Shared, ArrayPool<Entry<T>>.Shared)
         { }

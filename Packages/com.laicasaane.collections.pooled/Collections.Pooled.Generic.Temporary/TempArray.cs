@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Buffers;
+using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 
 namespace Collections.Pooled.Generic
 {
-    public ref struct TempArray<T>
+    public ref partial struct TempArray<T>
     {
         internal static readonly bool s_clearArray = RuntimeHelpers.IsReferenceOrContainsReferences<T>();
         private static readonly T[] s_emptyArray = new T[0];
@@ -15,11 +16,7 @@ namespace Collections.Pooled.Generic
         [NonSerialized]
         internal ArrayPool<T> _pool;
 
-        public TempArray(int length)
-            : this(length, ArrayPool<T>.Shared)
-        { }
-
-        public TempArray(int length, ArrayPool<T> pool)
+        internal TempArray(int length, ArrayPool<T> pool)
         {
             _pool = pool ?? ArrayPool<T>.Shared;
             _length = length;

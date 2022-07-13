@@ -69,27 +69,7 @@ namespace Collections.Pooled.Generic
 
         #region Constructors
 
-        public ValueHashSet(int capacity)
-            : this(capacity, null, ArrayPool<int>.Shared, ArrayPool<Entry<T>>.Shared)
-        { }
-
-        public ValueHashSet(IEnumerable<T> collection)
-            : this(collection, null, ArrayPool<int>.Shared, ArrayPool<Entry<T>>.Shared)
-        { }
-
-        public ValueHashSet(IEqualityComparer<T>? comparer)
-            : this(comparer, ArrayPool<int>.Shared, ArrayPool<Entry<T>>.Shared)
-        { }
-
-        public ValueHashSet(IEnumerable<T> collection, IEqualityComparer<T>? comparer)
-            : this(collection, comparer, ArrayPool<int>.Shared, ArrayPool<Entry<T>>.Shared)
-        { }
-
-        public ValueHashSet(int capacity, IEqualityComparer<T>? comparer)
-            : this(capacity, comparer, ArrayPool<int>.Shared, ArrayPool<Entry<T>>.Shared)
-        { }
-
-        public ValueHashSet(IEqualityComparer<T>? comparer, ArrayPool<int> bucketPool, ArrayPool<Entry<T>> entryPool)
+        internal ValueHashSet(IEqualityComparer<T>? comparer, ArrayPool<int> bucketPool, ArrayPool<Entry<T>> entryPool)
         {
             _buckets = default;
             _entries = default;
@@ -127,7 +107,7 @@ namespace Collections.Pooled.Generic
             _entryPool = entryPool ?? ArrayPool<Entry<T>>.Shared;
         }
 
-        public ValueHashSet(IEnumerable<T> collection, IEqualityComparer<T>? comparer, ArrayPool<int> bucketPool, ArrayPool<Entry<T>> entryPool)
+        internal ValueHashSet(IEnumerable<T> collection, IEqualityComparer<T>? comparer, ArrayPool<int> bucketPool, ArrayPool<Entry<T>> entryPool)
             : this(comparer, bucketPool, entryPool)
         {
             if (collection == null)
@@ -161,7 +141,7 @@ namespace Collections.Pooled.Generic
             }
         }
 
-        public ValueHashSet(int capacity, IEqualityComparer<T>? comparer, ArrayPool<int> bucketPool, ArrayPool<Entry<T>> entryPool)
+        internal ValueHashSet(int capacity, IEqualityComparer<T>? comparer, ArrayPool<int> bucketPool, ArrayPool<Entry<T>> entryPool)
             : this(comparer, bucketPool, entryPool)
         {
             if (capacity < 0)

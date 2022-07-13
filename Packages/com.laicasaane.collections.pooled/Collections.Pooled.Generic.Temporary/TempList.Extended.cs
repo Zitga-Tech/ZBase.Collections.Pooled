@@ -6,16 +6,7 @@ namespace Collections.Pooled.Generic
 {
     partial struct TempList<T>
     {
-        public TempList(T[] items) : this(items.AsSpan(), ArrayPool<T>.Shared)
-        { }
-
-        public TempList(T[] items, ArrayPool<T> pool) : this(items.AsSpan(), pool)
-        { }
-
-        public TempList(in ReadOnlySpan<T> span) : this(span, ArrayPool<T>.Shared)
-        { }
-
-        public TempList(in ReadOnlySpan<T> span, ArrayPool<T> pool)
+        internal TempList(in ReadOnlySpan<T> span, ArrayPool<T> pool)
         {
             _pool = pool ?? ArrayPool<T>.Shared;
 

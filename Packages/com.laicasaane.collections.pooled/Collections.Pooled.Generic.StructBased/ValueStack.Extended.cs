@@ -6,16 +6,7 @@ namespace Collections.Pooled.Generic
 {
     partial struct ValueStack<T> : IDisposable
     {
-        public ValueStack(T[] items) : this(items.AsSpan(), ArrayPool<T>.Shared)
-        { }
-        
-        public ValueStack(T[] items, ArrayPool<T> pool) : this(items.AsSpan(), pool)
-        { }
-
-        public ValueStack(in ReadOnlySpan<T> span) : this(span, ArrayPool<T>.Shared)
-        { }
-
-        public ValueStack(in ReadOnlySpan<T> span, ArrayPool<T> pool)
+        internal ValueStack(in ReadOnlySpan<T> span, ArrayPool<T> pool)
         {
             _size = default;
             _version = default;
@@ -33,15 +24,6 @@ namespace Collections.Pooled.Generic
                 span.CopyTo(_array);
                 _size = count;
             }
-        }
-
-        /// <summary>
-        /// Gets a <see cref="System.ReadOnlySpan{T}"/> for the items currently in the collection.
-        /// </summary>
-        public ReadOnlySpan<T> ReadOnlySpan
-        {
-            [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            get => _array.AsSpan(0, _size);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]

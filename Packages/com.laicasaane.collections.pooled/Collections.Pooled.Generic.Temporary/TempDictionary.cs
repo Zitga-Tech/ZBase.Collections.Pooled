@@ -51,54 +51,7 @@ namespace Collections.Pooled.Generic
 
         private const int StartOfFreeList = -3;
 
-        public TempDictionary(int capacity)
-            : this(capacity, null, ArrayPool<int>.Shared, ArrayPool<Entry<TKey, TValue>>.Shared)
-        { }
-
-        public TempDictionary(IEqualityComparer<TKey>? comparer)
-            : this(0, comparer, ArrayPool<int>.Shared, ArrayPool<Entry<TKey, TValue>>.Shared)
-        { }
-
-        public TempDictionary(IDictionary<TKey, TValue> dictionary)
-            : this(dictionary, null, ArrayPool<int>.Shared, ArrayPool<Entry<TKey, TValue>>.Shared)
-        { }
-
-        public TempDictionary(IEnumerable<KeyValuePair<TKey, TValue>> collection)
-            : this(collection, null, ArrayPool<int>.Shared, ArrayPool<Entry<TKey, TValue>>.Shared)
-        { }
-
-        public TempDictionary(int capacity, IEqualityComparer<TKey>? comparer)
-            : this(capacity, comparer, ArrayPool<int>.Shared, ArrayPool<Entry<TKey, TValue>>.Shared)
-        { }
-
-        public TempDictionary(IDictionary<TKey, TValue> dictionary, IEqualityComparer<TKey>? comparer)
-            : this(dictionary != null ? dictionary.Count : 0, comparer, ArrayPool<int>.Shared, ArrayPool<Entry<TKey, TValue>>.Shared)
-        { }
-
-        public TempDictionary(IEnumerable<KeyValuePair<TKey, TValue>> collection, IEqualityComparer<TKey>? comparer)
-            : this((collection as ICollection<KeyValuePair<TKey, TValue>>)?.Count ?? 0, comparer, ArrayPool<int>.Shared, ArrayPool<Entry<TKey, TValue>>.Shared)
-        { }
-        public TempDictionary(ArrayPool<int> bucketPool, ArrayPool<Entry<TKey, TValue>> entryPool)
-            : this(0, null, bucketPool, entryPool)
-        { }
-
-        public TempDictionary(int capacity, ArrayPool<int> bucketPool, ArrayPool<Entry<TKey, TValue>> entryPool)
-            : this(capacity, null, bucketPool, entryPool)
-        { }
-
-        public TempDictionary(IEqualityComparer<TKey>? comparer, ArrayPool<int> bucketPool, ArrayPool<Entry<TKey, TValue>> entryPool)
-            : this(0, comparer, bucketPool, entryPool)
-        { }
-
-        public TempDictionary(IDictionary<TKey, TValue> dictionary, ArrayPool<int> bucketPool, ArrayPool<Entry<TKey, TValue>> entryPool)
-            : this(dictionary, null, bucketPool, entryPool)
-        { }
-
-        public TempDictionary(IEnumerable<KeyValuePair<TKey, TValue>> collection, ArrayPool<int> bucketPool, ArrayPool<Entry<TKey, TValue>> entryPool)
-            : this(collection, null, bucketPool, entryPool)
-        { }
-
-        public TempDictionary(int capacity, IEqualityComparer<TKey>? comparer, ArrayPool<int> bucketPool, ArrayPool<Entry<TKey, TValue>> entryPool)
+        internal TempDictionary(int capacity, IEqualityComparer<TKey>? comparer, ArrayPool<int> bucketPool, ArrayPool<Entry<TKey, TValue>> entryPool)
         {
             _buckets = default;
             _entries = default;
@@ -146,7 +99,7 @@ namespace Collections.Pooled.Generic
             _entryPool = entryPool ?? ArrayPool<Entry<TKey, TValue>>.Shared;
         }
 
-        public TempDictionary(IDictionary<TKey, TValue> dictionary, IEqualityComparer<TKey>? comparer, ArrayPool<int> bucketPool, ArrayPool<Entry<TKey, TValue>> entryPool)
+        internal TempDictionary(IDictionary<TKey, TValue> dictionary, IEqualityComparer<TKey>? comparer, ArrayPool<int> bucketPool, ArrayPool<Entry<TKey, TValue>> entryPool)
             : this(dictionary != null ? dictionary.Count : 0, comparer, bucketPool, entryPool)
         {
             if (dictionary == null)
@@ -157,7 +110,7 @@ namespace Collections.Pooled.Generic
             AddRange(dictionary);
         }
 
-        public TempDictionary(IEnumerable<KeyValuePair<TKey, TValue>> collection, IEqualityComparer<TKey>? comparer, ArrayPool<int> bucketPool, ArrayPool<Entry<TKey, TValue>> entryPool)
+        internal TempDictionary(IEnumerable<KeyValuePair<TKey, TValue>> collection, IEqualityComparer<TKey>? comparer, ArrayPool<int> bucketPool, ArrayPool<Entry<TKey, TValue>> entryPool)
             : this((collection as ICollection<KeyValuePair<TKey, TValue>>)?.Count ?? 0, comparer, bucketPool, entryPool)
         {
             if (collection == null)
