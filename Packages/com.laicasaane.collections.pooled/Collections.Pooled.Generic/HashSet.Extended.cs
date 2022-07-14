@@ -614,7 +614,7 @@ namespace Collections.Pooled.Generic
                 ThrowHelper.ThrowArgumentException(ExceptionResource.Arg_ArrayPlusOffTooSmall);
             }
 
-            Span<Entry<T>> src = _entries.AsSpan(0, Count);
+            Span<Entry<T>> src = _entries.AsSpan(0, _count);
 
             if (src.Length == 0)
                 return;
