@@ -42,7 +42,7 @@ namespace Collections.Pooled.Generic
 
         private static readonly T[] s_emptyArray = new T[0];
 
-        internal static readonly bool s_clearArray = RuntimeHelpers.IsReferenceOrContainsReferences<T>();
+        internal static readonly bool s_clearArray = SystemRuntimeHelpers.IsReferenceOrContainsReferences<T>();
 
         // Creates a queue with room for capacity objects. The default grow factor
         // is used.

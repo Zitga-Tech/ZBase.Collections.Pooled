@@ -6,7 +6,7 @@ namespace Collections.Pooled.Generic
 {
     public ref partial struct TempArray<T>
     {
-        internal static readonly bool s_clearArray = RuntimeHelpers.IsReferenceOrContainsReferences<T>();
+        internal static readonly bool s_clearArray = SystemRuntimeHelpers.IsReferenceOrContainsReferences<T>();
         private static readonly T[] s_emptyArray = new T[0];
 
         internal T[] _array; // Do not rename (binary serialization)

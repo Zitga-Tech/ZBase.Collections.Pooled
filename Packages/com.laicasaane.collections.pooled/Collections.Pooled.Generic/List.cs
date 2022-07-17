@@ -38,7 +38,7 @@ namespace Collections.Pooled.Generic
 
         private static readonly T[] s_emptyArray = new T[0];
 
-        internal static readonly bool s_clearItems = RuntimeHelpers.IsReferenceOrContainsReferences<T>();
+        internal static readonly bool s_clearItems = SystemRuntimeHelpers.IsReferenceOrContainsReferences<T>();
 
         // Constructs a List. The list is initially empty and has a capacity
         // of zero. Upon adding the first element to the list the capacity is

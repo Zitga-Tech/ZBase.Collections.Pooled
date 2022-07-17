@@ -51,7 +51,7 @@ namespace Collections.Pooled
                         T[] arr = pool.Rent(DefaultCapacity);
                         arr[0] = en.Current;
                         int count = 1;
-                        var clearArray = RuntimeHelpers.IsReferenceOrContainsReferences<T>();
+                        var clearArray = SystemRuntimeHelpers.IsReferenceOrContainsReferences<T>();
 
                         while (en.MoveNext())
                         {

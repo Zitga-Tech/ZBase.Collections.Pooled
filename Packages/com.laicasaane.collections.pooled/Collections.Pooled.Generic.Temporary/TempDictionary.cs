@@ -45,8 +45,8 @@ namespace Collections.Pooled.Generic
         [NonSerialized]
         internal ArrayPool<Entry<TKey, TValue>> _entryPool;
 
-        internal static readonly bool s_isReferenceKey = RuntimeHelpers.IsReferenceOrContainsReferences<TKey>();
-        internal static readonly bool s_isReferenceValue = RuntimeHelpers.IsReferenceOrContainsReferences<TValue>();
+        internal static readonly bool s_isReferenceKey = SystemRuntimeHelpers.IsReferenceOrContainsReferences<TKey>();
+        internal static readonly bool s_isReferenceValue = SystemRuntimeHelpers.IsReferenceOrContainsReferences<TValue>();
         internal static readonly bool s_clearEntries = s_isReferenceKey || s_isReferenceValue;
 
         private const int StartOfFreeList = -3;

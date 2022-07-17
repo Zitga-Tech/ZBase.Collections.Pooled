@@ -43,7 +43,7 @@ namespace Collections.Pooled.Generic
         private static readonly int[] s_emptyBuckets = new int[0];
         private static readonly Entry<T>[] s_emptyEntries = new Entry<T>[0];
 
-        internal static readonly bool s_clearEntries = RuntimeHelpers.IsReferenceOrContainsReferences<T>();
+        internal static readonly bool s_clearEntries = SystemRuntimeHelpers.IsReferenceOrContainsReferences<T>();
 
         internal int[]? _buckets;
         internal Entry<T>[]? _entries;
