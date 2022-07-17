@@ -49,9 +49,9 @@ namespace Collections.Pooled.Generic
         [NonSerialized]
         internal ArrayPool<Entry<TKey, TValue>> _entryPool;
 
-        internal static readonly bool s_clearEntries = 
-               RuntimeHelpers.IsReferenceOrContainsReferences<TKey>() 
-            || RuntimeHelpers.IsReferenceOrContainsReferences<TValue>();
+        internal static readonly bool s_isReferenceKey = RuntimeHelpers.IsReferenceOrContainsReferences<TKey>();
+        internal static readonly bool s_isReferenceValue = RuntimeHelpers.IsReferenceOrContainsReferences<TValue>();
+        internal static readonly bool s_clearEntries = s_isReferenceKey || s_isReferenceValue;
 
         private const int StartOfFreeList = -3;
 
@@ -1072,12 +1072,12 @@ namespace Collections.Pooled.Generic
                         Debug.Assert((StartOfFreeList - _freeList) < 0, "shouldn't underflow because max hashtable length is MaxPrimeArrayLength = 0x7FEFFFFD(2146435069) _freelist underflow threshold 2147483646");
                         entry.Next = StartOfFreeList - _freeList;
 
-                        if (RuntimeHelpers.IsReferenceOrContainsReferences<TKey>())
+                        if (s_isReferenceKey)
                         {
                             entry.Key = default!;
                         }
 
-                        if (RuntimeHelpers.IsReferenceOrContainsReferences<TValue>())
+                        if (s_isReferenceValue)
                         {
                             entry.Value = default!;
                         }
@@ -1142,12 +1142,12 @@ namespace Collections.Pooled.Generic
                         Debug.Assert((StartOfFreeList - _freeList) < 0, "shouldn't underflow because max hashtable length is MaxPrimeArrayLength = 0x7FEFFFFD(2146435069) _freelist underflow threshold 2147483646");
                         entry.Next = StartOfFreeList - _freeList;
 
-                        if (RuntimeHelpers.IsReferenceOrContainsReferences<TKey>())
+                        if (s_isReferenceKey)
                         {
                             entry.Key = default!;
                         }
 
-                        if (RuntimeHelpers.IsReferenceOrContainsReferences<TValue>())
+                        if (s_isReferenceValue)
                         {
                             entry.Value = default!;
                         }

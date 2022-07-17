@@ -14,6 +14,8 @@ namespace Collections.Pooled.Generic.Internals
         [NonSerialized] public readonly int FreeList;
         [NonSerialized] public readonly int FreeCount;
         [NonSerialized] public readonly int Version;
+        [NonSerialized] public readonly bool IsReferenceKey;
+        [NonSerialized] public readonly bool IsReferenceValue;
         [NonSerialized] public readonly bool ClearEntries;
 
         [NonSerialized] public readonly ReadOnlySpan<int> Buckets;
@@ -30,6 +32,8 @@ namespace Collections.Pooled.Generic.Internals
             FreeList = source._freeList;
             FreeCount = source._freeCount;
             Version = source._version;
+            IsReferenceKey = ValueDictionary<TKey, TValue>.s_isReferenceKey;
+            IsReferenceValue = ValueDictionary<TKey, TValue>.s_isReferenceValue;
             ClearEntries = ValueDictionary<TKey, TValue>.s_clearEntries;
             Buckets = source._buckets;
             Entries = source._entries;

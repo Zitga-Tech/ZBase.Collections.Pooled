@@ -345,7 +345,7 @@ namespace Collections.Pooled.Generic
                         Debug.Assert((StartOfFreeList - _freeList) < 0, "shouldn't underflow because max hashtable length is MaxPrimeArrayLength = 0x7FEFFFFD(2146435069) _freelist underflow threshold 2147483646");
                         entry.Next = StartOfFreeList - _freeList;
 
-                        if (RuntimeHelpers.IsReferenceOrContainsReferences<T>())
+                        if (s_clearEntries)
                         {
                             entry.Value = default!;
                         }
