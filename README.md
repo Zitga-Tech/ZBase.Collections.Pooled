@@ -295,3 +295,19 @@ TempCollectionInternals  .AsSpan(collection)
 
 - For other collections, it returns `_items` or `_array`.
 
+### `GetUnsafe` methods
+
+```cs
+collection.GetUnsafe(out array, out count, ...)
+collection.GetUnsafe(out array, out count, ...)
+collection.GetUnsafe(out array, out count, ...)
+```
+
+- This method returns a **direct** reference to the internal main array of a source collection, along with the size of that array (named `count`).
+
+- For `Dictionary` and `HashSet`, it returns the `_entries` array.
+
+- For other collections, it returns `_items` or `_array`.
+
+- For `Queue`, it also returns `head` and `tail` values.
+
