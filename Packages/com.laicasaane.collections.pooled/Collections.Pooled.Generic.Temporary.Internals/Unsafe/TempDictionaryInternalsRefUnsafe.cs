@@ -63,6 +63,17 @@ namespace Collections.Pooled.Generic.Internals.Unsafe
             )
             => source._entries.AsSpan(0, source._count);
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void GetUnsafe<TKey, TValue>(
+                in this TempDictionary<TKey, TValue> source
+                , out Entry<TKey, TValue>[] entries
+                , out int count
+            )
+        {
+            entries = source._entries;
+            count = source._count;
+        }
+
         /// <summary>
         /// Gets a ref to a <typeparamref name="TValue"/> in the <see cref="TempDictionary{TKey, TValue}"/>, adding a new entry with a default value if it does not exist in the <paramref name="dictionary"/>.
         /// </summary>

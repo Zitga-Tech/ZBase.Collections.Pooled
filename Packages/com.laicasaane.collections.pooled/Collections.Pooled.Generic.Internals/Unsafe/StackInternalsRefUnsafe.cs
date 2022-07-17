@@ -38,5 +38,16 @@ namespace Collections.Pooled.Generic.Internals.Unsafe
                 Stack<T> source
             )
             => source._array.AsSpan(0, source._size);
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void GetUnsafe<T>(
+                this Stack<T> source
+                , out T[] array
+                , out int count
+            )
+        {
+            array = source._array;
+            count = source._size;
+        }
     }
 }

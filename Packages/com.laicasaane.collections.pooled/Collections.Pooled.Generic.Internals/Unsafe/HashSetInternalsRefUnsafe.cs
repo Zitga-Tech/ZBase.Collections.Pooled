@@ -57,6 +57,17 @@ namespace Collections.Pooled.Generic.Internals.Unsafe
             )
             => source._entries.AsSpan(0, source._count);
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void GetUnsafe<T>(
+                this HashSet<T> source
+                , out Entry<T>[] entries
+                , out int count
+            )
+        {
+            entries = source._entries;
+            count = source._count;
+        }
+
         /// <summary>
         /// Gets either a ref to a <typeparamref name="T"/> in the <see cref="HashSet{T}"/> or a ref null if it does not exist in the <paramref name="set"/>.
         /// </summary>

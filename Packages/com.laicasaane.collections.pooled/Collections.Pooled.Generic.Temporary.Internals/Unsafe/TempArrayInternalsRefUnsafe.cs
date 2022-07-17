@@ -36,5 +36,16 @@ namespace Collections.Pooled.Generic.Internals.Unsafe
                 in TempArray<T> source
             )
             => source._array.AsSpan(0, source._length);
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void GetUnsafe<T>(
+                in this TempArray<T> source
+                , out T[] array
+                , out int length
+            )
+        {
+            array = source._array;
+            length = source._length;
+        }
     }
 }

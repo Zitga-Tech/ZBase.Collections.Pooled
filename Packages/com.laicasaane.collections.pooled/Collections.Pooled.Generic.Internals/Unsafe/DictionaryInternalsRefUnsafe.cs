@@ -63,6 +63,17 @@ namespace Collections.Pooled.Generic.Internals.Unsafe
             )
             => source._entries.AsSpan(0, source._count);
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void GetUnsafe<TKey, TValue>(
+                this Dictionary<TKey, TValue> source
+                , out Entry<TKey, TValue>[] entries
+                , out int count
+            )
+        {
+            entries = source._entries;
+            count = source._count;
+        }
+
         /// <summary>
         /// Gets either a ref to a <typeparamref name="TValue"/> in the <see cref="Dictionary{TKey, TValue}"/> or a ref null if it does not exist in the <paramref name="dictionary"/>.
         /// </summary>
