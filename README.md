@@ -153,19 +153,23 @@ Safe internals accessing APIs are exposed through the static `*CollectionsIntern
 
 ```cs
 CollectionInternals      .TakeOwnership(collection)
-ValueCollectionInternals .TakeOwnership(collection)
-TempCollectionInternals  .TakeOwnership(collection)
+ValueCollectionInternals .TakeOwnership(valueCollection)
+TempCollectionInternals  .TakeOwnership(tempCollection)
 ```
 
-- Firstly, this method create an `*Internals` structure to hold references to internal arrays of a source collection.
+The procedure follows these steps:
 
-- Secondly, it removes the source references by assigning them to `null` and calling `Dispose` on the source.
+1. Creates an `*Internals` structure to hold references to internal arrays of a source collection.
 
-- Finally, it returns that structure to the outside.
+2. Removes the source references by assigning them to `null`.
 
-Consequentially, this structure has overtaken the **ownership** of those internal arrays.
+3. `Dispose` the source collection.
 
-:warning: The source collection is disposed at the same time, **DO NOT** use it anymore to avoid unknown behaviours.
+4. Returns that structure to the outside.
+
+:arrow_forward: Consequentially, this structure has overtaken the **ownership** of those internal arrays.
+
+:x: **DO NOT** use the source collection after this procedure to avoid unknown behaviours, because it has already been disposed.
 
 ```cs
 using Collections.Pooled.Generic;
@@ -203,8 +207,8 @@ void Internals_Ownership_Transferring()
 
 ```cs
 CollectionInternals      .GetRef(collection)
-ValueCollectionInternals .GetRef(collection)
-TempCollectionInternals  .GetRef(collection)
+ValueCollectionInternals .GetRef(valueCollection)
+TempCollectionInternals  .GetRef(tempCollection)
 ```
 
 - This method returns an `*InternalsRef` structure that holds **indirect** references to internal arrays of a source collection.
@@ -233,8 +237,8 @@ void InternalsDisposing()
 
 ```cs
 CollectionInternals      .AsReadOnlySpan(collection)
-ValueCollectionInternals .AsReadOnlySpan(collection)
-TempCollectionInternals  .AsReadOnlySpan(collection)
+ValueCollectionInternals .AsReadOnlySpan(valueCollection)
+TempCollectionInternals  .AsReadOnlySpan(tempCollection)
 ```
 
 - This method returns an indirect reference to the internal main array of a source collection.
@@ -253,8 +257,8 @@ Unsafe internals accessing APIs are exposed through the static `*CollectionInter
 
 ```cs
 CollectionInternalsUnsafe      .GetRef(collection)
-ValueCollectionInternalsUnsafe .GetRef(collection)
-TempCollectionInternalsUnsafe  .GetRef(collection)
+ValueCollectionInternalsUnsafe .GetRef(valuecollection)
+TempCollectionInternalsUnsafe  .GetRef(tempCollection)
 ```
 
 - This method returns an `*InternalsRefUnsafe` structure that holds **indirect** references to internal arrays of a source collection.
@@ -283,8 +287,8 @@ void InternalsDisposing()
 
 ```cs
 CollectionInternals      .AsSpan(collection)
-ValueCollectionInternals .AsSpan(collection)
-TempCollectionInternals  .AsSpan(collection)
+ValueCollectionInternals .AsSpan(valueCollection)
+TempCollectionInternals  .AsSpan(tempCollection)
 ```
 
 - This method returns an **indirect** reference to the internal main array of a source collection.
@@ -298,9 +302,9 @@ TempCollectionInternals  .AsSpan(collection)
 ### `GetUnsafe` methods
 
 ```cs
-collection.GetUnsafe(out array, out count, ...)
-collection.GetUnsafe(out array, out count, ...)
-collection.GetUnsafe(out array, out count, ...)
+collection      .GetUnsafe(out array, out count)
+valueCollection .GetUnsafe(out array, out count)
+tempCollection  .GetUnsafe(out array, out count)
 ```
 
 - This method returns a **direct** reference to the internal main array of a source collection, along with the size of that array (named `count`).
@@ -310,4 +314,10 @@ collection.GetUnsafe(out array, out count, ...)
 - For other collections, it returns `_items` or `_array`.
 
 - For `Queue`, it also returns `head` and `tail` values.
+
+```cs
+queue      .GetUnsafe(out array, out count, out head, out tail)
+valueQueue .GetUnsafe(out array, out count, out head, out tail)
+tempQueue  .GetUnsafe(out array, out count, out head, out tail)
+```
 
