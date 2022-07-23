@@ -14,6 +14,12 @@ using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 using System.Runtime.Serialization;
 
+#if UNITY_2021_3_OR_NEWER && !UNITY_EDITOR
+using Unsafe = System.Runtime.CompilerServices.Unsafe;
+#else
+using Unsafe = Collections.Pooled.SystemUnsafe;
+#endif
+
 namespace Collections.Pooled.Generic
 {
     [DebuggerTypeProxy(typeof(IDictionaryDebugView<,>))]

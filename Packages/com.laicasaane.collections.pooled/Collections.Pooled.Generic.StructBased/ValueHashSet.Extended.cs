@@ -6,6 +6,12 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
 
+#if UNITY_2021_3_OR_NEWER && !UNITY_EDITOR
+using Unsafe = System.Runtime.CompilerServices.Unsafe;
+#else
+using Unsafe = Collections.Pooled.SystemUnsafe;
+#endif
+
 namespace Collections.Pooled.Generic
 {
     partial struct ValueHashSet<T> : IDisposable
