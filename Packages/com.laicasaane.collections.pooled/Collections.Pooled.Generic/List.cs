@@ -188,20 +188,6 @@ namespace Collections.Pooled.Generic
             }
         }
 
-        private void ReturnArray(T[] replaceWith)
-        {
-            if (_items?.Length > 0)
-            {
-                try
-                {
-                    _pool.Return(_items, s_clearItems);
-                }
-                catch { }
-            }
-
-            _items = replaceWith ?? s_emptyArray;
-        }
-
         // Adds the given object to the end of this list. The size of the list is
         // increased by one. If required, the capacity of the list is doubled
         // before adding the new element.
@@ -327,9 +313,12 @@ namespace Collections.Pooled.Generic
             }
 
             List<TOut> list = new List<TOut>(_size);
+            T[] src = _items;
+            TOut[] dst = list._items;
+
             for (int i = 0; i < _size; i++)
             {
-                list._items[i] = converter(_items[i]);
+                dst[i] = converter(src[i]);
             }
             list._size = _size;
             return list;
@@ -411,11 +400,13 @@ namespace Collections.Pooled.Generic
                 ThrowHelper.ThrowArgumentNullException(ExceptionArgument.match);
             }
 
+            T[] items = _items;
+
             for (int i = 0; i < _size; i++)
             {
-                if (match(_items[i]))
+                if (match(items[i]))
                 {
-                    return _items[i];
+                    return items[i];
                 }
             }
             return default;
@@ -429,11 +420,13 @@ namespace Collections.Pooled.Generic
             }
 
             List<T> list = new List<T>();
+            T[] items = _items;
+
             for (int i = 0; i < _size; i++)
             {
-                if (match(_items[i]))
+                if (match(items[i]))
                 {
-                    list.Add(_items[i]);
+                    list.Add(items[i]);
                 }
             }
             return list;
@@ -463,9 +456,11 @@ namespace Collections.Pooled.Generic
             }
 
             int endIndex = startIndex + count;
+            T[] items = _items;
+
             for (int i = startIndex; i < endIndex; i++)
             {
-                if (match(_items[i])) return i;
+                if (match(items[i])) return i;
             }
             return -1;
         }
@@ -477,11 +472,13 @@ namespace Collections.Pooled.Generic
                 ThrowHelper.ThrowArgumentNullException(ExceptionArgument.match);
             }
 
+            T[] items = _items;
+
             for (int i = _size - 1; i >= 0; i--)
             {
-                if (match(_items[i]))
+                if (match(items[i]))
                 {
-                    return _items[i];
+                    return items[i];
                 }
             }
             return default;
@@ -524,9 +521,11 @@ namespace Collections.Pooled.Generic
             }
 
             int endIndex = startIndex - count;
+            T[] items = _items;
+
             for (int i = startIndex; i > endIndex; i--)
             {
-                if (match(_items[i]))
+                if (match(items[i]))
                 {
                     return i;
                 }
@@ -542,6 +541,7 @@ namespace Collections.Pooled.Generic
             }
 
             int version = _version;
+            T[] items = _items;
 
             for (int i = 0; i < _size; i++)
             {
@@ -549,7 +549,7 @@ namespace Collections.Pooled.Generic
                 {
                     break;
                 }
-                action(_items[i]);
+                action(items[i]);
             }
 
             if (version != _version)
@@ -822,27 +822,28 @@ namespace Collections.Pooled.Generic
             }
 
             int freeIndex = 0;   // the first free slot in items array
+            T[] items = _items;
 
             // Find the first item which needs to be removed.
-            while (freeIndex < _size && !match(_items[freeIndex])) freeIndex++;
+            while (freeIndex < _size && !match(items[freeIndex])) freeIndex++;
             if (freeIndex >= _size) return 0;
 
             int current = freeIndex + 1;
             while (current < _size)
             {
                 // Find the first item which needs to be kept.
-                while (current < _size && match(_items[current])) current++;
+                while (current < _size && match(items[current])) current++;
 
                 if (current < _size)
                 {
                     // copy item to the free slot.
-                    _items[freeIndex++] = _items[current++];
+                    items[freeIndex++] = items[current++];
                 }
             }
 
             if (s_clearItems)
             {
-                Array.Clear(_items, freeIndex, _size - freeIndex); // Clear the elements so that the gc can reclaim the references.
+                Array.Clear(items, freeIndex, _size - freeIndex); // Clear the elements so that the gc can reclaim the references.
             }
 
             int result = _size - freeIndex;
@@ -1025,9 +1026,11 @@ namespace Collections.Pooled.Generic
                 ThrowHelper.ThrowArgumentNullException(ExceptionArgument.match);
             }
 
+            T[] items = _items;
+
             for (int i = 0; i < _size; i++)
             {
-                if (!match(_items[i]))
+                if (!match(items[i]))
                 {
                     return false;
                 }

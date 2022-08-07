@@ -58,6 +58,8 @@ namespace Collections.Pooled
             if (min < 0)
                 throw new ArgumentException("Cannot get the next prime from a negative number.");
 
+            ReadOnlySpan<int> primes = HashHelpers.primes.AsSpan();
+
             for (int i = 0; i < primes.Length; i++)
             {
                 int prime = primes[i];

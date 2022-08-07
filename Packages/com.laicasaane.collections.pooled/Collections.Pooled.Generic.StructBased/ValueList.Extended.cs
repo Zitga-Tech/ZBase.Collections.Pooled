@@ -151,9 +151,11 @@ namespace Collections.Pooled.Generic
             if (converter == null)
                 ThrowHelper.ThrowArgumentNullException(ExceptionArgument.converter);
 
+            T[] items = _items;
+
             for (int i = 0; i < _size; i++)
             {
-                output.Add(converter(_items[i]));
+                output.Add(converter(items[i]));
             }
         }
 
@@ -162,11 +164,13 @@ namespace Collections.Pooled.Generic
             if (match == null)
                 ThrowHelper.ThrowArgumentNullException(ExceptionArgument.match);
 
+            T[] items = _items;
+
             for (int i = 0; i < _size; i++)
             {
-                if (match(_items[i]))
+                if (match(items[i]))
                 {
-                    output.Add(_items[i]);
+                    output.Add(items[i]);
                 }
             }
         }
@@ -176,11 +180,13 @@ namespace Collections.Pooled.Generic
             if (match == null)
                 ThrowHelper.ThrowArgumentNullException(ExceptionArgument.match);
 
+            T[] items = _items;
+
             for (int i = 0; i < _size; i++)
             {
-                if (match(_items[i]))
+                if (match(items[i]))
                 {
-                    result = _items[i];
+                    result = items[i];
                     return true;
                 }
             }
@@ -194,17 +200,33 @@ namespace Collections.Pooled.Generic
             if (match is null)
                 ThrowHelper.ThrowArgumentNullException(ExceptionArgument.match);
 
+            T[] items = _items;
+
             for (int i = _size - 1; i >= 0; i--)
             {
-                if (match(_items[i]))
+                if (match(items[i]))
                 {
-                    result = _items[i];
+                    result = items[i];
                     return true;
                 }
             }
 
             result = default;
             return false;
+        }
+
+        private void ReturnArray(T[] replaceWith)
+        {
+            if (_items?.Length > 0)
+            {
+                try
+                {
+                    _pool.Return(_items, s_clearItems);
+                }
+                catch { }
+            }
+
+            _items = replaceWith ?? s_emptyArray;
         }
 
         public void Dispose()

@@ -30,9 +30,11 @@ namespace Collections.Pooled.Generic
                 if (output == null)
                     ThrowHelper.ThrowArgumentNullException(ExceptionArgument.output);
 
+                T[] items = _list._items;
+
                 for (int i = 0; i < _list._size; i++)
                 {
-                    output.Add(converter(_list._items[i]));
+                    output.Add(converter(items[i]));
                 }
             }
 
@@ -45,11 +47,13 @@ namespace Collections.Pooled.Generic
                 if (output == null)
                     ThrowHelper.ThrowArgumentNullException(ExceptionArgument.output);
 
+                T[] items = _list._items;
+
                 for (int i = 0; i < _list._size; i++)
                 {
-                    if (match(_list._items[i]))
+                    if (match(items[i]))
                     {
-                        output.Add(_list._items[i]);
+                        output.Add(items[i]);
                     }
                 }
             }
@@ -62,9 +66,12 @@ namespace Collections.Pooled.Generic
                 }
 
                 CPG.TempList<TOut> list = CPG.TempList<TOut>.Create(_list._size);
+                T[] src = _list._items;
+                TOut[] dst = list._items;
+
                 for (int i = 0; i < _list._size; i++)
                 {
-                    list._items[i] = converter.Convert(_list._items[i]);
+                    dst[i] = converter.Convert(src[i]);
                 }
                 list._size = _list._size;
                 return list;
@@ -80,11 +87,13 @@ namespace Collections.Pooled.Generic
                     ThrowHelper.ThrowArgumentNullException(ExceptionArgument.match);
                 }
 
+                T[] items = _list._items;
+
                 for (int i = 0; i < _list._size; i++)
                 {
-                    if (match.Predicate(_list._items[i]))
+                    if (match.Predicate(items[i]))
                     {
-                        return _list._items[i];
+                        return items[i];
                     }
                 }
                 return default;
@@ -98,11 +107,13 @@ namespace Collections.Pooled.Generic
                 }
 
                 CPG.TempList<T> list = new CPG.TempList<T>();
+                T[] items = _list._items;
+
                 for (int i = 0; i < _list._size; i++)
                 {
-                    if (match.Predicate(_list._items[i]))
+                    if (match.Predicate(items[i]))
                     {
-                        list.Add(_list._items[i]);
+                        list.Add(items[i]);
                     }
                 }
                 return list;
@@ -132,9 +143,11 @@ namespace Collections.Pooled.Generic
                 }
 
                 int endIndex = startIndex + count;
+                T[] items = _list._items;
+
                 for (int i = startIndex; i < endIndex; i++)
                 {
-                    if (match.Predicate(_list._items[i])) return i;
+                    if (match.Predicate(items[i])) return i;
                 }
                 return -1;
             }
@@ -146,11 +159,13 @@ namespace Collections.Pooled.Generic
                     ThrowHelper.ThrowArgumentNullException(ExceptionArgument.match);
                 }
 
+                T[] items = _list._items;
+
                 for (int i = _list._size - 1; i >= 0; i--)
                 {
-                    if (match.Predicate(_list._items[i]))
+                    if (match.Predicate(items[i]))
                     {
-                        return _list._items[i];
+                        return items[i];
                     }
                 }
                 return default;
@@ -193,9 +208,11 @@ namespace Collections.Pooled.Generic
                 }
 
                 int endIndex = startIndex - count;
+                T[] items = _list._items;
+
                 for (int i = startIndex; i > endIndex; i--)
                 {
-                    if (match.Predicate(_list._items[i]))
+                    if (match.Predicate(items[i]))
                     {
                         return i;
                     }
@@ -211,6 +228,7 @@ namespace Collections.Pooled.Generic
                 }
 
                 int version = _list._version;
+                T[] items = _list._items;
 
                 for (int i = 0; i < _list._size; i++)
                 {
@@ -218,7 +236,7 @@ namespace Collections.Pooled.Generic
                     {
                         break;
                     }
-                    action.Action(_list._items[i]);
+                    action.Action(items[i]);
                 }
 
                 if (version != _list._version)
@@ -230,11 +248,13 @@ namespace Collections.Pooled.Generic
                 if (match == null)
                     ThrowHelper.ThrowArgumentNullException(ExceptionArgument.match);
 
+                T[] items = _list._items;
+
                 for (int i = 0; i < _list._size; i++)
                 {
-                    if (match.Predicate(_list._items[i]))
+                    if (match.Predicate(items[i]))
                     {
-                        result = _list._items[i];
+                        result = items[i];
                         return true;
                     }
                 }
@@ -248,11 +268,13 @@ namespace Collections.Pooled.Generic
                 if (match is null)
                     ThrowHelper.ThrowArgumentNullException(ExceptionArgument.match);
 
+                T[] items = _list._items;
+
                 for (int i = _list._size - 1; i >= 0; i--)
                 {
-                    if (match.Predicate(_list._items[i]))
+                    if (match.Predicate(items[i]))
                     {
-                        result = _list._items[i];
+                        result = items[i];
                         return true;
                     }
                 }
@@ -269,21 +291,22 @@ namespace Collections.Pooled.Generic
                 }
 
                 int freeIndex = 0;   // the first free slot in items array
+                T[] items = _list._items;
 
                 // Find the first item which needs to be removed.
-                while (freeIndex < _list._size && !match.Predicate(_list._items[freeIndex])) freeIndex++;
+                while (freeIndex < _list._size && !match.Predicate(items[freeIndex])) freeIndex++;
                 if (freeIndex >= _list._size) return 0;
 
                 int current = freeIndex + 1;
                 while (current < _list._size)
                 {
                     // Find the first item which needs to be kept.
-                    while (current < _list._size && match.Predicate(_list._items[current])) current++;
+                    while (current < _list._size && match.Predicate(items[current])) current++;
 
                     if (current < _list._size)
                     {
                         // copy item to the free slot.
-                        _list._items[freeIndex++] = _list._items[current++];
+                        items[freeIndex++] = items[current++];
                     }
                 }
 
@@ -319,9 +342,11 @@ namespace Collections.Pooled.Generic
                     ThrowHelper.ThrowArgumentNullException(ExceptionArgument.match);
                 }
 
+                T[] items = _list._items;
+
                 for (int i = 0; i < _list._size; i++)
                 {
-                    if (!match.Predicate(_list._items[i]))
+                    if (!match.Predicate(items[i]))
                     {
                         return false;
                     }

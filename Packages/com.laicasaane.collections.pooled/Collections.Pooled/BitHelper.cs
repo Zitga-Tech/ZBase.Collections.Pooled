@@ -23,26 +23,32 @@ namespace Collections.Pooled
         public void MarkBit(int bitPosition)
         {
             int bitArrayIndex = bitPosition / IntSize;
-            if ((uint)bitArrayIndex < (uint)_span.Length)
+            Span<int> span = _span;
+
+            if ((uint)bitArrayIndex < (uint)span.Length)
             {
-                _span[bitArrayIndex] |= (1 << (bitPosition % IntSize));
+                span[bitArrayIndex] |= (1 << (bitPosition % IntSize));
             }
         }
 
         public bool IsMarked(int bitPosition)
         {
             int bitArrayIndex = bitPosition / IntSize;
+            Span<int> span = _span;
+
             return
-                (uint)bitArrayIndex < (uint)_span.Length &&
-                (_span[bitArrayIndex] & (1 << (bitPosition % IntSize))) != 0;
+                (uint)bitArrayIndex < (uint)span.Length &&
+                (span[bitArrayIndex] & (1 << (bitPosition % IntSize))) != 0;
         }
 
         public int FindFirstUnmarked(int startPosition = 0)
         {
             int i = startPosition;
-            for (int bi = i / IntSize; (uint)bi < (uint)_span.Length; bi = ++i / IntSize)
+            Span<int> span = _span;
+
+            for (int bi = i / IntSize; (uint)bi < (uint)span.Length; bi = ++i / IntSize)
             {
-                if ((_span[bi] & (1 << (i % IntSize))) == 0)
+                if ((span[bi] & (1 << (i % IntSize))) == 0)
                     return i;
             }
             return -1;
@@ -51,9 +57,11 @@ namespace Collections.Pooled
         public int FindFirstMarked(int startPosition = 0)
         {
             int i = startPosition;
-            for (int bi = i / IntSize; (uint)bi < (uint)_span.Length; bi = ++i / IntSize)
+            Span<int> span = _span;
+
+            for (int bi = i / IntSize; (uint)bi < (uint)span.Length; bi = ++i / IntSize)
             {
-                if ((_span[bi] & (1 << (i % IntSize))) != 0)
+                if ((span[bi] & (1 << (i % IntSize))) != 0)
                     return i;
             }
             return -1;
