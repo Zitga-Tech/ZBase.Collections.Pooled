@@ -3,11 +3,11 @@ using System.Runtime.CompilerServices;
 
 namespace Collections.Pooled.Generic.Internals.Unsafe
 {
-    public readonly ref struct ValueArrayInternalsRefUnsafe<T>
+    public readonly struct ValueArrayInternalsRefUnsafe<T>
     {
         [NonSerialized] public readonly int Length;
         [NonSerialized] public readonly bool ClearArray;
-        [NonSerialized] public readonly Span<T> Array;
+        [NonSerialized] public readonly T[] Array;
 
         public ValueArrayInternalsRefUnsafe(in ValueArray<T> source)
         {

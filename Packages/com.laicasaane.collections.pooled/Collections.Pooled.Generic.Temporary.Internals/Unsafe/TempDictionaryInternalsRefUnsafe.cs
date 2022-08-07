@@ -6,7 +6,7 @@ using System.Runtime.CompilerServices;
 
 namespace Collections.Pooled.Generic.Internals.Unsafe
 {
-    public readonly ref struct TempDictionaryInternalsRefUnsafe<TKey, TValue>
+    public readonly struct TempDictionaryInternalsRefUnsafe<TKey, TValue>
     {
 #if TARGET_64BIT || PLATFORM_ARCH_64 || UNITY_64
         [NonSerialized] public readonly ulong FastModMultiplier;
@@ -20,8 +20,8 @@ namespace Collections.Pooled.Generic.Internals.Unsafe
         [NonSerialized] public readonly bool IsReferenceValue;
         [NonSerialized] public readonly bool ClearEntries;
 
-        [NonSerialized] public readonly Span<int> Buckets;
-        [NonSerialized] public readonly Span<Entry<TKey, TValue>> Entries;
+        [NonSerialized] public readonly int[] Buckets;
+        [NonSerialized] public readonly Entry<TKey, TValue>[] Entries;
         [NonSerialized] public readonly IEqualityComparer<TKey> Comparer;
 
         public TempDictionaryInternalsRefUnsafe(in TempDictionary<TKey, TValue> source)

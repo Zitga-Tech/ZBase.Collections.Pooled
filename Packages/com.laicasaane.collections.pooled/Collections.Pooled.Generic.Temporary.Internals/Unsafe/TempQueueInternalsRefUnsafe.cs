@@ -3,14 +3,14 @@ using System.Runtime.CompilerServices;
 
 namespace Collections.Pooled.Generic.Internals.Unsafe
 {
-    public readonly ref struct TempQueueInternalsRefUnsafe<T>
+    public readonly struct TempQueueInternalsRefUnsafe<T>
     {
         [NonSerialized] public readonly int Head;
         [NonSerialized] public readonly int Tail;
         [NonSerialized] public readonly int Size;
         [NonSerialized] public readonly int Version;
         [NonSerialized] public readonly bool ClearArray;
-        [NonSerialized] public readonly Span<T> Array;
+        [NonSerialized] public readonly T[] Array;
 
         internal TempQueueInternalsRefUnsafe(in TempQueue<T> source)
         {

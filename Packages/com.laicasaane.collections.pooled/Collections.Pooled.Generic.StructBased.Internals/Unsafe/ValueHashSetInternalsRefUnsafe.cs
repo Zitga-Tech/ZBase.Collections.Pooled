@@ -4,7 +4,7 @@ using System.Runtime.CompilerServices;
 
 namespace Collections.Pooled.Generic.Internals.Unsafe
 {
-    public readonly ref struct ValueHashSetInternalsRefUnsafe<T>
+    public readonly struct ValueHashSetInternalsRefUnsafe<T>
     {
 #if TARGET_64BIT || PLATFORM_ARCH_64 || UNITY_64
         [NonSerialized] public readonly ulong FastModMultiplier;
@@ -16,8 +16,8 @@ namespace Collections.Pooled.Generic.Internals.Unsafe
         [NonSerialized] public readonly int Version;
         [NonSerialized] public readonly bool ClearEntries;
 
-        [NonSerialized] public readonly Span<int> Buckets;
-        [NonSerialized] public readonly Span<Entry<T>> Entries;
+        [NonSerialized] public readonly int[] Buckets;
+        [NonSerialized] public readonly Entry<T>[] Entries;
         [NonSerialized] public readonly IEqualityComparer<T> Comparer;
 
         public ValueHashSetInternalsRefUnsafe(in ValueHashSet<T> source)

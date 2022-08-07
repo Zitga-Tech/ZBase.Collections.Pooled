@@ -3,12 +3,12 @@ using System.Runtime.CompilerServices;
 
 namespace Collections.Pooled.Generic.Internals.Unsafe
 {
-    public readonly ref struct ValueListInternalsRefUnsafe<T>
+    public readonly struct ValueListInternalsRefUnsafe<T>
     {
         [NonSerialized] public readonly int Size;
         [NonSerialized] public readonly int Version;
         [NonSerialized] public readonly bool ClearItems;
-        [NonSerialized] public readonly Span<T> Items;
+        [NonSerialized] public readonly T[] Items;
 
         public ValueListInternalsRefUnsafe(in ValueList<T> source)
         {
