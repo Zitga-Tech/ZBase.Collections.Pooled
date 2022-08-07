@@ -81,7 +81,7 @@ At the end of their lifetime, the collections should be `Dispose`d in order to r
 ```cs
 using Collections.Pooled.Generic;
 
-void ManualDisposing()
+void Test_Manual_Disposing()
 {
     var lst = new List<int>();
     using var arr = ValueArray<int>.Create(10);
@@ -90,7 +90,7 @@ void ManualDisposing()
     arr.Dispose();
 }
 
-void AutomaticDisposing()
+void Test_Automatic_Disposing()
 {
     using var lst = new List<int>();
     using var arr = TempArray<int>.Create(10);
@@ -117,7 +117,7 @@ class ExtendedLifetime : IDisposable
     }
 }
 
-void UseExtendedLifetime()
+void Test_Extended_Lifetime()
 {
     using var xyz = new ExtendedLifetime();
     ...
@@ -169,13 +169,13 @@ The procedure follows these steps:
 
 :arrow_forward: Consequentially, this structure has overtaken the **ownership** of those internal arrays.
 
-:x: **DO NOT** use the source collection after this procedure to avoid unknown behaviours, because it has already been disposed.
+:x: **DO NOT** use the source collections after this procedure to avoid unknown behaviours, because they have already been disposed.
 
 ```cs
 using Collections.Pooled.Generic;
 using Collections.Pooled.Generic.Internals;
 
-void InternalsDisposing()
+void Test_TakeOwnership()
 {
     using var list = new List<int>();
     using var internals = CollectionInternals.TakeOwnership(list);
@@ -191,7 +191,7 @@ Sometimes it is desired for `*Internals` structures to not be disposed because t
 using Collections.Pooled.Generic;
 using Collections.Pooled.Generic.Internals;
 
-void Internals_Ownership_Transferring()
+void Test_Ownership_Transferring()
 {
     using var list = new List<int>();
     var internals = CollectionInternals.TakeOwnership(list);
@@ -217,13 +217,13 @@ TempCollectionInternals  .GetRef(tempCollection)
 
 - `*InternalsRef`s are designed as `ref struct`s to prevent unintentional lingering effect of the references (could cause memory leaks).
 
-:warning: The source collection is **NOT** disposed, it still holds the ownership of its internal arrays.
+:warning: The source collections **WON'T** be disposed, they still hold the ownership to internal arrays of their own.
 
 ```cs
 using Collections.Pooled.Generic;
 using Collections.Pooled.Generic.Internals;
 
-void InternalsDisposing()
+void Test_GetRef_Safe()
 {
     using var list = new List<int>();
     var internalsRef = CollectionInternals.GetRef(list);
@@ -261,19 +261,17 @@ ValueCollectionInternalsUnsafe .GetRef(valuecollection)
 TempCollectionInternalsUnsafe  .GetRef(tempCollection)
 ```
 
-- This method returns an `*InternalsRefUnsafe` structure that holds **indirect** references to internal arrays of a source collection.
+- This method returns an `*InternalsRefUnsafe` structure that holds **direct** references to internal arrays of a source collection.
 
-- The indirect references are represented as `Span`s to expose high performant read and write operations.
+:warning: `*InternalsRefUnsafe`s are designed as `struct`s to be usable in any context. Coupled with direct references to internal arrays, they should be used carefully.
 
-- `*InternalsRefUnsafe`s are designed as `ref struct`s to prevent unintentional lingering effect of the references (could cause memory leaks).
-
-:warning: The source collection is **NOT** disposed, it still holds the ownership of its internal arrays.
+:warning: The source collections **WON'T** be disposed, they still hold the ownership to internal arrays of their own.
 
 ```cs
 using Collections.Pooled.Generic;
 using Collections.Pooled.Generic.Internals.Unsafe;
 
-void InternalsDisposing()
+void Test_GetRef_Unsafe()
 {
     using var list = new List<int>();
     var internalsRefUnsafe = CollectionInternalsUnsafe.GetRef(list);
