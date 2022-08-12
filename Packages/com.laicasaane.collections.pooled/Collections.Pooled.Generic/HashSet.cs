@@ -450,11 +450,9 @@ namespace Collections.Pooled.Generic
 
             if (_buckets != null)
             {
-                var pool = ArrayPool<T>.Shared;
-                var array = pool.Rent(Count);
+                var array = new T[Count];
                 CopyTo(array);
                 info.AddValue(ElementsName, array, typeof(T[]));
-                pool.Return(array, s_clearEntries);
             }
         }
 

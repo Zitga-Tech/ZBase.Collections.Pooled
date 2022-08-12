@@ -407,11 +407,9 @@ namespace Collections.Pooled.Generic
 
             if (_buckets != null)
             {
-                var pool = ArrayPool<KeyValuePair<TKey, TValue>>.Shared;
-                var array = pool.Rent(Count);
+                var array = new KeyValuePair<TKey, TValue>[Count];
                 CopyTo(array, 0);
                 info.AddValue(KeyValuePairsName, array, typeof(KeyValuePair<TKey, TValue>[]));
-                pool.Return(array, s_clearEntries);
             }
         }
 
