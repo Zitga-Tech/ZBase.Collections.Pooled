@@ -1123,6 +1123,8 @@ namespace Collections.Pooled.Generic
                 return;
             }
 
+            int[] oldBuckets = _buckets;
+
             int oldCount = _count;
             _version++;
             Initialize(newSize);
@@ -1144,6 +1146,9 @@ namespace Collections.Pooled.Generic
 
             _count = capacity;
             _freeCount = 0;
+
+            _bucketPool.Return(oldBuckets);
+            _entryPool.Return(oldEntries, s_clearEntries);
         }
 
         #endregion
@@ -1161,8 +1166,11 @@ namespace Collections.Pooled.Generic
         {
             int size = HashHelpers.GetPrime(capacity);
 
-            RenewBuckets(size);
-            RenewEntries(size);
+            var buckets = _bucketPool.Rent(size);
+            Array.Clear(buckets, 0, buckets.Length);
+            _buckets = buckets;
+
+            _entries = _entryPool.Rent(size);
 
             // Assign member variables after both arrays are allocated to guard against corruption from OOM if second fails.
             _freeList = -1;

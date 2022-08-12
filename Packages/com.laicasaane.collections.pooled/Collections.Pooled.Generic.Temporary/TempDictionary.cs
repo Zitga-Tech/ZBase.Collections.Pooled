@@ -1119,6 +1119,8 @@ namespace Collections.Pooled.Generic
                 return;
             }
 
+            int[] oldBuckets = _buckets;
+
             int oldCount = _count;
             _version++;
             Initialize(newSize);
@@ -1126,6 +1128,9 @@ namespace Collections.Pooled.Generic
             Debug.Assert(oldEntries is not null);
 
             CopyEntries(oldEntries, oldCount);
+
+            _bucketPool.Return(oldBuckets);
+            _entryPool.Return(oldEntries, s_clearEntries);
         }
 
         private void CopyEntries(Entry<TKey, TValue>[] entries, int count)
