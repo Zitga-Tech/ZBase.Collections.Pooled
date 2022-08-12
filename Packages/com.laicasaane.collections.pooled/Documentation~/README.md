@@ -1,7 +1,8 @@
 # Collections.Pooled
 
 - Inspired by [jtmueller/Collections.Pooled](https://github.com/jtmueller/Collections.Pooled)
-- The source code of `List`, `Queue`, `Stack`, `HashSet`, `Dictionary` are copied from [dotnet/runtime](https://github.com/dotnet/runtime/blob/main/src/libraries/System.Private.CoreLib/src/System/Collections/Generic/), along with other utilities to accomodate their functionality
+- The source code of `List`, `Queue`, `Stack`, `HashSet`, `Dictionary` are copied from [dotnet/runtime/System/Collections/Generic](https://github.com/dotnet/runtime/blob/main/src/libraries/System.Private.CoreLib/src/System/Collections/Generic/), along with other utilities to accomodate their functionality.
+- The source code of `ArrayDictionary` is copied from [sebas77/Svelto.Common/SveltoDictionary](https://github.com/sebas77/Svelto.Common/blob/master/DataStructures/Dictionaries/SveltoDictionary.cs).
 
 
 # Installation
@@ -37,6 +38,7 @@ from the `Add package from git URL` option.
 - `Stack<T>`
 - `HashSet<T>`
 - `Dictionary<TKey, TValue>`
+- `ArrayDictionary<TKey, TValue>`
 
 Their functionality is the same as provided by the standard collections in `System.Collections.Generic` namespace.
 
@@ -52,6 +54,7 @@ Designed as quick drop-in replacements for their standard counterparts.
 - `ValueStack<T>`
 - `ValueHashSet<T>`
 - `ValueDictionary<TKey, TValue>`
+- `ValueArrayDictionary<TKey, TValue>`
 
 Functionally the same as their class-based counterparts.
 
@@ -67,6 +70,7 @@ Designed as `struct`s to reduce GC allocation of the collection itself.
 - `TempStack<T>`
 - `TempHashSet<T>`
 - `TempDictionary<TKey, TValue>`
+- `TempArrayDictionary<TKey, TValue>`
 
 Functionally the same as their struct-based counterparts.
 
@@ -319,3 +323,33 @@ valueQueue .GetUnsafe(out array, out count, out head, out tail)
 tempQueue  .GetUnsafe(out array, out count, out head, out tail)
 ```
 
+# Changelog
+
+## 2.5.0
+
+### Features
+
+- Added `*ArrayDictionary` types based on [`SveltoDictionary`](https://github.com/sebas77/Svelto.Common/blob/master/DataStructures/Dictionaries/SveltoDictionary.cs)
+    - This data structure allows iterating over its keys and values as an array.
+
+```cs
+var dict = new ArrayDictionary<int, int>();
+
+dict.GetUnsafe(out var keys, out var values, out var count);
+
+for (var i = 0; i < count; i++)
+{
+    Debug.Log($"{keys[i].Key} = {values[i]}");
+}
+```
+
+- Added `*Internals` types related to `*ArrayDictionary<TKey, TValue>`
+
+### Fixes
+
+- For `*Dictionary` and `*HashSet`
+    - Internal pools must be set firstly in the constructors
+    - `TrimExcess` must return old arrays to the pools
+    - Serialization should not use `ArrayPool`
+    - Remove `null`s and null checks for the internal `_buckets` array
+    - Correct internal arrays initialization
