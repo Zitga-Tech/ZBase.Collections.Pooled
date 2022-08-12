@@ -355,7 +355,7 @@ namespace Collections.Pooled.Generic
 
         public bool Remove(T item)
         {
-            if (_buckets != null)
+            if (_buckets?.Length > 0)
             {
                 Entry<T>[]? entries = _entries;
                 Debug.Assert(entries != null, "entries should be non-null");
@@ -448,7 +448,7 @@ namespace Collections.Pooled.Generic
             info.AddValue(ComparerName, Comparer, typeof(IEqualityComparer<T>));
             info.AddValue(CapacityName, _buckets == null ? 0 : _buckets.Length);
 
-            if (_buckets != null)
+            if (_buckets?.Length > 0)
             {
                 var array = new T[Count];
                 CopyTo(array);
@@ -498,7 +498,7 @@ namespace Collections.Pooled.Generic
             }
             else
             {
-                _buckets = null;
+                _buckets = s_emptyBuckets;
             }
 
             _version = siInfo.GetInt32(VersionName);
@@ -526,7 +526,7 @@ namespace Collections.Pooled.Generic
         /// </remarks>
         public bool TryGetValue(T equalValue, [MaybeNullWhen(false)] out T actualValue)
         {
-            if (_buckets != null)
+            if (_buckets?.Length > 0)
             {
                 int index = FindItemIndex(equalValue);
                 if (index >= 0)
@@ -1041,7 +1041,7 @@ namespace Collections.Pooled.Generic
                 return currentCapacity;
             }
 
-            if (_buckets == null)
+            if (_buckets?.Length < 1)
             {
                 return Initialize(capacity);
             }
@@ -1190,7 +1190,7 @@ namespace Collections.Pooled.Generic
         /// <returns>true if the element is added to the <see cref="HashSet{T}"/> object; false if the element is already present.</returns>
         internal bool AddIfNotPresent(T value, out int location)
         {
-            if (_buckets == null)
+            if (_buckets?.Length < 1)
             {
                 Initialize(0);
             }

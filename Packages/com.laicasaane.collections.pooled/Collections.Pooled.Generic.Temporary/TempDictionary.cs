@@ -308,7 +308,7 @@ namespace Collections.Pooled.Generic
             info.AddValue(ComparerName, Comparer, typeof(IEqualityComparer<TKey>));
             info.AddValue(HashSizeName, _buckets == null ? 0 : _buckets.Length); // This is the length of the bucket array
 
-            if (_buckets != null)
+            if (_buckets?.Length > 0)
             {
                 var pool = ArrayPool<KeyValuePair<TKey, TValue>>.Shared;
                 var array = pool.Rent(Count);
@@ -326,7 +326,7 @@ namespace Collections.Pooled.Generic
             }
 
             ref Entry<TKey, TValue> entry = ref Unsafe.NullRef<Entry<TKey, TValue>>();
-            if (_buckets != null)
+            if (_buckets?.Length > 0)
             {
                 Debug.Assert(_entries != null, "expected entries to be != null");
                 IEqualityComparer<TKey>? comparer = _comparer;
@@ -475,7 +475,7 @@ namespace Collections.Pooled.Generic
                 ThrowHelper.ThrowArgumentNullException(ExceptionArgument.key);
             }
 
-            if (_buckets == null)
+            if (_buckets?.Length < 1)
             {
                 Initialize(0);
             }
@@ -678,7 +678,7 @@ namespace Collections.Pooled.Generic
                     ThrowHelper.ThrowArgumentNullException(ExceptionArgument.key);
                 }
 
-                if (dictionary._buckets == null)
+                if (dictionary._buckets?.Length < 1)
                 {
                     dictionary.Initialize(0);
                 }
@@ -908,7 +908,7 @@ namespace Collections.Pooled.Generic
                 ThrowHelper.ThrowArgumentNullException(ExceptionArgument.key);
             }
 
-            if (_buckets != null)
+            if (_buckets?.Length > 0)
             {
                 Debug.Assert(_entries != null, "entries should be non-null");
                 uint collisionCount = 0;
@@ -976,7 +976,7 @@ namespace Collections.Pooled.Generic
                 ThrowHelper.ThrowArgumentNullException(ExceptionArgument.key);
             }
 
-            if (_buckets != null)
+            if (_buckets?.Length > 0)
             {
                 Debug.Assert(_entries != null, "entries should be non-null");
                 uint collisionCount = 0;
@@ -1072,7 +1072,7 @@ namespace Collections.Pooled.Generic
 
             _version++;
 
-            if (_buckets == null)
+            if (_buckets?.Length < 1)
             {
                 return Initialize(capacity);
             }

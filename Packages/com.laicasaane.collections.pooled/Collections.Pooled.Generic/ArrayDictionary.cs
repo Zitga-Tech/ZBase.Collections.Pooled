@@ -5,14 +5,23 @@ using System.Buffers;
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
+using System.Runtime.Serialization;
 
 namespace Collections.Pooled.Generic
 {
+    [Serializable]
     public partial class ArrayDictionary<TKey, TValue>
         : IArrayDictionary<TKey, TValue>
         , IDictionary<TKey, TValue>
+        , ISerializable
+        , IDeserializationCallback
         , IDisposable
+        where TKey : notnull
     {
+        // constants for serialization
+        private const string CountName = "Count"; // Do not rename (binary serialization). Must save buckets.Length
+        private const string KeyValuePairsName = "KeyValuePairs"; // Do not rename (binary serialization)
+
         internal ArrayEntry<TKey>[] _entries;
         internal TValue[] _values;
         internal int[] _buckets;
@@ -61,12 +70,79 @@ namespace Collections.Pooled.Generic
             _valuePool = valuePool ?? ArrayPool<TValue>.Shared;
             _bucketPool = bucketPool ?? ArrayPool<int>.Shared;
 
-            _entries = _entryPool.Rent(capacity);
-            _values = _valuePool.Rent(capacity);
-            _buckets = _bucketPool.Rent(HashHelpers.GetPrime(capacity));
+            Initialize(capacity);
 
             if (capacity > 0)
                 _fastModBucketsMultiplier = HashHelpers.GetFastModMultiplier((uint)capacity);
+        }
+
+        private void Initialize(int capacity)
+        {
+            _entries = capacity < 1 ? s_emptyEntries : _entryPool.Rent(capacity);
+            _values = capacity < 1 ? s_emptyValues : _valuePool.Rent(capacity);
+            _buckets = capacity < 1 ? s_emptyBuckets : _bucketPool.Rent(HashHelpers.GetPrime(capacity));
+        }
+
+        public virtual void GetObjectData(SerializationInfo info, StreamingContext context)
+        {
+            if (info == null)
+            {
+                ThrowHelper.ThrowArgumentNullException(ExceptionArgument.info);
+            }
+
+            var count = this.Count;
+
+            info.AddValue(CountName, count);
+
+            if (count > 0)
+            {
+                var array = new KeyValuePair<TKey, TValue>[count];
+                CopyTo(array);
+                info.AddValue(KeyValuePairsName, array, typeof(KeyValuePair<TKey, TValue>[]));
+            }
+        }
+
+        public virtual void OnDeserialization(object sender)
+        {
+            HashHelpers.SerializationInfoTable.TryGetValue(this, out SerializationInfo? siInfo);
+
+            if (siInfo == null)
+            {
+                // We can return immediately if this function is called twice.
+                // Note we remove the serialization info from the table at the end of this method.
+                return;
+            }
+
+            int count = siInfo.GetInt32(CountName);
+
+            if (count > 0)
+            {
+                Resize(this.Count, count);
+
+                KeyValuePair<TKey, TValue>[]? array = (KeyValuePair<TKey, TValue>[]?)
+                    siInfo.GetValue(KeyValuePairsName, typeof(KeyValuePair<TKey, TValue>[]));
+
+                if (array == null)
+                {
+                    ThrowHelper.ThrowSerializationException(ExceptionResource.Serialization_MissingKeys);
+                }
+
+                for (int i = 0; i < array.Length; i++)
+                {
+                    if (array[i].Key == null)
+                    {
+                        ThrowHelper.ThrowSerializationException(ExceptionResource.Serialization_NullKey);
+                    }
+
+                    Add(array[i].Key, array[i].Value);
+                }
+            }
+            else
+            {
+                _buckets = null;
+            }
+
+            HashHelpers.SerializationInfoTable.Remove(this);
         }
 
         public TValue this[TKey key]
@@ -545,7 +621,7 @@ namespace Collections.Pooled.Generic
             if (_collisions > _buckets.Length)
             {
                 //we need more space and less collisions
-                _buckets = new int[HashHelpers.ExpandPrime(_collisions)];
+                RenewBuckets(HashHelpers.ExpandPrime(_collisions));
                 _collisions = 0;
                 _fastModBucketsMultiplier = HashHelpers.GetFastModMultiplier((uint)_buckets.Length);
 
@@ -649,7 +725,7 @@ namespace Collections.Pooled.Generic
             if (_collisions > _buckets.Length)
             {
                 //we need more space and less collisions
-                _buckets = new int[HashHelpers.ExpandPrime(_collisions)];
+                RenewBuckets(HashHelpers.ExpandPrime(_collisions));
                 _collisions = 0;
                 _fastModBucketsMultiplier = HashHelpers.GetFastModMultiplier((uint)_buckets.Length);
 
@@ -712,10 +788,13 @@ namespace Collections.Pooled.Generic
 
                 if (newValues.Length < values.Length)
                 {
-                    Array.Copy(values, newValues, count);
+                    if (count > 0)
+                        Array.Copy(values, newValues, count);
 
                     _values = newValues;
-                    _valuePool.Return(values, s_clearValues);
+
+                    if (values?.Length > 0)
+                        _valuePool.Return(values, s_clearValues);
                 }
                 else
                 {
@@ -731,10 +810,13 @@ namespace Collections.Pooled.Generic
 
                 if (newEntries.Length < entries.Length)
                 {
-                    Array.Copy(entries, newEntries, count);
+                    if (count > 0)
+                        Array.Copy(entries, newEntries, count);
 
                     _entries = newEntries;
-                    _entryPool.Return(entries, s_clearEntries);
+
+                    if (entries?.Length > 0)
+                        _entryPool.Return(entries, s_clearEntries);
                 }
                 else
                 {
@@ -1166,6 +1248,23 @@ namespace Collections.Pooled.Generic
             ReturnBuckets(s_emptyBuckets);
             ReturnEntries(s_emptyEntries);
             ReturnValues(s_emptyValues);
+        }
+
+        private void RenewBuckets(int newSize)
+        {
+            if (_buckets?.Length > 0)
+            {
+                try
+                {
+                    _bucketPool.Return(_buckets);
+                }
+                catch
+                { }
+            }
+
+            var buckets = _bucketPool.Rent(newSize);
+            Array.Clear(buckets, 0, buckets.Length);
+            _buckets = buckets;
         }
 
         private void ReturnBuckets(int[] replaceWith)
