@@ -126,6 +126,11 @@ namespace Collections.Pooled.Generic
             {
                 Initialize(capacity);
             }
+            else
+            {
+                _buckets = s_emptyBuckets;
+                _entries = s_emptyEntries;
+            }
 
             if (comparer is not null && comparer != EqualityComparer<TKey>.Default) // first check for null to avoid forcing default comparer instantiation unnecessarily
             {
@@ -222,6 +227,9 @@ namespace Collections.Pooled.Generic
         {
             _bucketPool = ArrayPool<int>.Shared;
             _entryPool = ArrayPool<Entry<TKey, TValue>>.Shared;
+
+            _buckets = s_emptyBuckets;
+            _entries = s_emptyEntries;
 
             // We can't do anything with the keys and values until the entire graph has been deserialized
             // and we have a resonable estimate that GetHashCode is not going to fail.  For the time being,

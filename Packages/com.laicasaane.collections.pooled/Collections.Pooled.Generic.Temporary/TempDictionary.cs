@@ -59,9 +59,6 @@ namespace Collections.Pooled.Generic
 
         internal TempDictionary(int capacity, IEqualityComparer<TKey>? comparer, ArrayPool<int> bucketPool, ArrayPool<Entry<TKey, TValue>> entryPool)
         {
-            _buckets = default;
-            _entries = default;
-
 #if TARGET_64BIT || PLATFORM_ARCH_64 || UNITY_64
             _fastModMultiplier = default;
 #endif
@@ -75,6 +72,9 @@ namespace Collections.Pooled.Generic
             _bucketPool = bucketPool ?? ArrayPool<int>.Shared;
             _entryPool = entryPool ?? ArrayPool<Entry<TKey, TValue>>.Shared;
 
+            _buckets = s_emptyBuckets;
+            _entries = s_emptyEntries;
+
             if (capacity < 0)
             {
                 ThrowHelper.ThrowArgumentOutOfRangeException(ExceptionArgument.capacity);
@@ -83,6 +83,11 @@ namespace Collections.Pooled.Generic
             if (capacity > 0)
             {
                 Initialize(capacity);
+            }
+            else
+            {
+                _buckets = s_emptyBuckets;
+                _entries = s_emptyEntries;
             }
 
             if (comparer is not null && comparer != EqualityComparer<TKey>.Default) // first check for null to avoid forcing default comparer instantiation unnecessarily

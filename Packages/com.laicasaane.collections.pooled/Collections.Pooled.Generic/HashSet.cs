@@ -109,6 +109,9 @@ namespace Collections.Pooled.Generic
             _bucketPool = bucketPool ?? ArrayPool<int>.Shared;
             _entryPool = entryPool ?? ArrayPool<Entry<T>>.Shared;
 
+            _buckets = s_emptyBuckets;
+            _entries = s_emptyEntries;
+
             // Special-case EqualityComparer<string>.Default, StringComparer.Ordinal, and StringComparer.OrdinalIgnoreCase.
             // We use a non-randomized comparer for improved perf, falling back to a randomized comparer if the
             // hash buckets become unbalanced.
@@ -174,6 +177,9 @@ namespace Collections.Pooled.Generic
         {
             _bucketPool = ArrayPool<int>.Shared;
             _entryPool = ArrayPool<Entry<T>>.Shared;
+
+            _buckets = s_emptyBuckets;
+            _entries = s_emptyEntries;
 
             // We can't do anything with the keys and values until the entire graph has been
             // deserialized and we have a reasonable estimate that GetHashCode is not going to

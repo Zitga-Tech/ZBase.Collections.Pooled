@@ -83,9 +83,11 @@ namespace Collections.Pooled.Generic
 
         private void Initialize(int capacity)
         {
-            _entries = capacity < 1 ? s_emptyEntries : _entryPool.Rent(capacity);
-            _values = capacity < 1 ? s_emptyValues : _valuePool.Rent(capacity);
-            _buckets = capacity < 1 ? s_emptyBuckets : _bucketPool.Rent(HashHelpers.GetPrime(capacity));
+            capacity = HashHelpers.GetPrime(capacity);
+
+            _entries = _entryPool.Rent(capacity);
+            _values = _valuePool.Rent(capacity);
+            _buckets = _bucketPool.Rent(capacity);
         }
 
         public TValue this[TKey key]

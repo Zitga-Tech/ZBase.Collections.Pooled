@@ -50,7 +50,7 @@ namespace Collections.Pooled.Generic
 
         internal ref T FindValue(T equalValue)
         {
-            if (_buckets != null)
+            if (_buckets?.Length > 0)
             {
                 int index = FindItemIndex(equalValue);
                 if (index >= 0)
