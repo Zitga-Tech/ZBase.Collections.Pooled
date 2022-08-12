@@ -6,7 +6,7 @@ using System.Runtime.CompilerServices;
 
 namespace Collections.Pooled.Generic.Internals.Unsafe
 {
-    public readonly struct ArrayDictionaryInternalsRefUnsafe<TKey, TValue>
+    public readonly struct ValueArrayDictionaryInternalsRefUnsafe<TKey, TValue>
     {
         [NonSerialized] public readonly int FreeEntryIndex;
         [NonSerialized] public readonly int Collisions;
@@ -23,14 +23,14 @@ namespace Collections.Pooled.Generic.Internals.Unsafe
         [NonSerialized] public readonly ArrayPool<TValue> ValuePool;
         [NonSerialized] public readonly ArrayPool<int> BucketPool;
 
-        public ArrayDictionaryInternalsRefUnsafe(ArrayDictionary<TKey, TValue> source)
+        public ValueArrayDictionaryInternalsRefUnsafe(in ValueArrayDictionary<TKey, TValue> source)
         {
             FreeEntryIndex = source._freeEntryIndex;
             Collisions = source._collisions;
             FastModBucketsMultiplier = source._fastModBucketsMultiplier;
 
-            ClearEntries = ArrayDictionary<TKey, TValue>.s_clearEntries;
-            ClearValues = ArrayDictionary<TKey, TValue>.s_clearValues;
+            ClearEntries = ValueArrayDictionary<TKey, TValue>.s_clearEntries;
+            ClearValues = ValueArrayDictionary<TKey, TValue>.s_clearValues;
 
             Entries = source._entries;
             Values = source._values;
@@ -42,23 +42,23 @@ namespace Collections.Pooled.Generic.Internals.Unsafe
         }
     }
 
-    partial class CollectionInternalsUnsafe
+    partial class ValueCollectionInternalsUnsafe
     {
         /// <summary>
         /// Returns a structure that holds references to internal fields of <paramref name="source"/>.
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static ArrayDictionaryInternalsRefUnsafe<TKey, TValue> GetRef<TKey, TValue>(
-                ArrayDictionary<TKey, TValue> source
+        public static ValueArrayDictionaryInternalsRefUnsafe<TKey, TValue> GetRef<TKey, TValue>(
+                in ValueArrayDictionary<TKey, TValue> source
             )
-            => new ArrayDictionaryInternalsRefUnsafe<TKey, TValue>(source);
+            => new ValueArrayDictionaryInternalsRefUnsafe<TKey, TValue>(source);
 
         /// <summary>
         /// Returns the internal Keys and Values arrays as a <see cref="Span{T}"/>.
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void AsSpan<TKey, TValue>(
-            ArrayDictionary<TKey, TValue> source
+            in ValueArrayDictionary<TKey, TValue> source
             , out ReadOnlySpan<ArrayEntry<TKey>> keys
             , out ReadOnlySpan<TValue> values
         )
@@ -72,7 +72,7 @@ namespace Collections.Pooled.Generic.Internals.Unsafe
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Span<ArrayEntry<TKey>> AsSpanKeys<TKey, TValue>(
-                ArrayDictionary<TKey, TValue> source
+                in ValueArrayDictionary<TKey, TValue> source
             )
             => source._entries.AsSpan(0, source.Count);
 
@@ -81,13 +81,13 @@ namespace Collections.Pooled.Generic.Internals.Unsafe
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Span<TValue> AsSpanValues<TKey, TValue>(
-                ArrayDictionary<TKey, TValue> source
+                in ValueArrayDictionary<TKey, TValue> source
             )
             => source._values.AsSpan(0, source.Count);
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void GetUnsafe<TKey, TValue>(
-            this ArrayDictionary<TKey, TValue> source
+            this in ValueArrayDictionary<TKey, TValue> source
             , out ArrayEntry<TKey>[] keys
             , out TValue[] values
             , out int count
@@ -100,7 +100,7 @@ namespace Collections.Pooled.Generic.Internals.Unsafe
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void GetUnsafeKeys<TKey, TValue>(
-            this ArrayDictionary<TKey, TValue> source
+            this in ValueArrayDictionary<TKey, TValue> source
             , out ArrayEntry<TKey>[] keys
             , out int count
         )
@@ -111,7 +111,7 @@ namespace Collections.Pooled.Generic.Internals.Unsafe
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void GetUnsafeValues<TKey, TValue>(
-            this ArrayDictionary<TKey, TValue> source
+            this in ValueArrayDictionary<TKey, TValue> source
             , out TValue[] values
             , out int count
         )
@@ -122,42 +122,42 @@ namespace Collections.Pooled.Generic.Internals.Unsafe
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static ref TValue GetIndexedValueByRef<TKey, TValue>(
-                ArrayDictionary<TKey, TValue> dictionary
+                in ValueArrayDictionary<TKey, TValue> dictionary
                 , int index
             )
             => ref dictionary.GetIndexedValueByRef(index);
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static ref TValue GetValueByRef<TKey, TValue>(
-                ArrayDictionary<TKey, TValue> dictionary
+                in ValueArrayDictionary<TKey, TValue> dictionary
                 , TKey key
             )
             => ref dictionary.GetValueByRef(key);
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static ref TValue GetValueByRef<TKey, TValue>(
-                ArrayDictionary<TKey, TValue> dictionary
+                in ValueArrayDictionary<TKey, TValue> dictionary
                 , in TKey key
             )
             => ref dictionary.GetValueByRef(in key);
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static ref TValue GetOrAdd<TKey, TValue>(
-                ArrayDictionary<TKey, TValue> dictionary
+                ref ValueArrayDictionary<TKey, TValue> dictionary
                 , TKey key
             )
             => ref dictionary.GetOrAdd(key);
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static ref TValue GetOrAdd<TKey, TValue>(
-                ArrayDictionary<TKey, TValue> dictionary
+                ref ValueArrayDictionary<TKey, TValue> dictionary
                 , in TKey key
             )
             => ref dictionary.GetOrAdd(in key);
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static ref TValue GetOrAdd<TKey, TValue>(
-                ArrayDictionary<TKey, TValue> dictionary
+                ref ValueArrayDictionary<TKey, TValue> dictionary
                 , TKey key
                 , Func<TValue> builder
             )
@@ -165,7 +165,7 @@ namespace Collections.Pooled.Generic.Internals.Unsafe
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static ref TValue GetOrAdd<TKey, TValue>(
-                ArrayDictionary<TKey, TValue> dictionary
+                ref ValueArrayDictionary<TKey, TValue> dictionary
                 , in TKey key
                 , Func<TValue> builder
             )
@@ -173,7 +173,7 @@ namespace Collections.Pooled.Generic.Internals.Unsafe
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static ref TValue GetOrAdd<TKey, TValue, W>(
-                ArrayDictionary<TKey, TValue> dictionary
+                ref ValueArrayDictionary<TKey, TValue> dictionary
                 , TKey key
                 , FuncRef<W, TValue> builder
                 , ref W parameter
@@ -182,7 +182,7 @@ namespace Collections.Pooled.Generic.Internals.Unsafe
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static ref TValue GetOrAdd<TKey, TValue, W>(
-                ArrayDictionary<TKey, TValue> dictionary
+                ref ValueArrayDictionary<TKey, TValue> dictionary
                 , in TKey key
                 , FuncRef<W, TValue> builder
                 , ref W parameter
@@ -191,7 +191,7 @@ namespace Collections.Pooled.Generic.Internals.Unsafe
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static ref TValue RecycleOrAdd<TKey, TValue, TValueProxy>(
-                ArrayDictionary<TKey, TValue> dictionary
+                ref ValueArrayDictionary<TKey, TValue> dictionary
                 , TKey key
                 , Func<TValueProxy> builder
                 , ActionRef<TValueProxy> recycler
@@ -201,7 +201,7 @@ namespace Collections.Pooled.Generic.Internals.Unsafe
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static ref TValue RecycleOrAdd<TKey, TValue, TValueProxy>(
-                ArrayDictionary<TKey, TValue> dictionary
+                ref ValueArrayDictionary<TKey, TValue> dictionary
                 , in TKey key
                 , Func<TValueProxy> builder
                 , ActionRef<TValueProxy> recycler
@@ -211,7 +211,7 @@ namespace Collections.Pooled.Generic.Internals.Unsafe
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static ref TValue RecycleOrAdd<TKey, TValue, TValueProxy, U>(
-                ArrayDictionary<TKey, TValue> dictionary
+                ref ValueArrayDictionary<TKey, TValue> dictionary
                 , TKey key
                 , FuncRef<U, TValue> builder
                 , ActionRef<TValueProxy, U> recycler
@@ -222,7 +222,7 @@ namespace Collections.Pooled.Generic.Internals.Unsafe
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static ref TValue RecycleOrAdd<TKey, TValue, TValueProxy, U>(
-                ArrayDictionary<TKey, TValue> dictionary
+                ref ValueArrayDictionary<TKey, TValue> dictionary
                 , in TKey key
                 , FuncRef<U, TValue> builder
                 , ActionRef<TValueProxy, U> recycler

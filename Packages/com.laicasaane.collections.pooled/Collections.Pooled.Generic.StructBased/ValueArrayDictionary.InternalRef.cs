@@ -3,7 +3,7 @@ using System.Runtime.CompilerServices;
 
 namespace Collections.Pooled.Generic
 {
-    partial class ArrayDictionary<TKey, TValue>
+    partial struct ValueArrayDictionary<TKey, TValue>
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal ref TValue GetOrAdd(TKey key)

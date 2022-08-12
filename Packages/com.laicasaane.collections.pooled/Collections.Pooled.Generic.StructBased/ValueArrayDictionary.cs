@@ -12,7 +12,7 @@ using System.Runtime.Serialization;
 namespace Collections.Pooled.Generic
 {
     [Serializable]
-    public partial class ArrayDictionary<TKey, TValue>
+    public partial struct ValueArrayDictionary<TKey, TValue>
         : IArrayDictionary<TKey, TValue>
         , IDictionary<TKey, TValue>
         , ISerializable
@@ -43,25 +43,36 @@ namespace Collections.Pooled.Generic
         private static readonly TValue[] s_emptyValues = new TValue[0];
         private static readonly int[] s_emptyBuckets = new int[0];
 
-        public ArrayDictionary() : this(0
-            , ArrayPool<ArrayEntry<TKey>>.Shared
-            , ArrayPool<TValue>.Shared
-            , ArrayPool<int>.Shared
-        )
-        { }
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static ValueArrayDictionary<TKey, TValue> Create()
+            => new ValueArrayDictionary<TKey, TValue>(0
+                , ArrayPool<ArrayEntry<TKey>>.Shared
+                , ArrayPool<TValue>.Shared
+                , ArrayPool<int>.Shared
+            );
 
-        public ArrayDictionary(int capacity) : this(capacity
-            , ArrayPool<ArrayEntry<TKey>>.Shared
-            , ArrayPool<TValue>.Shared
-            , ArrayPool<int>.Shared
-        )
-        { }
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static ValueArrayDictionary<TKey, TValue> Create(int capacity)
+            => new ValueArrayDictionary<TKey, TValue>(capacity
+                , ArrayPool<ArrayEntry<TKey>>.Shared
+                , ArrayPool<TValue>.Shared
+                , ArrayPool<int>.Shared
+            );
 
-        public ArrayDictionary(int capacity
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static ValueArrayDictionary<TKey, TValue> Create(int capacity
             , ArrayPool<ArrayEntry<TKey>> entryPool
             , ArrayPool<TValue> valuePool
             , ArrayPool<int> bucketPool
         )
+            => new ValueArrayDictionary<TKey, TValue>(capacity, entryPool, valuePool, bucketPool);
+
+        internal ValueArrayDictionary(int capacity
+            , ArrayPool<ArrayEntry<TKey>> entryPool
+            , ArrayPool<TValue> valuePool
+            , ArrayPool<int> bucketPool
+        )
+            : this()
         {
             if (capacity < 0)
             {
@@ -85,7 +96,7 @@ namespace Collections.Pooled.Generic
             _buckets = capacity < 1 ? s_emptyBuckets : _bucketPool.Rent(HashHelpers.GetPrime(capacity));
         }
 
-        public virtual void GetObjectData(SerializationInfo info, StreamingContext context)
+        public void GetObjectData(SerializationInfo info, StreamingContext context)
         {
             if (info == null)
             {
@@ -104,7 +115,7 @@ namespace Collections.Pooled.Generic
             }
         }
 
-        public virtual void OnDeserialization(object sender)
+        public void OnDeserialization(object sender)
         {
             HashHelpers.SerializationInfoTable.TryGetValue(this, out SerializationInfo? siInfo);
 
@@ -181,16 +192,16 @@ namespace Collections.Pooled.Generic
             get => _freeEntryIndex;
         }
 
-        public ArrayDictionaryKeyCollection<TKey, TValue> Keys
+        public ValueArrayDictionaryKeyCollection<TKey, TValue> Keys
         {
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            get => new ArrayDictionaryKeyCollection<TKey, TValue>(this);
+            get => new ValueArrayDictionaryKeyCollection<TKey, TValue>(this);
         }
 
-        public ArrayDictionaryValueCollection<TKey, TValue> Values
+        public ValueArrayDictionaryValueCollection<TKey, TValue> Values
         {
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            get => new ArrayDictionaryValueCollection<TKey, TValue>(this);
+            get => new ValueArrayDictionaryValueCollection<TKey, TValue>(this);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -1148,7 +1159,7 @@ namespace Collections.Pooled.Generic
 
             Span<ArrayEntry<TKey>> keys = _entries.AsSpan();
             Span<TValue> values = _values.AsSpan();
-            
+
             if (keys.Length == 0 || values.Length == 0)
                 return;
 
@@ -1209,7 +1220,7 @@ namespace Collections.Pooled.Generic
             }
         }
 
-        public void Intersect<UValue>(ArrayDictionary<TKey, UValue> other)
+        public void Intersect<UValue>(in ValueArrayDictionary<TKey, UValue> other)
         {
             var keys = _entries;
 
@@ -1223,7 +1234,7 @@ namespace Collections.Pooled.Generic
             }
         }
 
-        public void Exclude<UValue>(ArrayDictionary<TKey, UValue> otherDicKeys)
+        public void Exclude<UValue>(in ValueArrayDictionary<TKey, UValue> otherDicKeys)
         {
             var keys = _entries;
 
@@ -1237,7 +1248,7 @@ namespace Collections.Pooled.Generic
             }
         }
 
-        public void Union(ArrayDictionary<TKey, TValue> other)
+        public void Union(in ValueArrayDictionary<TKey, TValue> other)
         {
             foreach (var kv in other)
             {
@@ -1400,25 +1411,25 @@ namespace Collections.Pooled.Generic
         ICollection<TKey> IDictionary<TKey, TValue>.Keys
         {
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            get => new ArrayDictionaryKeyCollection<TKey, TValue>(this);
+            get => new ValueArrayDictionaryKeyCollection<TKey, TValue>(this);
         }
 
         ICollection<TValue> IDictionary<TKey, TValue>.Values
         {
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            get => new ArrayDictionaryValueCollection<TKey, TValue>(this);
+            get => new ValueArrayDictionaryValueCollection<TKey, TValue>(this);
         }
 
         IEnumerable<TKey> IReadOnlyDictionary<TKey, TValue>.Keys
         {
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            get => new ArrayDictionaryKeyCollection<TKey, TValue>(this);
+            get => new ValueArrayDictionaryKeyCollection<TKey, TValue>(this);
         }
 
         IEnumerable<TValue> IReadOnlyDictionary<TKey, TValue>.Values
         {
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            get => new ArrayDictionaryValueCollection<TKey, TValue>(this);
+            get => new ValueArrayDictionaryValueCollection<TKey, TValue>(this);
         }
 
         bool ICollection<KeyValuePair<TKey, TValue>>.IsReadOnly => false;

@@ -4,20 +4,12 @@
 
 using System;
 using System.Buffers;
-using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
-using System.Runtime.Serialization;
 
 namespace Collections.Pooled.Generic
 {
-    [Serializable]
-    public partial class ArrayDictionary<TKey, TValue>
-        : IArrayDictionary<TKey, TValue>
-        , IDictionary<TKey, TValue>
-        , ISerializable
-        , IDeserializationCallback
-        , IDisposable
+    public ref partial struct TempArrayDictionary<TKey, TValue>
         where TKey : notnull
     {
         // constants for serialization
@@ -43,25 +35,36 @@ namespace Collections.Pooled.Generic
         private static readonly TValue[] s_emptyValues = new TValue[0];
         private static readonly int[] s_emptyBuckets = new int[0];
 
-        public ArrayDictionary() : this(0
-            , ArrayPool<ArrayEntry<TKey>>.Shared
-            , ArrayPool<TValue>.Shared
-            , ArrayPool<int>.Shared
-        )
-        { }
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static TempArrayDictionary<TKey, TValue> Create()
+            => new TempArrayDictionary<TKey, TValue>(0
+                , ArrayPool<ArrayEntry<TKey>>.Shared
+                , ArrayPool<TValue>.Shared
+                , ArrayPool<int>.Shared
+            );
 
-        public ArrayDictionary(int capacity) : this(capacity
-            , ArrayPool<ArrayEntry<TKey>>.Shared
-            , ArrayPool<TValue>.Shared
-            , ArrayPool<int>.Shared
-        )
-        { }
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static TempArrayDictionary<TKey, TValue> Create(int capacity)
+            => new TempArrayDictionary<TKey, TValue>(capacity
+                , ArrayPool<ArrayEntry<TKey>>.Shared
+                , ArrayPool<TValue>.Shared
+                , ArrayPool<int>.Shared
+            );
 
-        public ArrayDictionary(int capacity
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static TempArrayDictionary<TKey, TValue> Create(int capacity
             , ArrayPool<ArrayEntry<TKey>> entryPool
             , ArrayPool<TValue> valuePool
             , ArrayPool<int> bucketPool
         )
+            => new TempArrayDictionary<TKey, TValue>(capacity, entryPool, valuePool, bucketPool);
+
+        internal TempArrayDictionary(int capacity
+            , ArrayPool<ArrayEntry<TKey>> entryPool
+            , ArrayPool<TValue> valuePool
+            , ArrayPool<int> bucketPool
+        )
+            : this()
         {
             if (capacity < 0)
             {
@@ -83,68 +86,6 @@ namespace Collections.Pooled.Generic
             _entries = capacity < 1 ? s_emptyEntries : _entryPool.Rent(capacity);
             _values = capacity < 1 ? s_emptyValues : _valuePool.Rent(capacity);
             _buckets = capacity < 1 ? s_emptyBuckets : _bucketPool.Rent(HashHelpers.GetPrime(capacity));
-        }
-
-        public virtual void GetObjectData(SerializationInfo info, StreamingContext context)
-        {
-            if (info == null)
-            {
-                ThrowHelper.ThrowArgumentNullException(ExceptionArgument.info);
-            }
-
-            var count = this.Count;
-
-            info.AddValue(CountName, count);
-
-            if (count > 0)
-            {
-                var array = new KeyValuePair<TKey, TValue>[count];
-                CopyTo(array);
-                info.AddValue(KeyValuePairsName, array, typeof(KeyValuePair<TKey, TValue>[]));
-            }
-        }
-
-        public virtual void OnDeserialization(object sender)
-        {
-            HashHelpers.SerializationInfoTable.TryGetValue(this, out SerializationInfo? siInfo);
-
-            if (siInfo == null)
-            {
-                // We can return immediately if this function is called twice.
-                // Note we remove the serialization info from the table at the end of this method.
-                return;
-            }
-
-            int count = siInfo.GetInt32(CountName);
-
-            if (count > 0)
-            {
-                Resize(this.Count, count);
-
-                KeyValuePair<TKey, TValue>[]? array = (KeyValuePair<TKey, TValue>[]?)
-                    siInfo.GetValue(KeyValuePairsName, typeof(KeyValuePair<TKey, TValue>[]));
-
-                if (array == null)
-                {
-                    ThrowHelper.ThrowSerializationException(ExceptionResource.Serialization_MissingKeys);
-                }
-
-                for (int i = 0; i < array.Length; i++)
-                {
-                    if (array[i].Key == null)
-                    {
-                        ThrowHelper.ThrowSerializationException(ExceptionResource.Serialization_NullKey);
-                    }
-
-                    Add(array[i].Key, array[i].Value);
-                }
-            }
-            else
-            {
-                _buckets = s_emptyBuckets;
-            }
-
-            HashHelpers.SerializationInfoTable.Remove(this);
         }
 
         public TValue this[TKey key]
@@ -181,16 +122,16 @@ namespace Collections.Pooled.Generic
             get => _freeEntryIndex;
         }
 
-        public ArrayDictionaryKeyCollection<TKey, TValue> Keys
+        public TempArrayDictionaryKeyCollection<TKey, TValue> Keys
         {
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            get => new ArrayDictionaryKeyCollection<TKey, TValue>(this);
+            get => new TempArrayDictionaryKeyCollection<TKey, TValue>(this);
         }
 
-        public ArrayDictionaryValueCollection<TKey, TValue> Values
+        public TempArrayDictionaryValueCollection<TKey, TValue> Values
         {
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            get => new ArrayDictionaryValueCollection<TKey, TValue>(this);
+            get => new TempArrayDictionaryValueCollection<TKey, TValue>(this);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -1148,7 +1089,7 @@ namespace Collections.Pooled.Generic
 
             Span<ArrayEntry<TKey>> keys = _entries.AsSpan();
             Span<TValue> values = _values.AsSpan();
-            
+
             if (keys.Length == 0 || values.Length == 0)
                 return;
 
@@ -1209,7 +1150,7 @@ namespace Collections.Pooled.Generic
             }
         }
 
-        public void Intersect<UValue>(ArrayDictionary<TKey, UValue> other)
+        public void Intersect<UValue>(in TempArrayDictionary<TKey, UValue> other)
         {
             var keys = _entries;
 
@@ -1223,7 +1164,7 @@ namespace Collections.Pooled.Generic
             }
         }
 
-        public void Exclude<UValue>(ArrayDictionary<TKey, UValue> otherDicKeys)
+        public void Exclude<UValue>(in TempArrayDictionary<TKey, UValue> otherDicKeys)
         {
             var keys = _entries;
 
@@ -1237,7 +1178,7 @@ namespace Collections.Pooled.Generic
             }
         }
 
-        public void Union(ArrayDictionary<TKey, TValue> other)
+        public void Union(in TempArrayDictionary<TKey, TValue> other)
         {
             foreach (var kv in other)
             {
@@ -1331,112 +1272,5 @@ namespace Collections.Pooled.Generic
             if (previous != -1)
                 valuesInfo[previous].Next = next;
         }
-
-        bool ICollection<KVPair<TKey, TValue>>.IsReadOnly => false;
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        void ICollection<KVPair<TKey, TValue>>.Add(KVPair<TKey, TValue> item)
-            => Add(item.Key, item.Value);
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        bool ICollection<KVPair<TKey, TValue>>.Contains(KVPair<TKey, TValue> item)
-            => ContainsKey(item.Key);
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        bool ICollection<KVPair<TKey, TValue>>.Remove(KVPair<TKey, TValue> item)
-            => Remove(item.Key);
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        IEnumerator<KVPair<TKey, TValue>> IEnumerable<KVPair<TKey, TValue>>.GetEnumerator()
-            => new KVPairEnumerator(this);
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        IEnumerator IEnumerable.GetEnumerator()
-            => new KVPairEnumerator(this);
-
-        bool ICollection<ArrayKVPair<TKey, TValue>>.IsReadOnly => false;
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        void ICollection<ArrayKVPair<TKey, TValue>>.Add(ArrayKVPair<TKey, TValue> item)
-            => Add(item.Key, item.Value);
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        bool ICollection<ArrayKVPair<TKey, TValue>>.Contains(ArrayKVPair<TKey, TValue> item)
-            => ContainsKey(item.Key);
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        void ICollection<ArrayKVPair<TKey, TValue>>.CopyTo(ArrayKVPair<TKey, TValue>[] dest, int destIndex)
-        {
-            if (destIndex < 0 || destIndex > dest.Length)
-            {
-                ThrowHelper.ThrowDestIndexArgumentOutOfRange_ArgumentOutOfRange_IndexMustBeLessOrEqual();
-            }
-
-            if (dest.Length - destIndex < Count)
-            {
-                ThrowHelper.ThrowArgumentException(ExceptionResource.Arg_ArrayPlusOffTooSmall);
-            }
-
-            Span<ArrayEntry<TKey>> keys = _entries.AsSpan();
-            TValue[] values = _values ?? s_emptyValues;
-
-            if (keys.Length == 0 || values.Length == 0)
-                return;
-
-            for (int i = 0, len = this.Count; i < len; i++)
-            {
-                dest[destIndex++] = new ArrayKVPair<TKey, TValue>(keys[i].Key, values, i);
-            }
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        bool ICollection<ArrayKVPair<TKey, TValue>>.Remove(ArrayKVPair<TKey, TValue> item)
-            => Remove(item.Key);
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        IEnumerator<ArrayKVPair<TKey, TValue>> IEnumerable<ArrayKVPair<TKey, TValue>>.GetEnumerator()
-            => new Enumerator(this);
-
-        ICollection<TKey> IDictionary<TKey, TValue>.Keys
-        {
-            [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            get => new ArrayDictionaryKeyCollection<TKey, TValue>(this);
-        }
-
-        ICollection<TValue> IDictionary<TKey, TValue>.Values
-        {
-            [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            get => new ArrayDictionaryValueCollection<TKey, TValue>(this);
-        }
-
-        IEnumerable<TKey> IReadOnlyDictionary<TKey, TValue>.Keys
-        {
-            [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            get => new ArrayDictionaryKeyCollection<TKey, TValue>(this);
-        }
-
-        IEnumerable<TValue> IReadOnlyDictionary<TKey, TValue>.Values
-        {
-            [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            get => new ArrayDictionaryValueCollection<TKey, TValue>(this);
-        }
-
-        bool ICollection<KeyValuePair<TKey, TValue>>.IsReadOnly => false;
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        void ICollection<KeyValuePair<TKey, TValue>>.Add(KeyValuePair<TKey, TValue> item)
-            => Add(item.Key, item.Value);
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        bool ICollection<KeyValuePair<TKey, TValue>>.Contains(KeyValuePair<TKey, TValue> item)
-            => ContainsKey(item.Key);
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        bool ICollection<KeyValuePair<TKey, TValue>>.Remove(KeyValuePair<TKey, TValue> item)
-            => Remove(item.Key);
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        IEnumerator<KeyValuePair<TKey, TValue>> IEnumerable<KeyValuePair<TKey, TValue>>.GetEnumerator()
-            => new KeyValuePairEnumerator(this);
     }
 }
