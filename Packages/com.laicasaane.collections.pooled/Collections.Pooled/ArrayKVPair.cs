@@ -1,4 +1,5 @@
-﻿using System.Runtime.CompilerServices;
+﻿using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 
 namespace Collections.Pooled
 {
@@ -26,5 +27,17 @@ namespace Collections.Pooled
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             get => ref _values[_index];
         }
+
+        public void Deconstruct(out TKey key, out TValue value)
+        {
+            key = _key;
+            value = _values[_index];
+        }
+
+        public static implicit operator KVPair<TKey, TValue>(in ArrayKVPair<TKey, TValue> kvp)
+            => new KVPair<TKey, TValue>(kvp.Key, kvp.Value);
+
+        public static implicit operator KeyValuePair<TKey, TValue>(in ArrayKVPair<TKey, TValue> kvp)
+            => new KeyValuePair<TKey, TValue>(kvp.Key, kvp.Value);
     }
 }

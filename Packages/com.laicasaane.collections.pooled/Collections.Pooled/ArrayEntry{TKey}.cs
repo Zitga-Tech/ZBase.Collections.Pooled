@@ -3,11 +3,12 @@
     public struct ArrayEntry<TKey>
     {
         public readonly TKey Key;
-        internal readonly int Hashcode;
-        internal int Previous;
-        internal int Next;
+        public readonly int Hashcode;
 
-        public ArrayEntry(ref TKey key, int hash, int previousNode)
+        public int Previous;
+        public int Next;
+
+        public ArrayEntry(TKey key, int hash, int previousNode)
         {
             Key = key;
             Hashcode = hash;
@@ -15,7 +16,23 @@
             Next = -1;
         }
 
-        public ArrayEntry(ref TKey key, int hash)
+        public ArrayEntry(TKey key, int hash)
+        {
+            Key = key;
+            Hashcode = hash;
+            Previous = -1;
+            Next = -1;
+        }
+
+        public ArrayEntry(in TKey key, int hash, int previousNode)
+        {
+            Key = key;
+            Hashcode = hash;
+            Previous = previousNode;
+            Next = -1;
+        }
+
+        public ArrayEntry(in TKey key, int hash)
         {
             Key = key;
             Hashcode = hash;
