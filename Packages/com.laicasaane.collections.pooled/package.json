@@ -1,7 +1,7 @@
 {
     "name": "com.laicasaane.collections.pooled",
     "displayName": "Collections.Pooled",
-    "version": "2.4.0",
+    "version": "2.5.0",
     "unity": "2021.3",
     "documentationUrl": "https://github.com/laicasaane/Collections.Pooled/blob/main/README.md",
     "dependencies": {
