@@ -75,8 +75,9 @@ namespace Collections.Pooled.Generic
             _freeCount = default;
             _version = default;
             _comparer = default;
-            _bucketPool = default;
-            _entryPool = default;
+
+            _bucketPool = bucketPool ?? ArrayPool<int>.Shared;
+            _entryPool = entryPool ?? ArrayPool<Entry<TKey, TValue>>.Shared;
 
             if (capacity < 0)
             {
@@ -104,9 +105,6 @@ namespace Collections.Pooled.Generic
                     _comparer = (IEqualityComparer<TKey>?)stringComparer;
                 }
             }
-
-            _bucketPool = bucketPool ?? ArrayPool<int>.Shared;
-            _entryPool = entryPool ?? ArrayPool<Entry<TKey, TValue>>.Shared;
         }
 
         internal ValueDictionary(IDictionary<TKey, TValue> dictionary, IEqualityComparer<TKey>? comparer, ArrayPool<int> bucketPool, ArrayPool<Entry<TKey, TValue>> entryPool)

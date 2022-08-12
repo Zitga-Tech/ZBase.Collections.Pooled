@@ -106,6 +106,9 @@ namespace Collections.Pooled.Generic
                 _comparer = comparer;
             }
 
+            _bucketPool = bucketPool ?? ArrayPool<int>.Shared;
+            _entryPool = entryPool ?? ArrayPool<Entry<T>>.Shared;
+
             // Special-case EqualityComparer<string>.Default, StringComparer.Ordinal, and StringComparer.OrdinalIgnoreCase.
             // We use a non-randomized comparer for improved perf, falling back to a randomized comparer if the
             // hash buckets become unbalanced.
@@ -117,9 +120,6 @@ namespace Collections.Pooled.Generic
                     _comparer = (IEqualityComparer<T>?)stringComparer;
                 }
             }
-
-            _bucketPool = bucketPool ?? ArrayPool<int>.Shared;
-            _entryPool = entryPool ?? ArrayPool<Entry<T>>.Shared;
         }
 
         public HashSet(IEnumerable<T> collection, IEqualityComparer<T>? comparer, ArrayPool<int> bucketPool, ArrayPool<Entry<T>> entryPool)

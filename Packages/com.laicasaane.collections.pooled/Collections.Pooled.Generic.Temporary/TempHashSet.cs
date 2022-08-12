@@ -85,8 +85,9 @@ namespace Collections.Pooled.Generic
             _freeCount = default;
             _version = default;
             _comparer = default;
-            _bucketPool = default;
-            _entryPool = default;
+
+            _bucketPool = bucketPool ?? ArrayPool<int>.Shared;
+            _entryPool = entryPool ?? ArrayPool<Entry<T>>.Shared;
 
             if (comparer is not null && comparer != EqualityComparer<T>.Default) // first check for null to avoid forcing default comparer instantiation unnecessarily
             {
@@ -104,9 +105,6 @@ namespace Collections.Pooled.Generic
                     _comparer = (IEqualityComparer<T>?)stringComparer;
                 }
             }
-
-            _bucketPool = bucketPool ?? ArrayPool<int>.Shared;
-            _entryPool = entryPool ?? ArrayPool<Entry<T>>.Shared;
         }
 
         internal TempHashSet(IEnumerable<T> collection, IEqualityComparer<T>? comparer, ArrayPool<int> bucketPool, ArrayPool<Entry<T>> entryPool)

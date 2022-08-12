@@ -119,6 +119,9 @@ namespace Collections.Pooled.Generic
                 ThrowHelper.ThrowArgumentOutOfRangeException(ExceptionArgument.capacity);
             }
 
+            _bucketPool = bucketPool ?? ArrayPool<int>.Shared;
+            _entryPool = entryPool ?? ArrayPool<Entry<TKey, TValue>>.Shared;
+
             if (capacity > 0)
             {
                 Initialize(capacity);
@@ -140,9 +143,6 @@ namespace Collections.Pooled.Generic
                     _comparer = (IEqualityComparer<TKey>?)stringComparer;
                 }
             }
-
-            _bucketPool = bucketPool ?? ArrayPool<int>.Shared;
-            _entryPool = entryPool ?? ArrayPool<Entry<TKey, TValue>>.Shared;
         }
 
         public Dictionary(IDictionary<TKey, TValue> dictionary, IEqualityComparer<TKey>? comparer, ArrayPool<int> bucketPool, ArrayPool<Entry<TKey, TValue>> entryPool)
