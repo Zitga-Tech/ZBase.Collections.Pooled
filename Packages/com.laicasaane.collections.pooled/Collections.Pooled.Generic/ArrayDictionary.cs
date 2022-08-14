@@ -1099,8 +1099,6 @@ namespace Collections.Pooled.Generic
             //even if we found an existing value we need to be sure it's the one we requested
             while (valueIndex != -1)
             {
-                //Comparer<TKey>.default needs to create a new comparer, so it is much slower
-                //than assuming that Equals is implemented through IEquatable
                 ref var entry = ref _entries[valueIndex];
                 if (entry.Hashcode == hash && EqualityComparer<TKey>.Default.Equals(entry.Key, key) == true)
                 {
@@ -1133,8 +1131,6 @@ namespace Collections.Pooled.Generic
             //even if we found an existing value we need to be sure it's the one we requested
             while (valueIndex != -1)
             {
-                //Comparer<TKey>.default needs to create a new comparer, so it is much slower
-                //than assuming that Equals is implemented through IEquatable
                 ref var entry = ref _entries[valueIndex];
                 if (entry.Hashcode == hash && EqualityComparer<TKey>.Default.Equals(entry.Key, key) == true)
                 {
