@@ -39,6 +39,7 @@ namespace Collections.Pooled.Generic
         internal static readonly bool s_clearEntries = SystemRuntimeHelpers.IsReferenceOrContainsReferences<TKey>();
         internal static readonly bool s_clearValues = SystemRuntimeHelpers.IsReferenceOrContainsReferences<TValue>();
 
+        private static readonly Type s_typeOfKey = typeof(TKey);
         private static readonly ArrayEntry<TKey>[] s_emptyEntries = new ArrayEntry<TKey>[0];
         private static readonly TValue[] s_emptyValues = new TValue[0];
         private static readonly int[] s_emptyBuckets = new int[0];
@@ -578,23 +579,49 @@ namespace Collections.Pooled.Generic
             }
             else //collision or already exists
             {
-                int currentValueIndex = valueIndex;
-                do
+                if (s_typeOfKey.IsValueType == true)
                 {
-                    //must check if the key already exists in the dictionary
-                    //Comparer<TKey>.default needs to create a new comparer, so it is much slower
-                    //than assuming that Equals is implemented through IEquatable
-                    ref var entry = ref _entries[currentValueIndex];
-                    if (entry.Hashcode == hash && entry.Key.Equals(key) == true)
+                    int currentValueIndex = valueIndex;
+                    do
                     {
-                        //the key already exists, simply replace the value!
-                        index = currentValueIndex;
-                        return false;
-                    }
+                        //must check if the key already exists in the dictionary
+                        //ValueType: Devirtualize with EqualityComparer<TValue>.Default intrinsic, since .NET Core 2.1
 
-                    currentValueIndex = entry.Previous;
-                } while (currentValueIndex != -1); //-1 means no more values with key with the same hash
+                        ref var entry = ref _entries[currentValueIndex];
+                        if (entry.Hashcode == hash && EqualityComparer<TKey>.Default.Equals(entry.Key, key) == true)
+                        {
+                            //the key already exists, simply replace the value!
+                            index = currentValueIndex;
+                            return false;
+                        }
 
+                        currentValueIndex = entry.Previous;
+                    } while (currentValueIndex != -1); //-1 means no more values with key with the same hash
+                }
+                else
+                {
+                    // Object type: Shared Generic, EqualityComparer<TValue>.Default won't devirtualize
+                    // https://github.com/dotnet/runtime/issues/10050
+                    // So cache in a local rather than get EqualityComparer per loop iteration
+                    EqualityComparer<TKey> defaultComparer = EqualityComparer<TKey>.Default;
+
+                    int currentValueIndex = valueIndex;
+                    do
+                    {
+                        //must check if the key already exists in the dictionary
+
+                        ref var entry = ref _entries[currentValueIndex];
+                        if (entry.Hashcode == hash && defaultComparer.Equals(entry.Key, key) == true)
+                        {
+                            //the key already exists, simply replace the value!
+                            index = currentValueIndex;
+                            return false;
+                        }
+
+                        currentValueIndex = entry.Previous;
+                    } while (currentValueIndex != -1); //-1 means no more values with key with the same hash
+
+                }
                 ResizeIfNeeded();
 
                 //oops collision!
@@ -682,22 +709,48 @@ namespace Collections.Pooled.Generic
             }
             else //collision or already exists
             {
-                int currentValueIndex = valueIndex;
-                do
+                if (s_typeOfKey.IsValueType == true)
                 {
-                    //must check if the key already exists in the dictionary
-                    //Comparer<TKey>.default needs to create a new comparer, so it is much slower
-                    //than assuming that Equals is implemented through IEquatable
-                    ref var entry = ref _entries[currentValueIndex];
-                    if (entry.Hashcode == hash && entry.Key.Equals(key) == true)
+                    int currentValueIndex = valueIndex;
+                    do
                     {
-                        //the key already exists, simply replace the value!
-                        index = currentValueIndex;
-                        return false;
-                    }
+                        //must check if the key already exists in the dictionary
+                        //ValueType: Devirtualize with EqualityComparer<TValue>.Default intrinsic, since .NET Core 2.1
 
-                    currentValueIndex = entry.Previous;
-                } while (currentValueIndex != -1); //-1 means no more values with key with the same hash
+                        ref var entry = ref _entries[currentValueIndex];
+                        if (entry.Hashcode == hash && EqualityComparer<TKey>.Default.Equals(entry.Key, key) == true)
+                        {
+                            //the key already exists, simply replace the value!
+                            index = currentValueIndex;
+                            return false;
+                        }
+
+                        currentValueIndex = entry.Previous;
+                    } while (currentValueIndex != -1); //-1 means no more values with key with the same hash
+                }
+                else
+                {
+                    // Object type: Shared Generic, EqualityComparer<TValue>.Default won't devirtualize
+                    // https://github.com/dotnet/runtime/issues/10050
+                    // So cache in a local rather than get EqualityComparer per loop iteration
+                    EqualityComparer<TKey> defaultComparer = EqualityComparer<TKey>.Default;
+
+                    int currentValueIndex = valueIndex;
+                    do
+                    {
+                        //must check if the key already exists in the dictionary
+
+                        ref var entry = ref _entries[currentValueIndex];
+                        if (entry.Hashcode == hash && defaultComparer.Equals(entry.Key, key) == true)
+                        {
+                            //the key already exists, simply replace the value!
+                            index = currentValueIndex;
+                            return false;
+                        }
+
+                        currentValueIndex = entry.Previous;
+                    } while (currentValueIndex != -1); //-1 means no more values with key with the same hash
+                }
 
                 ResizeIfNeeded();
 
@@ -825,11 +878,13 @@ namespace Collections.Pooled.Generic
             }
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public bool Remove(TKey key)
         {
             return Remove(key, out _, out _);
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public bool Remove(in TKey key)
         {
             return Remove(in key, out _, out _);
@@ -848,7 +903,7 @@ namespace Collections.Pooled.Generic
             while (indexToValueToRemove != -1)
             {
                 ref var entry = ref _entries[indexToValueToRemove];
-                if (entry.Hashcode == hash && entry.Key.Equals(key) == true)
+                if (entry.Hashcode == hash && EqualityComparer<TKey>.Default.Equals(entry.Key, key) == true)
                 {
                     //if the key is found and the bucket points directly to the node to remove
                     if (_buckets[bucketIndex] - 1 == indexToValueToRemove)
@@ -948,7 +1003,7 @@ namespace Collections.Pooled.Generic
             while (indexToValueToRemove != -1)
             {
                 ref var entry = ref _entries[indexToValueToRemove];
-                if (entry.Hashcode == hash && entry.Key.Equals(key) == true)
+                if (entry.Hashcode == hash && EqualityComparer<TKey>.Default.Equals(entry.Key, key) == true)
                 {
                     //if the key is found and the bucket points directly to the node to remove
                     if (_buckets[bucketIndex] - 1 == indexToValueToRemove)
@@ -1059,7 +1114,7 @@ namespace Collections.Pooled.Generic
                 //Comparer<TKey>.default needs to create a new comparer, so it is much slower
                 //than assuming that Equals is implemented through IEquatable
                 ref var entry = ref _entries[valueIndex];
-                if (entry.Hashcode == hash && entry.Key.Equals(key) == true)
+                if (entry.Hashcode == hash && EqualityComparer<TKey>.Default.Equals(entry.Key, key) == true)
                 {
                     //this is the one
                     findIndex = valueIndex;
@@ -1093,7 +1148,7 @@ namespace Collections.Pooled.Generic
                 //Comparer<TKey>.default needs to create a new comparer, so it is much slower
                 //than assuming that Equals is implemented through IEquatable
                 ref var entry = ref _entries[valueIndex];
-                if (entry.Hashcode == hash && entry.Key.Equals(key) == true)
+                if (entry.Hashcode == hash && EqualityComparer<TKey>.Default.Equals(entry.Key, key) == true)
                 {
                     //this is the one
                     findIndex = valueIndex;
