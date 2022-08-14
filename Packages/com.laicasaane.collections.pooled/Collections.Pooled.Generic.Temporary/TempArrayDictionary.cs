@@ -9,6 +9,13 @@ using System.Runtime.CompilerServices;
 
 namespace Collections.Pooled.Generic
 {
+    /// <summary>
+    /// Dictionary that <typeparamref name="TKey"/> and <typeparamref name="TValue"/> are stored in dense arrays.
+    /// Effectively, internal <see cref="Keys"/> and <see cref="Values"/> can be iterated over like normal arrays.
+    /// </summary>
+    /// <remarks>
+    /// To iterate over <see cref="Keys"/> or <see cref="Values"/> as arrays, they must be get through unsafe APIs.
+    /// </remarks>
     public ref partial struct TempArrayDictionary<TKey, TValue>
         where TKey : notnull
     {
