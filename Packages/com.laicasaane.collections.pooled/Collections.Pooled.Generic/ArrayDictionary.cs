@@ -367,18 +367,6 @@ namespace Collections.Pooled.Generic
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public void FastClear()
-        {
-            if (_freeEntryIndex == 0)
-                return;
-
-            _freeEntryIndex = 0;
-
-            //Buckets cannot be FastCleared because it's important that the values are reset to 0
-            Array.Clear(_buckets, 0, _buckets.Length);
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         //WARNING this method must stay stateless (not relying on states that can change, it's ok to read 
         //constant states) because it will be used in multithreaded parallel code
         public bool ContainsKey(TKey key)

@@ -16,8 +16,6 @@ namespace Collections.Pooled
 
         void EnsureCapacity(int capacity);
 
-        void FastClear();
-
         bool Remove(in TKey key);
 
         bool Remove(in TKey key, out int index, out TValue value);
