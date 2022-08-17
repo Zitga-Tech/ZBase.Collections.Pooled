@@ -15,12 +15,6 @@ using System.Diagnostics.CodeAnalysis;
 
 using SCG = System.Collections.Generic;
 
-#if UNITY_2021_3_OR_NEWER && !UNITY_EDITOR
-using Unsafe = System.Runtime.CompilerServices.Unsafe;
-#else
-using Unsafe = Collections.Pooled.SystemUnsafe;
-#endif
-
 namespace Collections.Pooled.Generic
 {
     public ref partial struct TempHashSet<T>
