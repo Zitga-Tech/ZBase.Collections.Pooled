@@ -353,3 +353,22 @@ for (var i = 0; i < count; i++)
     - Serialization should not use `ArrayPool`
     - Remove `null`s and null checks for the internal `_buckets` array
     - Correct internal arrays initialization
+
+## 2.5.2
+
+### Changes
+
+- Add `1` to the `HashHelpers.primes` array to support the scenarios of only 1 element
+
+## 2.6.0
+
+### Fixes
+
+- Correct the reference to `System.Runtime.CompilerServices.dll` version `6.0.0`
+
+## 2.6.1
+
+### Breaking Changes
+
+- Expose some internal methods of `*ArrayDictionary` because they are safe
+- Remove the related methods from `*CollectionInternalUnsafe` for the same reason
