@@ -4,11 +4,11 @@ using System.Runtime.CompilerServices;
 
 namespace Collections.Pooled.Generic
 {
-    public struct ReadOnlyArray<T> : IReadOnlyList<T>
+    public readonly struct ReadOnlyArray<T> : IReadOnlyList<T>
     {
         private static readonly T[] s_emptyArray = new T[0];
 
-        private readonly T[] _array;
+        internal readonly T[] _array;
 
         internal ReadOnlyArray(T[] array)
         {

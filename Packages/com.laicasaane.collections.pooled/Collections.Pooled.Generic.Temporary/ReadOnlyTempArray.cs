@@ -2,9 +2,9 @@
 
 namespace Collections.Pooled.Generic
 {
-    public ref struct ReadOnlyTempArray<T>
+    public readonly ref struct ReadOnlyTempArray<T>
     {
-        private TempArray<T> _array;
+        internal readonly TempArray<T> _array;
 
         internal ReadOnlyTempArray(in TempArray<T> array)
         {

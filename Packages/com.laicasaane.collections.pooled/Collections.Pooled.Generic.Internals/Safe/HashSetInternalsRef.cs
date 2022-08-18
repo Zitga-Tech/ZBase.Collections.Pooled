@@ -53,7 +53,7 @@ namespace Collections.Pooled.Generic.Internals
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static ReadOnlySpan<Entry<T>> AsReadOnlySpan<T>(
-                HashSet<T> source
+                this HashSet<T> source
             )
             => source._entries.AsSpan(0, source._count);
     }

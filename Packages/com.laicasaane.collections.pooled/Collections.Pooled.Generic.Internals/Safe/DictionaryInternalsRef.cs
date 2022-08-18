@@ -57,7 +57,7 @@ namespace Collections.Pooled.Generic.Internals
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static ReadOnlySpan<Entry<TKey, TValue>> AsReadOnlySpan<TKey, TValue>(
-                Dictionary<TKey, TValue> source
+                this Dictionary<TKey, TValue> source
             )
             => source._entries.AsSpan(0, source._count);
     }

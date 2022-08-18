@@ -5,9 +5,9 @@ using System.Runtime.CompilerServices;
 
 namespace Collections.Pooled.Generic
 {
-    public struct ReadOnlyValueArray<T> : IReadOnlyList<T>, IDisposable
+    public readonly struct ReadOnlyValueArray<T> : IReadOnlyList<T>, IDisposable
     {
-        private ValueArray<T> _array;
+        internal readonly ValueArray<T> _array;
 
         internal ReadOnlyValueArray(in ValueArray<T> array)
         {

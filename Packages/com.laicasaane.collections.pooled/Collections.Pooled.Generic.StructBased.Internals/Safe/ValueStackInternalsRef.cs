@@ -35,7 +35,7 @@ namespace Collections.Pooled.Generic.Internals
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static ReadOnlySpan<T> AsReadOnlySpan<T>(
-                in ValueStack<T> source
+                in this ValueStack<T> source
             )
             => source._array.AsSpan(0, source._size);
     }

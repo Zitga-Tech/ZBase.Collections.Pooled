@@ -57,7 +57,7 @@ namespace Collections.Pooled.Generic.Internals
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void AsReadOnlySpan<TKey, TValue>(
-            ArrayDictionary<TKey, TValue> source
+            this ArrayDictionary<TKey, TValue> source
             , out ReadOnlySpan<ArrayEntry<TKey>> keys
             , out ReadOnlySpan<TValue> values
         )
@@ -70,8 +70,8 @@ namespace Collections.Pooled.Generic.Internals
         /// Returns the internal Keys array as a <see cref="ReadOnlySpan{T}"/>.
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static ReadOnlySpan<ArrayEntry<TKey>> AsReadOnlySpanKeys<TKey, TValue>(
-                ArrayDictionary<TKey, TValue> source
+        public static ReadOnlySpan<ArrayEntry<TKey>> KeysAsReadOnlySpan<TKey, TValue>(
+                this ArrayDictionary<TKey, TValue> source
             )
             => source._entries.AsSpan(0, source.Count);
 
@@ -79,8 +79,8 @@ namespace Collections.Pooled.Generic.Internals
         /// Returns the internal Values array as a <see cref="ReadOnlySpan{T}"/>.
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static ReadOnlySpan<TValue> AsReadOnlySpanValues<TKey, TValue>(
-                ArrayDictionary<TKey, TValue> source
+        public static ReadOnlySpan<TValue> ValuesAsReadOnlySpan<TKey, TValue>(
+                this ArrayDictionary<TKey, TValue> source
             )
             => source._values.AsSpan(0, source.Count);
     }

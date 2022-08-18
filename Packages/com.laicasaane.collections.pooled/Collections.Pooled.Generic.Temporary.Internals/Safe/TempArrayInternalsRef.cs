@@ -33,7 +33,7 @@ namespace Collections.Pooled.Generic.Internals
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static ReadOnlySpan<T> AsReadOnlySpan<T>(
-                in TempArray<T> source
+                in this TempArray<T> source
             )
             => source._array.AsSpan(0, source._length);
     }

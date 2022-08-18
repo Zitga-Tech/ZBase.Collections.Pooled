@@ -39,8 +39,14 @@ namespace Collections.Pooled.Generic.Internals
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static ReadOnlySpan<T> AsReadOnlySpan<T>(
-                in ValueQueue<T> source
-            )
-            => source._array.AsSpan(0, source._size);
+            in this ValueQueue<T> source
+            , out int head
+            , out int tail
+        )
+        {
+            head = source._head;
+            tail = source._tail;
+            return source._array.AsSpan(0, source._size);
+        }
     }
 }
