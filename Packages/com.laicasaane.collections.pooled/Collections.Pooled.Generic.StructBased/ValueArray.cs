@@ -24,9 +24,12 @@ namespace Collections.Pooled.Generic
 
         internal ValueArray(int length, ArrayPool<T> pool)
         {
-            _pool = pool ?? ArrayPool<T>.Shared;
+            if (length < 0)
+                ThrowHelper.ThrowLengthArgumentOutOfRange_ArgumentOutOfRange_NeedNonNegNum();
+
             _length = length;
-            _array = pool.Rent(length);
+            _pool = pool ?? ArrayPool<T>.Shared;
+            _array = _length == 0 ? s_emptyArray : pool.Rent(length);
         }
 
         public int Length
