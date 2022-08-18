@@ -44,7 +44,7 @@ namespace Collections.Pooled.Generic
 
         internal ref T FindValue(T equalValue)
         {
-            if (_buckets?.Length > 0)
+            if (_buckets.IsNullOrEmpty() == false)
             {
                 int index = FindItemIndex(equalValue);
                 if (index >= 0)
@@ -650,7 +650,7 @@ namespace Collections.Pooled.Generic
 
         private void ReturnBuckets(int[] replaceWith)
         {
-            if (_buckets?.Length > 0)
+            if (_buckets.IsNullOrEmpty() == false)
             {
                 try
                 {
@@ -664,7 +664,7 @@ namespace Collections.Pooled.Generic
 
         private void ReturnEntries(Entry<T>[] replaceWith)
         {
-            if (_entries?.Length > 0)
+            if (_entries.IsNullOrEmpty() == false)
             {
                 try
                 {

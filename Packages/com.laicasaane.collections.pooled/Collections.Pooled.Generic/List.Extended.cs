@@ -229,7 +229,7 @@ namespace Collections.Pooled.Generic
 
         private void ReturnArray(T[] replaceWith)
         {
-            if (_items?.Length > 0)
+            if (_items.IsNullOrEmpty() == false)
             {
                 try
                 {

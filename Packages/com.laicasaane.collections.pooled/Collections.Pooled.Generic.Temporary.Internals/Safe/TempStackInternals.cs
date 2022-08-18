@@ -22,7 +22,7 @@ namespace Collections.Pooled.Generic.Internals
 
         public void Dispose()
         {
-            if (Array != null && Array.Length > 0)
+            if (Array.IsNullOrEmpty() == false)
             {
                 try
                 {

@@ -50,7 +50,7 @@ namespace Collections.Pooled.Generic.Internals
 
         public void Dispose()
         {
-            if (Buckets != null && Buckets.Length > 0)
+            if (Buckets.IsNullOrEmpty() == false)
             {
                 try
                 {
@@ -59,7 +59,7 @@ namespace Collections.Pooled.Generic.Internals
                 catch { }
             }
 
-            if (Entries != null && Entries.Length > 0)
+            if (Entries.IsNullOrEmpty() == false)
             {
                 try
                 {

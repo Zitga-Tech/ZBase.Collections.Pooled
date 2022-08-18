@@ -345,7 +345,7 @@ namespace Collections.Pooled.Generic
 
         private void ReturnArray(T[] replaceWith = null)
         {
-            if (_array?.Length > 0)
+            if (_array.IsNullOrEmpty() == false)
             {
                 try
                 {

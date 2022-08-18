@@ -22,7 +22,7 @@ namespace Collections.Pooled.Generic
             }
 
             // They're not both null, so if either is null, they're not equal.
-            if (x._buckets?.Length < 1 || y._buckets?.Length < 1)
+            if (x._buckets.IsNullOrEmpty() || y._buckets.IsNullOrEmpty())
             {
                 return false;
             }
@@ -62,7 +62,7 @@ namespace Collections.Pooled.Generic
         {
             int hashCode = 0; // default to 0 for null/empty set
 
-            if (obj._buckets?.Length > 0)
+            if (obj._buckets.IsNullOrEmpty() == false)
             {
                 foreach (T t in obj)
                 {

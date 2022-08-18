@@ -380,7 +380,7 @@ namespace Collections.Pooled.Generic
 
         private void ReturnArray(T[] replaceWith)
         {
-            if (_array?.Length > 0)
+            if (_array.IsNullOrEmpty() == false)
             {
                 try
                 {

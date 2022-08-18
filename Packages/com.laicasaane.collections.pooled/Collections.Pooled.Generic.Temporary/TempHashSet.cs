@@ -313,7 +313,7 @@ namespace Collections.Pooled.Generic
 
         public bool Remove(T item)
         {
-            if (_buckets?.Length > 0)
+            if (_buckets.IsNullOrEmpty() == false)
             {
                 Entry<T>[]? entries = _entries;
                 Debug.Assert(entries != null, "entries should be non-null");
@@ -404,7 +404,7 @@ namespace Collections.Pooled.Generic
         /// </remarks>
         public bool TryGetValue(T equalValue, [MaybeNullWhen(false)] out T actualValue)
         {
-            if (_buckets?.Length > 0)
+            if (_buckets.IsNullOrEmpty() == false)
             {
                 int index = FindItemIndex(equalValue);
                 if (index >= 0)
@@ -807,7 +807,7 @@ namespace Collections.Pooled.Generic
                 return currentCapacity;
             }
 
-            if (_buckets?.Length < 1)
+            if (_buckets.IsNullOrEmpty())
             {
                 return Initialize(capacity);
             }
@@ -953,7 +953,7 @@ namespace Collections.Pooled.Generic
         /// <returns>true if the element is added to the <see cref="TempHashSet{T}"/> object; false if the element is already present.</returns>
         internal bool AddIfNotPresent(T value, out int location)
         {
-            if (_buckets?.Length < 1)
+            if (_buckets.IsNullOrEmpty())
             {
                 Initialize(0);
             }
@@ -1460,7 +1460,7 @@ namespace Collections.Pooled.Generic
 
         private void RenewBuckets(int newSize)
         {
-            if (_buckets?.Length > 0)
+            if (_buckets.IsNullOrEmpty() == false)
             {
                 try
                 {
@@ -1477,7 +1477,7 @@ namespace Collections.Pooled.Generic
 
         private void RenewEntries(int newSize)
         {
-            if (_entries?.Length > 0)
+            if (_entries.IsNullOrEmpty() == false)
             {
                 try
                 {

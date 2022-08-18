@@ -786,7 +786,7 @@ namespace Collections.Pooled.Generic
 
                     _values = newValues;
 
-                    if (values?.Length > 0)
+                    if (values.IsNullOrEmpty() == false)
                         _valuePool.Return(values, s_clearValues);
                 }
                 else
@@ -808,7 +808,7 @@ namespace Collections.Pooled.Generic
 
                     _entries = newEntries;
 
-                    if (entries?.Length > 0)
+                    if (entries.IsNullOrEmpty() == false)
                         _entryPool.Return(entries, s_clearEntries);
                 }
                 else
@@ -1243,7 +1243,7 @@ namespace Collections.Pooled.Generic
 
         private void RenewBuckets(int newSize)
         {
-            if (_buckets?.Length > 0)
+            if (_buckets.IsNullOrEmpty() == false)
             {
                 try
                 {
@@ -1260,7 +1260,7 @@ namespace Collections.Pooled.Generic
 
         private void ReturnBuckets(int[] replaceWith)
         {
-            if (_buckets?.Length > 0)
+            if (_buckets.IsNullOrEmpty() == false)
             {
                 try
                 {
@@ -1274,7 +1274,7 @@ namespace Collections.Pooled.Generic
 
         private void ReturnEntries(ArrayEntry<TKey>[] replaceWith)
         {
-            if (_entries?.Length > 0)
+            if (_entries.IsNullOrEmpty() == false)
             {
                 try
                 {
@@ -1288,7 +1288,7 @@ namespace Collections.Pooled.Generic
 
         private void ReturnValues(TValue[] replaceWith)
         {
-            if (_values?.Length > 0)
+            if (_values.IsNullOrEmpty() == false)
             {
                 try
                 {

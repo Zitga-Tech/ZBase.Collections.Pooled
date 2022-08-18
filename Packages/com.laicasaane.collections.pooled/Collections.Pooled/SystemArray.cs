@@ -1,4 +1,6 @@
-﻿namespace Collections.Pooled
+﻿using System.Runtime.CompilerServices;
+
+namespace Collections.Pooled
 {
     public static class SystemArray
     {
@@ -14,5 +16,9 @@
         public const int MaxLength =
             // Keep in sync with `inline SIZE_T MaxArrayLength()` from gchelpers and HashHelpers.MaxPrimeArrayLength.
             0X7FFFFFC7;
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static bool IsNullOrEmpty<T>(this T[] array)
+            => array == null || array.Length == 0;
     }
 }

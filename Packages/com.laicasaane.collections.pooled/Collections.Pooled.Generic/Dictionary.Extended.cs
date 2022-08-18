@@ -162,7 +162,7 @@ namespace Collections.Pooled.Generic
 
         private void ReturnBuckets(int[] replaceWith)
         {
-            if (_buckets?.Length > 0)
+            if (_buckets.IsNullOrEmpty() == false)
             {
                 try
                 {
@@ -176,7 +176,7 @@ namespace Collections.Pooled.Generic
 
         private void ReturnEntries(Entry<TKey, TValue>[] replaceWith)
         {
-            if (_entries?.Length > 0)
+            if (_entries.IsNullOrEmpty() == false)
             {
                 try
                 {
