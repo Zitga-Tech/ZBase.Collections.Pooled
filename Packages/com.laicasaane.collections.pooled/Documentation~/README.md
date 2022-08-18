@@ -386,3 +386,9 @@ for (var i = 0; i < count; i++)
 ### Fixes
 
 - Correct `ValueArray` and `TempArray` constructor
+
+## 2.6.3
+
+### Features
+
+- Add `ReadOnlyArray`
