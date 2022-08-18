@@ -43,13 +43,17 @@ namespace Collections.Pooled.Generic
             get => ref _array[index];
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public void CopyTo(T[] array, int index)
+            => _array.AsSpan().CopyTo(array.AsSpan(index));
+
         private void ReturnArray(T[] replaceWith)
         {
             if (_array.IsNullOrEmpty() == false)
             {
                 try
                 {
-                    _pool.Return(_array, s_clearArray);
+                    _pool?.Return(_array, s_clearArray);
                 }
                 catch { }
             }

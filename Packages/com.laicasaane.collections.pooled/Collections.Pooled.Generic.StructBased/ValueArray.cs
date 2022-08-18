@@ -11,7 +11,7 @@ namespace Collections.Pooled.Generic
     [DebuggerTypeProxy(typeof(ICollectionDebugView<>))]
     [DebuggerDisplay("Count = {Length}")]
     [Serializable]
-    public partial struct ValueArray<T> : IEnumerable<T>, IDisposable, IDeserializationCallback
+    public partial struct ValueArray<T> : IReadOnlyList<T>, IDisposable, IDeserializationCallback
     {
         internal static readonly bool s_clearArray = SystemRuntimeHelpers.IsReferenceOrContainsReferences<T>();
         private static readonly T[] s_emptyArray = new T[0];
@@ -49,6 +49,22 @@ namespace Collections.Pooled.Generic
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             get => ref _array[index];
         }
+
+        int IReadOnlyCollection<T>.Count
+        {
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            get => _length;
+        }
+
+        T IReadOnlyList<T>.this[int index]
+        {
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            get => _array[index];
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public void CopyTo(T[] array, int index)
+            => _array.AsSpan().CopyTo(array.AsSpan(index));
 
         private void ReturnArray(T[] replaceWith)
         {

@@ -7,10 +7,18 @@ namespace Collections.Pooled.Generic
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static ValueArray<T> Create(int minLength)
-            => new(minLength, ArrayPool<T>.Shared);
+            => new ValueArray<T>(minLength, ArrayPool<T>.Shared);
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static ValueArray<T> Create(int minLength, ArrayPool<T> pool)
-            => new(minLength, pool);
+            => new ValueArray<T>(minLength, pool);
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static ValueArray<T> Empty()
+            => Create(0);
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static ValueArray<T> Empty(ArrayPool<T> pool)
+            => Create(0, pool);
     }
 }
