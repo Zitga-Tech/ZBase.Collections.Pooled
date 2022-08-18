@@ -403,3 +403,9 @@ for (var i = 0; i < count; i++)
 
 - Improve Enumerators
 - Make `AsReadOnlySpan` and `AsSpan` extension methods
+
+## 2.6.5
+
+### Features
+
+- Add APIs to create `ValueArray` and `TempArray` in unsafe context
