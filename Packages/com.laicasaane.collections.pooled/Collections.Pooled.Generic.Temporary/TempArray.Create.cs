@@ -20,5 +20,9 @@ namespace Collections.Pooled.Generic
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static TempArray<T> Empty(ArrayPool<T> pool)
             => Create(0, pool);
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        internal static TempArray<T> Create(T[] array, int length, ArrayPool<T> pool)
+            => new TempArray<T>(array, length, pool);
     }
 }

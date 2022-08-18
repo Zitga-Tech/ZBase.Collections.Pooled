@@ -27,6 +27,16 @@ namespace Collections.Pooled.Generic
             _array = _length == 0 ? s_emptyArray : pool.Rent(length);
         }
 
+        internal TempArray(T[] array, int length, ArrayPool<T> pool)
+        {
+            if (length < 0)
+                ThrowHelper.ThrowLengthArgumentOutOfRange_ArgumentOutOfRange_NeedNonNegNum();
+
+            _array = array ?? s_emptyArray;
+            _length = array == null ? 0 : length;
+            _pool = pool ?? ArrayPool<T>.Shared;
+        }
+
         public int Length
         {
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
