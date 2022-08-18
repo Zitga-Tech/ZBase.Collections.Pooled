@@ -372,3 +372,17 @@ for (var i = 0; i < count; i++)
 
 - Expose some internal methods of `*ArrayDictionary` because they are safe
 - Remove the related methods from `*CollectionInternalUnsafe` for the same reason
+
+## 2.6.2
+
+### Features
+
+- Add `ReadOnlyValueArray` and `ReadOnlyTempArray`
+
+### Changes
+
+- Use `IsNullOrEmpty` extension method to check if arrays are null or empty
+
+### Fixes
+
+- Correct `ValueArray` and `TempArray` constructor
