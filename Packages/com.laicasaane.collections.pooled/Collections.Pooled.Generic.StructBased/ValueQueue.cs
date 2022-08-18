@@ -411,7 +411,7 @@ namespace Collections.Pooled.Generic
             private int _index;   // -1 = not started, -2 = ended/disposed
             private T? _currentElement;
 
-            internal Enumerator(ValueQueue<T> q)
+            public Enumerator(in ValueQueue<T> q)
             {
                 _q = q;
                 _version = q._version;

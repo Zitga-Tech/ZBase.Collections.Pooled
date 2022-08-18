@@ -1,5 +1,4 @@
-﻿using System;
-using System.Runtime.CompilerServices;
+﻿using System.Runtime.CompilerServices;
 
 namespace Collections.Pooled.Generic
 {
@@ -33,7 +32,7 @@ namespace Collections.Pooled.Generic
             => _array.CopyTo(array, index);
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Span<T>.Enumerator GetEnumerator()
+        public TempArray<T>.Enumerator GetEnumerator()
             => _array.GetEnumerator();
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]

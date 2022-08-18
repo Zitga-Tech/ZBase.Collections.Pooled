@@ -78,7 +78,7 @@ namespace Collections.Pooled.Generic
             private readonly int _version;
             private TValue? _currentValue;
 
-            internal Enumerator(ValueDictionary<TKey, TValue> dictionary)
+            public Enumerator(in ValueDictionary<TKey, TValue> dictionary)
             {
                 _dictionary = dictionary;
                 _version = dictionary._version;

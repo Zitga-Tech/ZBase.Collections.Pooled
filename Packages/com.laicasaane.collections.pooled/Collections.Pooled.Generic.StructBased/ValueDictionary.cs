@@ -1317,7 +1317,7 @@ namespace Collections.Pooled.Generic
             internal const int DictEntry = 1;
             internal const int KeyValuePair = 2;
 
-            internal Enumerator(ValueDictionary<TKey, TValue> dictionary, int getEnumeratorRetType)
+            public Enumerator(in ValueDictionary<TKey, TValue> dictionary, int getEnumeratorRetType)
             {
                 _dictionary = dictionary;
                 _version = dictionary._version;

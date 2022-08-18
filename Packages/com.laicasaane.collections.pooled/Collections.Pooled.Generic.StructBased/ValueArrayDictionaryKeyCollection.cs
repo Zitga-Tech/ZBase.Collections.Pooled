@@ -84,7 +84,7 @@ namespace Collections.Pooled.Generic
 
             private int _index;
 
-            internal Enumerator(in ValueArrayDictionary<TKey, TValue> dictionary)
+            public Enumerator(in ValueArrayDictionary<TKey, TValue> dictionary)
             {
                 _dictionary = dictionary;
                 _index = -1;

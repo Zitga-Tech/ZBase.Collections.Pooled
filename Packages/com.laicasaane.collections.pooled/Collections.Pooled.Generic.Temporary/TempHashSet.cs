@@ -1502,7 +1502,7 @@ namespace Collections.Pooled.Generic
             private int _index;
             private T _current;
 
-            internal Enumerator(TempHashSet<T> hashSet)
+            public Enumerator(in TempHashSet<T> hashSet)
             {
                 _hashSet = hashSet;
                 _version = hashSet._version;

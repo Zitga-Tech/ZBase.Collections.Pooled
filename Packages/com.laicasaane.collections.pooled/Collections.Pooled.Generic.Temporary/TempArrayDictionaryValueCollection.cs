@@ -39,7 +39,7 @@ namespace Collections.Pooled.Generic
 
             private int _index;
 
-            internal Enumerator(in TempArrayDictionary<TKey, TValue> dictionary)
+            public Enumerator(in TempArrayDictionary<TKey, TValue> dictionary)
             {
                 _dictionary = dictionary;
                 _index = -1;

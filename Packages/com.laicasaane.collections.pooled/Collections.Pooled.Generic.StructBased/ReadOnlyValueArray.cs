@@ -35,8 +35,8 @@ namespace Collections.Pooled.Generic
             => _array.CopyTo(array, index);
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Span<T>.Enumerator GetEnumerator()
-            => _array.GetEnumerator();
+        public Enumerator GetEnumerator()
+            => new Enumerator(_array);
 
         int IReadOnlyCollection<T>.Count
         {
@@ -67,7 +67,7 @@ namespace Collections.Pooled.Generic
             private int _index;
             private T _current;
 
-            internal Enumerator(in ValueArray<T> array)
+            public Enumerator(in ValueArray<T> array)
             {
                 _array = array._array;
                 _length = array._length;

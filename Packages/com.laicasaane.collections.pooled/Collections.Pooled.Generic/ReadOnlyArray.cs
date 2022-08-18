@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 
@@ -37,8 +36,8 @@ namespace Collections.Pooled.Generic
             => _array.CopyTo(array, index);
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Span<T>.Enumerator GetEnumerator()
-            => _array.AsSpan().GetEnumerator();
+        public Enumerator GetEnumerator()
+            => new Enumerator(_array);
 
         int IReadOnlyCollection<T>.Count
         {
@@ -65,7 +64,7 @@ namespace Collections.Pooled.Generic
             private int _index;
             private T _current;
 
-            internal Enumerator(T[] array)
+            public Enumerator(T[] array)
             {
                 _array = array ?? s_emptyArray;
                 _length = _array.Length;

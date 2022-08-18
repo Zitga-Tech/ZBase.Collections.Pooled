@@ -22,7 +22,7 @@ namespace Collections.Pooled.Generic
             private int _index;
             private KVPair<TKey, TValue> _current;
 
-            internal Enumerator(in TempDictionary<TKey, TValue> dictionary)
+            public Enumerator(in TempDictionary<TKey, TValue> dictionary)
             {
                 _dictionary = dictionary;
                 _version = dictionary._version;

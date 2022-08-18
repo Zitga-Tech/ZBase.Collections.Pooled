@@ -352,7 +352,7 @@ namespace Collections.Pooled.Generic
             private int _index;
             private T? _currentElement;
 
-            internal Enumerator(TempStack<T> stack)
+            public Enumerator(in TempStack<T> stack)
             {
                 _stack = stack;
                 _version = stack._version;

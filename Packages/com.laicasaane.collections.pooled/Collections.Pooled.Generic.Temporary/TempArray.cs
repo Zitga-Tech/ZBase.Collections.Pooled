@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Buffers;
+using System.Collections;
+using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 
 namespace Collections.Pooled.Generic
@@ -68,7 +70,51 @@ namespace Collections.Pooled.Generic
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Span<T>.Enumerator GetEnumerator()
-            => _array.AsSpan(0, _length).GetEnumerator();
+        public Enumerator GetEnumerator()
+            => new Enumerator(this);
+
+        public ref struct Enumerator
+        {
+            private readonly TempArray<T> _array;
+            private int _index;
+            private T _current;
+
+            public Enumerator(in TempArray<T> array)
+            {
+                _array = array;
+                _index = 0;
+                _current = default;
+            }
+
+            public bool MoveNext()
+            {
+                if (((uint)_index < (uint)_array.Length))
+                {
+                    _current = _array._array[_index];
+                    _index++;
+                    return true;
+                }
+
+                _index = _array.Length + 1;
+                _current = default;
+                return false;
+            }
+
+            public T Current
+            {
+                [MethodImpl(MethodImplOptions.AggressiveInlining)]
+                get => _current!;
+            }
+
+            public void Reset()
+            {
+                _index = 0;
+                _current = default;
+            }
+
+            public void Dispose()
+            {
+            }
+        }
     }
 }

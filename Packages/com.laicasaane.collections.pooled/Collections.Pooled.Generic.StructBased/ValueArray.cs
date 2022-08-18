@@ -95,8 +95,8 @@ namespace Collections.Pooled.Generic
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Span<T>.Enumerator GetEnumerator()
-            => _array.AsSpan(0, _length).GetEnumerator();
+        public Enumerator GetEnumerator()
+            => new Enumerator(this);
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         IEnumerator<T> IEnumerable<T>.GetEnumerator()
@@ -112,15 +112,11 @@ namespace Collections.Pooled.Generic
             private int _index;
             private T _current;
 
-            internal Enumerator(ValueArray<T> array)
+            public Enumerator(in ValueArray<T> array)
             {
                 _array = array;
                 _index = 0;
                 _current = default;
-            }
-
-            public void Dispose()
-            {
             }
 
             public bool MoveNext()
@@ -143,22 +139,27 @@ namespace Collections.Pooled.Generic
                 get => _current!;
             }
 
-            object IEnumerator.Current
-            {
-                get
-                {
-                    if (_index == 0 || _index == _array.Length + 1)
-                    {
-                        ThrowHelper.ThrowInvalidOperationException_InvalidOperation_EnumOpCantHappen();
-                    }
-                    return Current;
-                }
-            }
-
-            void IEnumerator.Reset()
+            public void Reset()
             {
                 _index = 0;
                 _current = default;
+            }
+
+            public void Dispose()
+            {
+            }
+
+            object IEnumerator.Current
+            {
+                [MethodImpl(MethodImplOptions.AggressiveInlining)]
+                get
+                {
+                    if (((uint)_index >= (uint)_array.Length))
+                    {
+                        ThrowHelper.ThrowInvalidOperationException_InvalidOperation_EnumOpCantHappen();
+                    }
+                    return _current;
+                }
             }
         }
     }

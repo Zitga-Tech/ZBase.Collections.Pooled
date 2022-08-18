@@ -1050,7 +1050,7 @@ namespace Collections.Pooled.Generic
             private readonly int _version;
             private T? _current;
 
-            internal Enumerator(ValueList<T> list)
+            public Enumerator(in ValueList<T> list)
             {
                 _list = list;
                 _index = 0;
