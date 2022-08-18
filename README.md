@@ -392,3 +392,14 @@ for (var i = 0; i < count; i++)
 ### Features
 
 - Add `ReadOnlyArray`
+
+## 2.6.4
+
+### Features
+
+- Add internal APIs for readonly arrays
+
+### Changes
+
+- Improve Enumerators
+- Make `AsReadOnlySpan` and `AsSpan` extension methods
