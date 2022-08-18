@@ -59,7 +59,7 @@ namespace Collections.Pooled.Generic.Internals.Unsafe
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Span<Entry<TKey, TValue>> AsSpan<TKey, TValue>(
-                Dictionary<TKey, TValue> source
+                this Dictionary<TKey, TValue> source
             )
             => source._entries.AsSpan(0, source._count);
 

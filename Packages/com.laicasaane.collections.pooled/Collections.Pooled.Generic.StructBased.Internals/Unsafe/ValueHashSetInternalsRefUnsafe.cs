@@ -53,7 +53,7 @@ namespace Collections.Pooled.Generic.Internals.Unsafe
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Span<Entry<T>> AsSpan<T>(
-                in ValueHashSet<T> source
+                in this ValueHashSet<T> source
             )
             => source._entries.AsSpan(0, source._count);
 

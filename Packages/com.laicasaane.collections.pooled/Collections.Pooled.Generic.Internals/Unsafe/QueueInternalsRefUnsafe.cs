@@ -39,16 +39,14 @@ namespace Collections.Pooled.Generic.Internals.Unsafe
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Span<T> AsSpan<T>(
-                Queue<T> source
-                , out int size
+                this Queue<T> source
                 , out int head
                 , out int tail
             )
         {
-            size = source._size;
             head = source._head;
             tail = source._tail;
-            return source._array.AsSpan();
+            return source._array.AsSpan(0, source._size);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]

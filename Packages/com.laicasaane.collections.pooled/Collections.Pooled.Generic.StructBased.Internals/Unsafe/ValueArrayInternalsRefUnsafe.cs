@@ -33,7 +33,7 @@ namespace Collections.Pooled.Generic.Internals.Unsafe
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Span<T> AsSpan<T>(
-                in ValueArray<T> source
+                in this ValueArray<T> source
             )
             => source._array.AsSpan(0, source._length);
 

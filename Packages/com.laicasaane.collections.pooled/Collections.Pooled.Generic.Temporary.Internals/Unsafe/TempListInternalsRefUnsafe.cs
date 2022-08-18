@@ -35,7 +35,7 @@ namespace Collections.Pooled.Generic.Internals.Unsafe
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Span<T> AsSpan<T>(
-                in TempList<T> source
+                in this TempList<T> source
             )
             => source._items.AsSpan(0, source._size);
 

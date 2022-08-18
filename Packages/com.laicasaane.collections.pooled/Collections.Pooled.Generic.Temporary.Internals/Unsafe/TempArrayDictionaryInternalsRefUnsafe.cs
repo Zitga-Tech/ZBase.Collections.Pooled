@@ -58,7 +58,7 @@ namespace Collections.Pooled.Generic.Internals.Unsafe
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void AsSpan<TKey, TValue>(
-            in TempArrayDictionary<TKey, TValue> source
+            in this TempArrayDictionary<TKey, TValue> source
             , out ReadOnlySpan<ArrayEntry<TKey>> keys
             , out ReadOnlySpan<TValue> values
         )
@@ -71,8 +71,8 @@ namespace Collections.Pooled.Generic.Internals.Unsafe
         /// Returns the internal Keys array as a <see cref="Span{T}"/>.
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Span<ArrayEntry<TKey>> AsSpanKeys<TKey, TValue>(
-                in TempArrayDictionary<TKey, TValue> source
+        public static Span<ArrayEntry<TKey>> KeysAsSpan<TKey, TValue>(
+                in this TempArrayDictionary<TKey, TValue> source
             )
             => source._entries.AsSpan(0, source.Count);
 
@@ -80,8 +80,8 @@ namespace Collections.Pooled.Generic.Internals.Unsafe
         /// Returns the internal Values array as a <see cref="Span{T}"/>.
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Span<TValue> AsSpanValues<TKey, TValue>(
-                in TempArrayDictionary<TKey, TValue> source
+        public static Span<TValue> ValuesAsSpan<TKey, TValue>(
+                in this TempArrayDictionary<TKey, TValue> source
             )
             => source._values.AsSpan(0, source.Count);
 
