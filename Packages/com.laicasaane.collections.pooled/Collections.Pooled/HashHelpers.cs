@@ -4,7 +4,6 @@
 
 
 using System;
-using System.Diagnostics;
 using System.Runtime.CompilerServices;
 
 namespace Collections.Pooled
@@ -86,7 +85,7 @@ namespace Collections.Pooled
             // Note that this check works even when _items.Length overflowed thanks to the (uint) cast
             if ((uint)newSize > MaxPrimeArrayLength && MaxPrimeArrayLength > oldSize)
             {
-                Debug.Assert(MaxPrimeArrayLength == GetPrime(MaxPrimeArrayLength), "Invalid MaxPrimeArrayLength");
+                SystemDebug.Assert(MaxPrimeArrayLength == GetPrime(MaxPrimeArrayLength), "Invalid MaxPrimeArrayLength");
                 return MaxPrimeArrayLength;
             }
 
@@ -105,13 +104,13 @@ namespace Collections.Pooled
         {
             // We use modified Daniel Lemire's fastmod algorithm (https://github.com/dotnet/runtime/pull/406),
             // which allows to avoid the long multiplication if the divisor is less than 2**31.
-            Debug.Assert(divisor <= int.MaxValue);
+            SystemDebug.Assert(divisor <= int.MaxValue);
 
             // This is equivalent of (uint)Math.BigMul(multiplier * value, divisor, out _). This version
             // is faster than BigMul currently because we only need the high bits.
             uint highbits = (uint)(((((multiplier * value) >> 32) + 1) * divisor) >> 32);
 
-            Debug.Assert(highbits == value % divisor);
+            SystemDebug.Assert(highbits == value % divisor);
             return highbits;
         }
     }

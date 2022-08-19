@@ -37,7 +37,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Runtime.Serialization;
 
@@ -430,7 +429,7 @@ namespace Collections.Pooled
         [MethodImpl(MethodImplOptions.NoInlining)]
         private static string GetArgumentName(ExceptionArgument argument)
         {
-            Debug.Assert(Enum.IsDefined(typeof(ExceptionArgument), argument),
+            SystemDebug.Assert(Enum.IsDefined(typeof(ExceptionArgument), argument),
                 "The enum value is not defined, please check the ExceptionArgument Enum.");
 
             return argument.ToString();
@@ -572,7 +571,7 @@ namespace Collections.Pooled
                 case EA.codePoint:
                     return nameof(EA.codePoint);
                 default:
-                    Debug.Fail("The enum value is not defined, please check the ExceptionArgument Enum.");
+                    SystemDebug.Fail("The enum value is not defined, please check the ExceptionArgument Enum.");
                     return argument.ToString();
             }
         }
@@ -582,7 +581,7 @@ namespace Collections.Pooled
         [MethodImpl(MethodImplOptions.NoInlining)]
         private static string GetResourceString(ExceptionResource resource)
         {
-            Debug.Assert(Enum.IsDefined(typeof(ExceptionResource), resource),
+            SystemDebug.Assert(Enum.IsDefined(typeof(ExceptionResource), resource),
                 "The enum value is not defined, please check the ExceptionResource Enum.");
 
             return SR.GetResourceString(resource.ToString());
@@ -676,7 +675,7 @@ namespace Collections.Pooled
                 case ER.Enumeration_Ended:
                     return "Enumeration has ended.";
                 default:
-                    Debug.Assert(false,
+                    SystemDebug.Assert(false,
                         "The enum value is not defined, please check the ExceptionResource Enum.");
                     return resource.ToString();
             }

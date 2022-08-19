@@ -328,7 +328,7 @@ namespace Collections.Pooled.Generic
 
         private void ThrowForEmptyQueue()
         {
-            Debug.Assert(_size == 0);
+            SystemDebug.Assert(_size == 0);
             ThrowHelper.ThrowInvalidOperationException_InvalidOperation_EmptyQueue();
         }
 
@@ -363,7 +363,7 @@ namespace Collections.Pooled.Generic
 
         private void Grow(int capacity)
         {
-            Debug.Assert(_array.Length < capacity);
+            SystemDebug.Assert(_array.Length < capacity);
 
             const int GrowFactor = 2;
             const int MinimumGrow = 4;
@@ -484,7 +484,7 @@ namespace Collections.Pooled.Generic
 
             private void ThrowEnumerationNotStartedOrEnded()
             {
-                Debug.Assert(_index == -1 || _index == -2);
+                SystemDebug.Assert(_index == -1 || _index == -2);
 
                 if (_index == -1)
                     ThrowHelper.ThrowInvalidOperationException_InvalidOperation_EnumNotStarted();

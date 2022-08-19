@@ -3,7 +3,6 @@
 // See the LICENSE file in the project root for more information.
 
 using System;
-using System.Diagnostics;
 
 namespace Collections.Pooled
 {
@@ -16,8 +15,8 @@ namespace Collections.Pooled
 
             fixed (char* src = chars)
             {
-                Debug.Assert(src[chars.Length] == '\0', "src[this.Length] == '\\0'");
-                Debug.Assert(((int)src) % 4 == 0, "Managed string should start at 4 bytes boundary");
+                SystemDebug.Assert(src[chars.Length] == '\0', "src[this.Length] == '\\0'");
+                SystemDebug.Assert(((int)src) % 4 == 0, "Managed string should start at 4 bytes boundary");
 
                 uint hash1 = (5381 << 16) + 5381;
                 uint hash2 = hash1;

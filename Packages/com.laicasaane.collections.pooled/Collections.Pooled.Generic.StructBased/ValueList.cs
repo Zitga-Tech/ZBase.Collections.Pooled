@@ -198,7 +198,7 @@ namespace Collections.Pooled.Generic
         [MethodImpl(MethodImplOptions.NoInlining)]
         private void AddWithResize(T item)
         {
-            Debug.Assert(_size == _items.Length);
+            SystemDebug.Assert(_size == _items.Length);
             int size = _size;
             Grow(size + 1);
             _size = size + 1;
@@ -360,7 +360,7 @@ namespace Collections.Pooled.Generic
         /// <param name="capacity">The minimum capacity to ensure.</param>
         private void Grow(int capacity)
         {
-            Debug.Assert(_items.Length < capacity);
+            SystemDebug.Assert(_items.Length < capacity);
 
             int newcapacity = _items.Length == 0 ? DefaultCapacity : 2 * _items.Length;
 

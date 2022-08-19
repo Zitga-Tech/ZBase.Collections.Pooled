@@ -146,10 +146,10 @@ namespace Collections.Pooled.Generic
 
                 // This is not currently a true .AddRange as it needs to be an initialized dictionary
                 // of the correct size, and also an empty dictionary with no current entities (and no argument checks).
-                Debug.Assert(source._entries is not null);
-                Debug.Assert(_entries is not null);
-                Debug.Assert(_entries.Length >= source.Count);
-                Debug.Assert(_count == 0);
+                SystemDebug.Assert(source._entries is not null);
+                SystemDebug.Assert(_entries is not null);
+                SystemDebug.Assert(_entries.Length >= source.Count);
+                SystemDebug.Assert(_count == 0);
 
                 Entry<TKey, TValue>[] oldEntries = source._entries;
                 if (source._comparer == _comparer)
@@ -245,14 +245,14 @@ namespace Collections.Pooled.Generic
             set
             {
                 bool modified = TryInsert(key, value, InsertionBehavior.OverwriteExisting);
-                Debug.Assert(modified);
+                SystemDebug.Assert(modified);
             }
         }
 
         public void Add(TKey key, TValue value)
         {
             bool modified = TryInsert(key, value, InsertionBehavior.ThrowOnExisting);
-            Debug.Assert(modified); // If there was an existing key and the Add failed, an exception will already have been thrown.
+            SystemDebug.Assert(modified); // If there was an existing key and the Add failed, an exception will already have been thrown.
         }
 
         void ICollection<KeyValuePair<TKey, TValue>>.Add(KeyValuePair<TKey, TValue> keyValuePair) =>
@@ -286,8 +286,8 @@ namespace Collections.Pooled.Generic
             int count = _count;
             if (count > 0)
             {
-                Debug.Assert(_buckets != null, "_buckets should be non-null");
-                Debug.Assert(_entries != null, "_entries should be non-null");
+                SystemDebug.Assert(_buckets != null, "_buckets should be non-null");
+                SystemDebug.Assert(_entries != null, "_entries should be non-null");
 
                 Array.Clear(_buckets, 0, _buckets.Length);
 
@@ -397,7 +397,7 @@ namespace Collections.Pooled.Generic
             ref Entry<TKey, TValue> entry = ref Unsafe.NullRef<Entry<TKey, TValue>>();
             if (_buckets.IsNullOrEmpty() == false)
             {
-                Debug.Assert(_entries != null, "expected entries to be != null");
+                SystemDebug.Assert(_entries != null, "expected entries to be != null");
                 IEqualityComparer<TKey>? comparer = _comparer;
                 if (comparer == null)
                 {
@@ -548,10 +548,10 @@ namespace Collections.Pooled.Generic
             {
                 Initialize(0);
             }
-            Debug.Assert(_buckets != null);
+            SystemDebug.Assert(_buckets != null);
 
             Entry<TKey, TValue>[]? entries = _entries;
-            Debug.Assert(entries != null, "expected entries to be non-null");
+            SystemDebug.Assert(entries != null, "expected entries to be non-null");
 
             IEqualityComparer<TKey>? comparer = _comparer;
             uint hashCode = (uint)((comparer == null) ? key.GetHashCode() : comparer.GetHashCode(key));
@@ -687,7 +687,7 @@ namespace Collections.Pooled.Generic
             if (_freeCount > 0)
             {
                 index = _freeList;
-                Debug.Assert((StartOfFreeList - entries[_freeList].Next) >= -1, "shouldn't overflow because `next` cannot underflow");
+                SystemDebug.Assert((StartOfFreeList - entries[_freeList].Next) >= -1, "shouldn't overflow because `next` cannot underflow");
                 _freeList = StartOfFreeList - entries[_freeList].Next;
                 _freeCount--;
             }
@@ -751,10 +751,10 @@ namespace Collections.Pooled.Generic
                 {
                     dictionary.Initialize(0);
                 }
-                Debug.Assert(dictionary._buckets != null);
+                SystemDebug.Assert(dictionary._buckets != null);
 
                 Entry<TKey, TValue>[]? entries = dictionary._entries;
-                Debug.Assert(entries != null, "expected entries to be non-null");
+                SystemDebug.Assert(entries != null, "expected entries to be non-null");
 
                 IEqualityComparer<TKey>? comparer = dictionary._comparer;
                 uint hashCode = (uint)((comparer == null) ? key.GetHashCode() : comparer.GetHashCode(key));
@@ -863,7 +863,7 @@ namespace Collections.Pooled.Generic
                 if (dictionary._freeCount > 0)
                 {
                     index = dictionary._freeList;
-                    Debug.Assert((StartOfFreeList - entries[dictionary._freeList].Next) >= -1, "shouldn't overflow because `next` cannot underflow");
+                    SystemDebug.Assert((StartOfFreeList - entries[dictionary._freeList].Next) >= -1, "shouldn't overflow because `next` cannot underflow");
                     dictionary._freeList = StartOfFreeList - entries[dictionary._freeList].Next;
                     dictionary._freeCount--;
                 }
@@ -902,7 +902,7 @@ namespace Collections.Pooled.Generic
                     // lookup is guaranteed to always find a value though and it will never return a null reference here.
                     ref TValue? value = ref dictionary.FindValue(key)!;
 
-                    Debug.Assert(!Unsafe.IsNullRef(ref value), "the lookup result cannot be a null ref here");
+                    SystemDebug.Assert(!Unsafe.IsNullRef(ref value), "the lookup result cannot be a null ref here");
 
                     return ref value;
                 }
@@ -964,9 +964,9 @@ namespace Collections.Pooled.Generic
         private void Resize(int newSize, bool forceNewHashCodes)
         {
             // Value types never rehash
-            Debug.Assert(!forceNewHashCodes || !typeof(TKey).IsValueType);
-            Debug.Assert(_entries != null, "_entries should be non-null");
-            Debug.Assert(newSize >= _entries.Length);
+            SystemDebug.Assert(!forceNewHashCodes || !typeof(TKey).IsValueType);
+            SystemDebug.Assert(_entries != null, "_entries should be non-null");
+            SystemDebug.Assert(newSize >= _entries.Length);
 
             int count = _count;
             Entry<TKey, TValue>[] entries = _entryPool.Rent(newSize);
@@ -974,7 +974,7 @@ namespace Collections.Pooled.Generic
 
             if (!typeof(TKey).IsValueType && forceNewHashCodes)
             {
-                Debug.Assert(_comparer is NonRandomizedStringEqualityComparer);
+                SystemDebug.Assert(_comparer is NonRandomizedStringEqualityComparer);
                 _comparer = EqualityComparer<TKey>.Default;
 
                 for (int i = 0; i < count; i++)
@@ -1025,7 +1025,7 @@ namespace Collections.Pooled.Generic
 
             if (_buckets.IsNullOrEmpty() == false)
             {
-                Debug.Assert(_entries != null, "entries should be non-null");
+                SystemDebug.Assert(_entries != null, "entries should be non-null");
                 uint collisionCount = 0;
                 uint hashCode = (uint)(_comparer?.GetHashCode(key) ?? key.GetHashCode());
                 ref int bucket = ref GetBucket(hashCode);
@@ -1047,7 +1047,7 @@ namespace Collections.Pooled.Generic
                             entries[last].Next = entry.Next;
                         }
 
-                        Debug.Assert((StartOfFreeList - _freeList) < 0, "shouldn't underflow because max hashtable length is MaxPrimeArrayLength = 0x7FEFFFFD(2146435069) _freelist underflow threshold 2147483646");
+                        SystemDebug.Assert((StartOfFreeList - _freeList) < 0, "shouldn't underflow because max hashtable length is MaxPrimeArrayLength = 0x7FEFFFFD(2146435069) _freelist underflow threshold 2147483646");
                         entry.Next = StartOfFreeList - _freeList;
 
                         if (s_isReferenceKey)
@@ -1093,7 +1093,7 @@ namespace Collections.Pooled.Generic
 
             if (_buckets.IsNullOrEmpty() == false)
             {
-                Debug.Assert(_entries != null, "entries should be non-null");
+                SystemDebug.Assert(_entries != null, "entries should be non-null");
                 uint collisionCount = 0;
                 uint hashCode = (uint)(_comparer?.GetHashCode(key) ?? key.GetHashCode());
                 ref int bucket = ref GetBucket(hashCode);
@@ -1117,7 +1117,7 @@ namespace Collections.Pooled.Generic
 
                         value = entry.Value;
 
-                        Debug.Assert((StartOfFreeList - _freeList) < 0, "shouldn't underflow because max hashtable length is MaxPrimeArrayLength = 0x7FEFFFFD(2146435069) _freelist underflow threshold 2147483646");
+                        SystemDebug.Assert((StartOfFreeList - _freeList) < 0, "shouldn't underflow because max hashtable length is MaxPrimeArrayLength = 0x7FEFFFFD(2146435069) _freelist underflow threshold 2147483646");
                         entry.Next = StartOfFreeList - _freeList;
 
                         if (s_isReferenceKey)
@@ -1246,7 +1246,7 @@ namespace Collections.Pooled.Generic
             _version++;
             Initialize(newSize);
 
-            Debug.Assert(oldEntries is not null);
+            SystemDebug.Assert(oldEntries is not null);
 
             CopyEntries(oldEntries, oldCount);
 
@@ -1256,7 +1256,7 @@ namespace Collections.Pooled.Generic
 
         private void CopyEntries(Entry<TKey, TValue>[] entries, int count)
         {
-            Debug.Assert(_entries is not null);
+            SystemDebug.Assert(_entries is not null);
 
             Entry<TKey, TValue>[] newEntries = _entries;
             int newCount = 0;

@@ -16,7 +16,6 @@
 using System;
 using System.Buffers;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Diagnostics.CodeAnalysis;
 
@@ -259,7 +258,7 @@ namespace Collections.Pooled.Generic
         [MethodImpl(MethodImplOptions.NoInlining)]
         private void PushWithResize(T item)
         {
-            Debug.Assert(_size == _array.Length);
+            SystemDebug.Assert(_size == _array.Length);
             Grow(_size + 1);
             _array[_size] = item;
             _version++;
@@ -291,7 +290,7 @@ namespace Collections.Pooled.Generic
 
         private void Grow(int capacity)
         {
-            Debug.Assert(_array.Length < capacity);
+            SystemDebug.Assert(_array.Length < capacity);
 
             int newCapacity = _array.Length == 0 ? DefaultCapacity : 2 * _array.Length;
 
@@ -341,7 +340,7 @@ namespace Collections.Pooled.Generic
 
         private void ThrowForEmptyStack()
         {
-            Debug.Assert(_size == 0);
+            SystemDebug.Assert(_size == 0);
             ThrowHelper.ThrowInvalidOperationException_InvalidOperation_EmptyStack();
         }
 
@@ -403,7 +402,7 @@ namespace Collections.Pooled.Generic
 
             private void ThrowEnumerationNotStartedOrEnded()
             {
-                Debug.Assert(_index == -1 || _index == -2);
+                SystemDebug.Assert(_index == -1 || _index == -2);
 
                 if (_index == -2)
                     ThrowHelper.ThrowInvalidOperationException_InvalidOperation_EnumNotStarted();

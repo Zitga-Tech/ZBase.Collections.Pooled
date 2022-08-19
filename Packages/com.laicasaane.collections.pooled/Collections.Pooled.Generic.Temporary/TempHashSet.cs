@@ -9,7 +9,6 @@ using System;
 using System.Buffers;
 using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Diagnostics.CodeAnalysis;
 
@@ -182,7 +181,7 @@ namespace Collections.Pooled.Generic
                 }
             }
 
-            Debug.Assert(Count == source.Count);
+            SystemDebug.Assert(Count == source.Count);
         }
 
         #endregion
@@ -195,8 +194,8 @@ namespace Collections.Pooled.Generic
             int count = _count;
             if (count > 0)
             {
-                Debug.Assert(_buckets != null, "_buckets should be non-null");
-                Debug.Assert(_entries != null, "_entries should be non-null");
+                SystemDebug.Assert(_buckets != null, "_buckets should be non-null");
+                SystemDebug.Assert(_entries != null, "_entries should be non-null");
 
                 Array.Clear(_buckets, 0, _buckets.Length);
                 _count = 0;
@@ -218,7 +217,7 @@ namespace Collections.Pooled.Generic
             if (buckets != null)
             {
                 Entry<T>[]? entries = _entries;
-                Debug.Assert(entries != null, "Expected _entries to be initialized");
+                SystemDebug.Assert(entries != null, "Expected _entries to be initialized");
 
                 uint collisionCount = 0;
                 IEqualityComparer<T>? comparer = _comparer;
@@ -316,7 +315,7 @@ namespace Collections.Pooled.Generic
             if (_buckets.IsNullOrEmpty() == false)
             {
                 Entry<T>[]? entries = _entries;
-                Debug.Assert(entries != null, "entries should be non-null");
+                SystemDebug.Assert(entries != null, "entries should be non-null");
 
                 uint collisionCount = 0;
                 int last = -1;
@@ -340,7 +339,7 @@ namespace Collections.Pooled.Generic
                             entries[last].Next = entry.Next;
                         }
 
-                        Debug.Assert((StartOfFreeList - _freeList) < 0, "shouldn't underflow because max hashtable length is MaxPrimeArrayLength = 0x7FEFFFFD(2146435069) _freelist underflow threshold 2147483646");
+                        SystemDebug.Assert((StartOfFreeList - _freeList) < 0, "shouldn't underflow because max hashtable length is MaxPrimeArrayLength = 0x7FEFFFFD(2146435069) _freelist underflow threshold 2147483646");
                         entry.Next = StartOfFreeList - _freeList;
 
                         if (s_clearEntries)
@@ -822,9 +821,9 @@ namespace Collections.Pooled.Generic
         private void Resize(int newSize, bool forceNewHashCodes)
         {
             // Value types never rehash
-            Debug.Assert(!forceNewHashCodes || !typeof(T).IsValueType);
-            Debug.Assert(_entries != null, "_entries should be non-null");
-            Debug.Assert(newSize >= _entries.Length);
+            SystemDebug.Assert(!forceNewHashCodes || !typeof(T).IsValueType);
+            SystemDebug.Assert(_entries != null, "_entries should be non-null");
+            SystemDebug.Assert(newSize >= _entries.Length);
 
             int count = _count;
             Entry<T>[] entries = _entryPool.Rent(newSize);
@@ -832,7 +831,7 @@ namespace Collections.Pooled.Generic
 
             if (!typeof(T).IsValueType && forceNewHashCodes)
             {
-                Debug.Assert(_comparer is NonRandomizedStringEqualityComparer);
+                SystemDebug.Assert(_comparer is NonRandomizedStringEqualityComparer);
                 _comparer = EqualityComparer<T>.Default;
 
                 for (int i = 0; i < count; i++)
@@ -957,10 +956,10 @@ namespace Collections.Pooled.Generic
             {
                 Initialize(0);
             }
-            Debug.Assert(_buckets != null);
+            SystemDebug.Assert(_buckets != null);
 
             Entry<T>[]? entries = _entries;
-            Debug.Assert(entries != null, "expected entries to be non-null");
+            SystemDebug.Assert(entries != null, "expected entries to be non-null");
 
             IEqualityComparer<T>? comparer = _comparer;
             int hashCode;
@@ -1047,7 +1046,7 @@ namespace Collections.Pooled.Generic
             {
                 index = _freeList;
                 _freeCount--;
-                Debug.Assert((StartOfFreeList - entries![_freeList].Next) >= -1, "shouldn't overflow because `next` cannot underflow");
+                SystemDebug.Assert((StartOfFreeList - entries![_freeList].Next) >= -1, "shouldn't overflow because `next` cannot underflow");
                 _freeList = StartOfFreeList - entries[_freeList].Next;
             }
             else
@@ -1080,7 +1079,7 @@ namespace Collections.Pooled.Generic
                 // i.e. EqualityComparer<string>.Default.
                 Resize(entries.Length, forceNewHashCodes: true);
                 location = FindItemIndex(value);
-                Debug.Assert(location >= 0);
+                SystemDebug.Assert(location >= 0);
             }
 
             return true;
@@ -1212,7 +1211,7 @@ namespace Collections.Pooled.Generic
         /// </summary>
         private unsafe void IntersectWithEnumerable(IEnumerable<T> other)
         {
-            Debug.Assert(_buckets != null, "_buckets shouldn't be null; callers should check first");
+            SystemDebug.Assert(_buckets != null, "_buckets shouldn't be null; callers should check first");
 
             // Keep track of current last index; don't want to move past the end of our bit array
             // (could happen if another thread is modifying the collection).
@@ -1396,7 +1395,7 @@ namespace Collections.Pooled.Generic
                 return (UniqueCount: 0, UnfoundCount: numElementsInOther);
             }
 
-            Debug.Assert((_buckets != null) && (_count > 0), "_buckets was null but count greater than 0");
+            SystemDebug.Assert((_buckets != null) && (_count > 0), "_buckets was null but count greater than 0");
 
             int originalCount = _count;
             int intArrayLength = BitHelper.ToIntArrayLength(originalCount);
