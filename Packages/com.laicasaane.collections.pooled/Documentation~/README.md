@@ -409,3 +409,13 @@ for (var i = 0; i < count; i++)
 ### Features
 
 - Add APIs to create `ValueArray` and `TempArray` in unsafe context
+
+## 2.6.6
+
+### Features
+
+- Add `SystemDebug`
+
+### Changes
+
+- Replace `System.Debug` with `SystemDebug` to allow disabling `Debug.Assert`
