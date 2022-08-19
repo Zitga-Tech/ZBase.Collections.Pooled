@@ -418,4 +418,4 @@ for (var i = 0; i < count; i++)
 
 ### Changes
 
-- Replace `System.Debug` with `SystemDebug` to allow disabling `Debug.Assert`
+- Replace `System.Diagnostics.Debug` with `SystemDebug` to allow disabling `Debug.Assert`
