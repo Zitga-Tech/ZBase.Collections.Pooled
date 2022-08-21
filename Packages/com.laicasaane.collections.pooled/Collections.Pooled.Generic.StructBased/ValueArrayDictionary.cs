@@ -841,11 +841,11 @@ namespace Collections.Pooled.Generic
         {
             TValue[] values = _values;
 
-            if (newCapacity < values.Length)
+            if (newCapacity > values.Length)
             {
                 var newValues = _valuePool.Rent(newCapacity);
 
-                if (newValues.Length < values.Length)
+                if (newValues.Length > values.Length)
                 {
                     if (count > 0)
                         Array.Copy(values, newValues, count);
@@ -863,11 +863,11 @@ namespace Collections.Pooled.Generic
 
             ArrayEntry<TKey>[] entries = _entries;
 
-            if (newCapacity < entries.Length)
+            if (newCapacity > entries.Length)
             {
                 var newEntries = _entryPool.Rent(newCapacity);
 
-                if (newEntries.Length < entries.Length)
+                if (newEntries.Length > entries.Length)
                 {
                     if (count > 0)
                         Array.Copy(entries, newEntries, count);
