@@ -419,3 +419,10 @@ for (var i = 0; i < count; i++)
 ### Changes
 
 - Replace `System.Diagnostics.Debug` with `SystemDebug` to allow disabling `Debug.Assert`
+
+## 2.6.7
+
+### Fixes
+
+- `ArrayDictionary.Resize` should work if `newCapacity` is greater than the current capacity
+- `ArrayDictionary.Resize` should return the newly rented arrays if its length is smaller than the current capacity
