@@ -426,3 +426,9 @@ for (var i = 0; i < count; i++)
 
 - `ArrayDictionary.Resize` should work if `newCapacity` is greater than the current capacity
 - `ArrayDictionary.Resize` should return the newly rented arrays if its length is smaller than the current capacity
+
+## 2.6.9
+
+### Fixes
+
+- Buckets array should be cleared after renting
