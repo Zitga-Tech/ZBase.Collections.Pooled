@@ -131,7 +131,7 @@ namespace Collections.Pooled.Generic
         /// <param name="other"></param>
         private void IntersectWithSpan(in ReadOnlySpan<T> other)
         {
-            SystemDebug.Assert(_buckets != null, "_buckets shouldn't be null; callers should check first");
+            SystemDebug.Assert(_buckets.IsNullOrEmpty() == false, "_buckets shouldn't be null; callers should check first");
 
             // keep track of current last index; don't want to move past the end of our bit array
             // (could happen if another thread is modifying the collection)
@@ -395,7 +395,7 @@ namespace Collections.Pooled.Generic
                 return (UniqueCount: 0, UnfoundCount: numElementsInOther);
             }
 
-            SystemDebug.Assert((_buckets != null) && (_count > 0), "_buckets was null but count greater than 0");
+            SystemDebug.Assert((_buckets.IsNullOrEmpty() == false) && (_count > 0), "_buckets was null but count greater than 0");
 
             int originalCount = _count;
             int intArrayLength = BitHelper.ToIntArrayLength(originalCount);

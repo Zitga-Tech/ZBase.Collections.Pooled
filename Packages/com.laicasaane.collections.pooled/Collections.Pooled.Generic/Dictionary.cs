@@ -314,7 +314,7 @@ namespace Collections.Pooled.Generic
             int count = _count;
             if (count > 0)
             {
-                SystemDebug.Assert(_buckets != null, "_buckets should be non-null");
+                SystemDebug.Assert(_buckets.IsNullOrEmpty() == false, "_buckets should be non-null");
                 SystemDebug.Assert(_entries != null, "_entries should be non-null");
 
                 Array.Clear(_buckets, 0, _buckets.Length);
@@ -576,7 +576,7 @@ namespace Collections.Pooled.Generic
             {
                 Initialize(0);
             }
-            SystemDebug.Assert(_buckets != null);
+            SystemDebug.Assert(_buckets.IsNullOrEmpty() == false);
 
             Entry<TKey, TValue>[]? entries = _entries;
             SystemDebug.Assert(entries != null, "expected entries to be non-null");
@@ -779,7 +779,7 @@ namespace Collections.Pooled.Generic
                 {
                     dictionary.Initialize(0);
                 }
-                SystemDebug.Assert(dictionary._buckets != null);
+                SystemDebug.Assert(dictionary._buckets.IsNullOrEmpty() == false);
 
                 Entry<TKey, TValue>[]? entries = dictionary._entries;
                 SystemDebug.Assert(entries != null, "expected entries to be non-null");

@@ -194,7 +194,7 @@ namespace Collections.Pooled.Generic
             int count = _count;
             if (count > 0)
             {
-                SystemDebug.Assert(_buckets != null, "_buckets should be non-null");
+                SystemDebug.Assert(_buckets.IsNullOrEmpty() == false, "_buckets should be non-null");
                 SystemDebug.Assert(_entries != null, "_entries should be non-null");
 
                 Array.Clear(_buckets, 0, _buckets.Length);
@@ -214,7 +214,7 @@ namespace Collections.Pooled.Generic
         private int FindItemIndex(T item)
         {
             int[]? buckets = _buckets;
-            if (buckets != null)
+            if (buckets.IsNullOrEmpty() == false)
             {
                 Entry<T>[]? entries = _entries;
                 SystemDebug.Assert(entries != null, "Expected _entries to be initialized");
@@ -956,7 +956,7 @@ namespace Collections.Pooled.Generic
             {
                 Initialize(0);
             }
-            SystemDebug.Assert(_buckets != null);
+            SystemDebug.Assert(_buckets.IsNullOrEmpty() == false);
 
             Entry<T>[]? entries = _entries;
             SystemDebug.Assert(entries != null, "expected entries to be non-null");
@@ -1211,7 +1211,7 @@ namespace Collections.Pooled.Generic
         /// </summary>
         private unsafe void IntersectWithEnumerable(IEnumerable<T> other)
         {
-            SystemDebug.Assert(_buckets != null, "_buckets shouldn't be null; callers should check first");
+            SystemDebug.Assert(_buckets.IsNullOrEmpty() == false, "_buckets shouldn't be null; callers should check first");
 
             // Keep track of current last index; don't want to move past the end of our bit array
             // (could happen if another thread is modifying the collection).
@@ -1395,7 +1395,7 @@ namespace Collections.Pooled.Generic
                 return (UniqueCount: 0, UnfoundCount: numElementsInOther);
             }
 
-            SystemDebug.Assert((_buckets != null) && (_count > 0), "_buckets was null but count greater than 0");
+            SystemDebug.Assert((_buckets.IsNullOrEmpty() == false) && (_count > 0), "_buckets was null but count greater than 0");
 
             int originalCount = _count;
             int intArrayLength = BitHelper.ToIntArrayLength(originalCount);
