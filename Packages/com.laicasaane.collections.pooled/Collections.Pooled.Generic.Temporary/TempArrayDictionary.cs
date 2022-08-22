@@ -19,10 +19,6 @@ namespace Collections.Pooled.Generic
     public ref partial struct TempArrayDictionary<TKey, TValue>
         where TKey : notnull
     {
-        // constants for serialization
-        private const string CountName = "Count"; // Do not rename (binary serialization). Must save buckets.Length
-        private const string KeyValuePairsName = "KeyValuePairs"; // Do not rename (binary serialization)
-
         internal ArrayEntry<TKey>[] _entries;
         internal TValue[] _values;
         internal int[] _buckets;
@@ -93,9 +89,12 @@ namespace Collections.Pooled.Generic
         {
             capacity = HashHelpers.GetPrime(capacity);
 
+            var buckets = _bucketPool.Rent(capacity);
+            Array.Clear(buckets, 0, buckets.Length);
+
+            _buckets = buckets;
             _entries = _entryPool.Rent(capacity);
             _values = _valuePool.Rent(capacity);
-            _buckets = _bucketPool.Rent(capacity);
         }
 
         public TValue this[TKey key]

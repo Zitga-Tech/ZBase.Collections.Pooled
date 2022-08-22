@@ -90,9 +90,12 @@ namespace Collections.Pooled.Generic
         {
             capacity = HashHelpers.GetPrime(capacity);
 
+            var buckets = _bucketPool.Rent(capacity);
+            Array.Clear(buckets, 0, buckets.Length);
+
+            _buckets = buckets;
             _entries = _entryPool.Rent(capacity);
             _values = _valuePool.Rent(capacity);
-            _buckets = _bucketPool.Rent(capacity);
         }
 
         public virtual void GetObjectData(SerializationInfo info, StreamingContext context)
