@@ -39,6 +39,34 @@ namespace Collections.Pooled.Generic.Internals.Unsafe
             => source._array.AsSpan(0, source._length);
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Span<T> AsSpan<T>(
+                  in this ValueArray<T> source
+                , int start
+            )
+            => source._array.AsSpan(start);
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Span<T> AsSpan<T>(
+                  in this ValueArray<T> source
+                , int start, int length
+            )
+            => source._array.AsSpan(start, length);
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Span<T> AsSpan<T>(
+                  in this ValueArray<T> source
+                , Index startIndex
+            )
+            => source._array.AsSpan(startIndex);
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Span<T> AsSpan<T>(
+                  in this ValueArray<T> source
+                , Range range
+            )
+            => source._array.AsSpan(range);
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void GetUnsafe<T>(
                 in this ValueArray<T> source
                 , out T[] array
