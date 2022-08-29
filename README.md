@@ -432,3 +432,9 @@ for (var i = 0; i < count; i++)
 ### Fixes
 
 - Buckets array should be cleared after renting
+
+## 2.6.10
+
+### Features
+
+- Add more APIs: `CopyTo`, `AsSpan`, and `AsReadOnlySpan`
