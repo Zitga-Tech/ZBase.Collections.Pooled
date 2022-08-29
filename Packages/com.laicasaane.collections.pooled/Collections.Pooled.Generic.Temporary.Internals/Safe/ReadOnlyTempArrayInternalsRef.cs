@@ -13,5 +13,33 @@ namespace Collections.Pooled.Generic.Internals
                 in this ReadOnlyTempArray<T> source
             )
             => source._array.AsReadOnlySpan();
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static ReadOnlySpan<T> AsReadOnlySpan<T>(
+                  in this ReadOnlyTempArray<T> source
+                , int start
+            )
+            => source._array.AsReadOnlySpan(start);
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static ReadOnlySpan<T> AsReadOnlySpan<T>(
+                  in this ReadOnlyTempArray<T> source
+                , int start, int length
+            )
+            => source._array.AsReadOnlySpan(start, length);
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static ReadOnlySpan<T> AsReadOnlySpan<T>(
+                  in this ReadOnlyTempArray<T> source
+                , Index startIndex
+            )
+            => source._array.AsReadOnlySpan(startIndex);
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static ReadOnlySpan<T> AsReadOnlySpan<T>(
+                  in this ReadOnlyTempArray<T> source
+                , Range range
+            )
+            => source._array.AsReadOnlySpan(range);
     }
 }
