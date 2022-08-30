@@ -38,6 +38,7 @@ from the `Add package from git URL` option.
 - `Stack<T>`
 - `HashSet<T>`
 - `Dictionary<TKey, TValue>`
+- `ArrayHashSet<T>`
 - `ArrayDictionary<TKey, TValue>`
 
 Their functionality is the same as provided by the standard collections in `System.Collections.Generic` namespace.
@@ -54,6 +55,7 @@ Designed as quick drop-in replacements for their standard counterparts.
 - `ValueStack<T>`
 - `ValueHashSet<T>`
 - `ValueDictionary<TKey, TValue>`
+- `ValueArrayHashSet<T>`
 - `ValueArrayDictionary<TKey, TValue>`
 
 Functionally the same as their class-based counterparts.
@@ -70,6 +72,7 @@ Designed as `struct`s to reduce GC allocation of the collection itself.
 - `TempStack<T>`
 - `TempHashSet<T>`
 - `TempDictionary<TKey, TValue>`
+- `TempArrayHashSet<T>`
 - `TempArrayDictionary<TKey, TValue>`
 
 Functionally the same as their struct-based counterparts.
