@@ -16,6 +16,8 @@ namespace Collections.Pooled
 
         void EnsureCapacity(int capacity);
 
+        void IncreaseCapacityBy(int capacity);
+
         bool Remove(in TKey key);
 
         bool Remove(in TKey key, out int index, out TValue value);
