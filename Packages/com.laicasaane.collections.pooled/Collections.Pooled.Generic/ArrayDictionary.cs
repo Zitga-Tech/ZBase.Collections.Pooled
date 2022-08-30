@@ -1256,42 +1256,6 @@ namespace Collections.Pooled.Generic
             }
         }
 
-        public void Intersect<UValue>(ArrayDictionary<TKey, UValue> other)
-        {
-            var keys = _entries;
-
-            for (int i = Count - 1; i >= 0; i--)
-            {
-                var key = keys[i].Key;
-                if (other.ContainsKey(key) == false)
-                {
-                    this.Remove(key);
-                }
-            }
-        }
-
-        public void Exclude<UValue>(ArrayDictionary<TKey, UValue> otherDicKeys)
-        {
-            var keys = _entries;
-
-            for (int i = Count - 1; i >= 0; i--)
-            {
-                var key = keys[i].Key;
-                if (otherDicKeys.ContainsKey(key) == true)
-                {
-                    this.Remove(key);
-                }
-            }
-        }
-
-        public void Union(ArrayDictionary<TKey, TValue> other)
-        {
-            foreach (var kv in other)
-            {
-                this[kv.Key] = kv.Value;
-            }
-        }
-
         public void Dispose()
         {
             ReturnBuckets(s_emptyBuckets);
