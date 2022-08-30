@@ -438,3 +438,13 @@ for (var i = 0; i < count; i++)
 ### Features
 
 - Add more APIs: `CopyTo`, `AsSpan`, and `AsReadOnlySpan`
+
+## 2.7.0
+
+### Features
+
+- Add `*ArrayHashSet` and related APIs
+
+### Changes
+
+- Remove `Intersect`, `Exclude`, `Union` APIs from `ArrayDictionary`
