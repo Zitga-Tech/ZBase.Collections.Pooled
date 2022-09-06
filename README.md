@@ -451,3 +451,14 @@ for (var i = 0; i < count; i++)
 ### Changes
 
 - Remove `Intersect`, `Exclude`, `Union` APIs from `ArrayDictionary`
+
+## 2.7.1
+
+### Features
+
+- Add APIs to return `System.Memory<T>`
+
+### Fixes
+
+- Correct `CopyTo` methods for `ValueArray` and `TempArray`
+- Some unsafe methods return incorrect type (`ReadOnlySpan` instead of `Span`)
