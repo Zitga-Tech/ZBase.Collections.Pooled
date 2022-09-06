@@ -38,5 +38,14 @@ namespace Collections.Pooled.Generic.Internals
                 this List<T> source
             )
             => source._items.AsSpan(0, source._size);
+
+        /// <summary>
+        /// Returns the internal array as a <see cref="ReadOnlyMemory{T}"/>.
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static ReadOnlyMemory<T> AsReadOnlyMemory<T>(
+                this List<T> source
+            )
+            => source._items.AsMemory(0, source._size);
     }
 }

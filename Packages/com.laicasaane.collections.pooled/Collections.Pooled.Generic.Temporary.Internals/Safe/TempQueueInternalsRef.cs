@@ -48,5 +48,20 @@ namespace Collections.Pooled.Generic.Internals
             tail = source._tail;
             return source._array.AsSpan(0, source._size);
         }
+
+        /// <summary>
+        /// Returns the internal array as a <see cref="ReadOnlyMemory{T}"/>.
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static ReadOnlyMemory<T> AsReadOnlyMemory<T>(
+            in this TempQueue<T> source
+            , out int head
+            , out int tail
+        )
+        {
+            head = source._head;
+            tail = source._tail;
+            return source._array.AsMemory(0, source._size);
+        }
     }
 }

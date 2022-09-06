@@ -60,5 +60,14 @@ namespace Collections.Pooled.Generic.Internals
                 this Dictionary<TKey, TValue> source
             )
             => source._entries.AsSpan(0, source._count);
+
+        /// <summary>
+        /// Returns the internal <see cref="Entry{TKey, TValue}"/> array as a <see cref="ReadOnlyMemory{T}"/>.
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static ReadOnlyMemory<Entry<TKey, TValue>> AsReadOnlyMemory<TKey, TValue>(
+                this Dictionary<TKey, TValue> source
+            )
+            => source._entries.AsMemory(0, source._count);
     }
 }

@@ -63,6 +63,15 @@ namespace Collections.Pooled.Generic.Internals.Unsafe
             )
             => source._entries.AsSpan(0, source._count);
 
+        /// <summary>
+        /// Returns the internal <see cref="Entry{TKey, TValue}"/> array as a <see cref="Memory{T}"/>.
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Memory<Entry<TKey, TValue>> AsMemory<TKey, TValue>(
+                in this TempDictionary<TKey, TValue> source
+            )
+            => source._entries.AsMemory(0, source._count);
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void GetUnsafe<TKey, TValue>(
                 in this TempDictionary<TKey, TValue> source

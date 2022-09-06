@@ -57,6 +57,15 @@ namespace Collections.Pooled.Generic.Internals.Unsafe
             )
             => source._entries.AsSpan(0, source._count);
 
+        /// <summary>
+        /// Returns the internal <see cref="Entry{T}"/> array as a <see cref="Memory{T}"/>.
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Memory<Entry<T>> AsMemory<T>(
+                this HashSet<T> source
+            )
+            => source._entries.AsMemory(0, source._count);
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void GetUnsafe<T>(
                 this HashSet<T> source

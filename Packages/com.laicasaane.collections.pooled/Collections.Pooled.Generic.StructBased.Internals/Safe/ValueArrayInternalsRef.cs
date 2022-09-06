@@ -64,5 +64,42 @@ namespace Collections.Pooled.Generic.Internals
                 , Range range
             )
             => source._array.AsSpan(range);
+
+        /// <summary>
+        /// Returns the internal array as a <see cref="ReadOnlyMemory{T}"/>.
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static ReadOnlyMemory<T> AsReadOnlyMemory<T>(
+                in this ValueArray<T> source
+            )
+            => source._array.AsMemory(0, source._length);
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static ReadOnlyMemory<T> AsReadOnlyMemory<T>(
+                  in this ValueArray<T> source
+                , int start
+            )
+            => source._array.AsMemory(start);
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static ReadOnlyMemory<T> AsReadOnlyMemory<T>(
+                  in this ValueArray<T> source
+                , int start, int length
+            )
+            => source._array.AsMemory(start, length);
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static ReadOnlyMemory<T> AsReadOnlyMemory<T>(
+                  in this ValueArray<T> source
+                , Index startIndex
+            )
+            => source._array.AsMemory(startIndex);
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static ReadOnlyMemory<T> AsReadOnlyMemory<T>(
+                  in this ValueArray<T> source
+                , Range range
+            )
+            => source._array.AsMemory(range);
     }
 }

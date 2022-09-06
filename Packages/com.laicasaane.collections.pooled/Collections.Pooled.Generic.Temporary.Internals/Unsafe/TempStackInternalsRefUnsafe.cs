@@ -39,6 +39,15 @@ namespace Collections.Pooled.Generic.Internals.Unsafe
             )
             => source._array.AsSpan(0, source._size);
 
+        /// <summary>
+        /// Returns the internal array as a <see cref="Memory{T}"/>.
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Memory<T> AsMemory<T>(
+                in this TempStack<T> source
+            )
+            => source._array.AsMemory(0, source._size);
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void GetUnsafe<T>(
                 in this TempStack<T> source

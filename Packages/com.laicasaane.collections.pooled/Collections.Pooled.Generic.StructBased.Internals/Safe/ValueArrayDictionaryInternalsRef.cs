@@ -83,5 +83,37 @@ namespace Collections.Pooled.Generic.Internals
                 in this ValueArrayDictionary<TKey, TValue> source
             )
             => source._values.AsSpan(0, source.Count);
+
+        /// <summary>
+        /// Returns the internal Keys and Values arrays as a <see cref="ReadOnlyMemory{T}"/>.
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void AsReadOnlyMemory<TKey, TValue>(
+            in this ValueArrayDictionary<TKey, TValue> source
+            , out ReadOnlyMemory<ArrayEntry<TKey>> keys
+            , out ReadOnlyMemory<TValue> values
+        )
+        {
+            keys = source._entries.AsMemory(0, source.Count);
+            values = source._values.AsMemory(0, source.Count);
+        }
+
+        /// <summary>
+        /// Returns the internal Keys array as a <see cref="ReadOnlyMemory{T}"/>.
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static ReadOnlyMemory<ArrayEntry<TKey>> KeysAsReadOnlyMemory<TKey, TValue>(
+                in this ValueArrayDictionary<TKey, TValue> source
+            )
+            => source._entries.AsMemory(0, source.Count);
+
+        /// <summary>
+        /// Returns the internal Values array as a <see cref="ReadOnlyMemory{T}"/>.
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static ReadOnlyMemory<TValue> ValuesAsReadOnlyMemory<TKey, TValue>(
+                in this ValueArrayDictionary<TKey, TValue> source
+            )
+            => source._values.AsMemory(0, source.Count);
     }
 }

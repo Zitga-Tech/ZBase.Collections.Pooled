@@ -56,5 +56,14 @@ namespace Collections.Pooled.Generic.Internals
                 this HashSet<T> source
             )
             => source._entries.AsSpan(0, source._count);
+
+        /// <summary>
+        /// Returns the internal <see cref="Entry{T}"/> array as a <see cref="ReadOnlyMemory{T}"/>.
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static ReadOnlyMemory<Entry<T>> AsReadOnlyMemory<T>(
+                this HashSet<T> source
+            )
+            => source._entries.AsMemory(0, source._count);
     }
 }

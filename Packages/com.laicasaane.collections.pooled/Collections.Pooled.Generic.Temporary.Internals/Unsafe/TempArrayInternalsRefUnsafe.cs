@@ -66,6 +66,43 @@ namespace Collections.Pooled.Generic.Internals.Unsafe
             )
             => source._array.AsSpan(range);
 
+        /// <summary>
+        /// Returns the internal array as a <see cref="Memory{T}"/>.
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Memory<T> AsMemory<T>(
+                in this TempArray<T> source
+            )
+            => source._array.AsMemory(0, source._length);
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Memory<T> AsMemory<T>(
+                  in this TempArray<T> source
+                , int start
+            )
+            => source._array.AsMemory(start);
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Memory<T> AsMemory<T>(
+                  in this TempArray<T> source
+                , int start, int length
+            )
+            => source._array.AsMemory(start, length);
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Memory<T> AsMemory<T>(
+                  in this TempArray<T> source
+                , Index startIndex
+            )
+            => source._array.AsMemory(startIndex);
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Memory<T> AsMemory<T>(
+                  in this TempArray<T> source
+                , Range range
+            )
+            => source._array.AsMemory(range);
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void GetUnsafe<T>(
                 in this TempArray<T> source

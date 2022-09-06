@@ -56,6 +56,15 @@ namespace Collections.Pooled.Generic.Internals.Unsafe
             )
             => source._entries.AsSpan(0, source.Count);
 
+        /// <summary>
+        /// Returns the internal Keys and Values arrays as a <see cref="Memory{T}"/>.
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Memory<ArrayEntry<T>> AsMemory<T>(
+                in this TempArrayHashSet<T> source
+            )
+            => source._entries.AsMemory(0, source.Count);
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void GetUnsafe<T>(
             in this TempArrayHashSet<T> source
