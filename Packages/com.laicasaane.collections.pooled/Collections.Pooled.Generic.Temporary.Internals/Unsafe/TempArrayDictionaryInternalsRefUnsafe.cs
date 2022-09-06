@@ -59,8 +59,8 @@ namespace Collections.Pooled.Generic.Internals.Unsafe
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void AsSpan<TKey, TValue>(
             in this TempArrayDictionary<TKey, TValue> source
-            , out ReadOnlySpan<ArrayEntry<TKey>> keys
-            , out ReadOnlySpan<TValue> values
+            , out Span<ArrayEntry<TKey>> keys
+            , out Span<TValue> values
         )
         {
             keys = source._entries.AsSpan(0, source.Count);

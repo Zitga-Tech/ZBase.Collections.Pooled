@@ -51,7 +51,7 @@ namespace Collections.Pooled.Generic.Internals.Unsafe
         /// Returns the internal Keys and Values arrays as a <see cref="Span{T}"/>.
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static ReadOnlySpan<ArrayEntry<T>> AsSpan<T>(
+        public static Span<ArrayEntry<T>> AsSpan<T>(
                 in this TempArrayHashSet<T> source
             )
             => source._entries.AsSpan(0, source.Count);
