@@ -80,26 +80,20 @@ namespace Collections.Pooled.Generic
         /// Copies this List into array, which must be of a compatible array type.
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public void CopyTo(ref TempArray<T> dest)
-            => CopyTo(0, ref dest, 0, _length);
+        public void CopyTo(in TempArray<T> dest)
+            => CopyTo(0, dest, 0, _array.Length);
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public void CopyTo(ref TempArray<T> dest, int destIndex)
-            => CopyTo(0, ref dest, destIndex, _length);
+        public void CopyTo(in TempArray<T> dest, int destIndex)
+            => CopyTo(0, dest, destIndex, _array.Length);
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public void CopyTo(ref TempArray<T> dest, int destIndex, int count)
-            => CopyTo(0, ref dest, destIndex, count);
+        public void CopyTo(in TempArray<T> dest, int destIndex, int count)
+            => CopyTo(0, dest, destIndex, count);
 
-        public void CopyTo(int index, ref TempArray<T> dest, int destIndex, int count)
-        {
-            if (dest._array.IsNullOrEmpty())
-                ThrowHelper.ThrowArgumentNullException(ExceptionArgument.dest);
-
-            CopyTo(index, dest._array.AsSpan(), destIndex, count);
-
-            dest._length += count;
-        }
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public void CopyTo(int index, in TempArray<T> dest, int destIndex, int count)
+            => CopyTo(index, dest._array.AsSpan(), destIndex, count);
 
         /// <summary>
         /// Copies this List into the given span.
