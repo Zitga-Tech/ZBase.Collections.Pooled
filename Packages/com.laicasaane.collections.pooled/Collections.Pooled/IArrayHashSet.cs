@@ -6,8 +6,6 @@ namespace Collections.Pooled
         : ICollection<T>
         , IReadOnlyCollection<T>
     {
-        bool Add(T item);
-
         bool Add(in T item);
 
         bool Add(T item, out int index);
