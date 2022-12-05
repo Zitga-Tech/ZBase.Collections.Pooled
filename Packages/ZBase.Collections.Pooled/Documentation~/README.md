@@ -38,7 +38,7 @@ openupm add com.zbase.collections.pooled
 6. Enter this git url:
 
 ```
-https://github.com/Zitga-Tech/ZBase.Collections.Pooled.git?path=Packages/com.zbase.collections.pooled
+https://github.com/Zitga-Tech/ZBase.Collections.Pooled.git?path=Packages/ZBase.Collections.Pooled
 ```
 
 # Collections.Pooled
