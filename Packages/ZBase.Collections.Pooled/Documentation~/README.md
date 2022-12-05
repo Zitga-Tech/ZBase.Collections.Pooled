@@ -462,3 +462,8 @@ for (var i = 0; i < count; i++)
 
 - Correct `CopyTo` methods for `ValueArray` and `TempArray`
 - Some unsafe methods return incorrect type (`ReadOnlySpan` instead of `Span`)
+
+## 2.8.0
+
+- Acquire ownership from @laicasaaane
+- Consolidate many asmdefs into `ZBase.Collections.Pooled`
