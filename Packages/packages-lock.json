@@ -71,10 +71,10 @@
     },
     "org.nuget.system.runtime.compilerservices.unsafe": {
       "version": "6.0.0",
-      "depth": 0,
+      "depth": 1,
       "source": "registry",
       "dependencies": {},
-      "url": "https://package.openupm.com"
+      "url": "https://unitynuget-registry.azurewebsites.net"
     },
     "com.unity.modules.animation": {
       "version": "1.0.0",

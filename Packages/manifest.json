@@ -6,7 +6,6 @@
     "com.unity.test-framework": "1.1.31",
     "com.unity.textmeshpro": "3.0.6",
     "com.unity.ugui": "1.0.0",
-    "org.nuget.system.runtime.compilerservices.unsafe": "6.0.0",
     "com.unity.modules.animation": "1.0.0",
     "com.unity.modules.assetbundle": "1.0.0",
     "com.unity.modules.audio": "1.0.0",
@@ -25,12 +24,11 @@
   },
   "scopedRegistries": [
     {
-      "name": "package.openupm.com",
-      "url": "https://package.openupm.com",
-      "scopes": [
-        "com.openupm",
-        "org.nuget.system.runtime.compilerservices.unsafe"
-      ]
+        "name": "Unity NuGet",
+        "url": "https://unitynuget-registry.azurewebsites.net",
+        "scopes": [
+            "org.nuget"
+        ]
     }
   ]
 }
