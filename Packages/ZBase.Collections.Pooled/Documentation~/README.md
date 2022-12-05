@@ -4,6 +4,9 @@
 - The source code of `List`, `Queue`, `Stack`, `HashSet`, `Dictionary` are copied from [dotnet/runtime/System/Collections/Generic](https://github.com/dotnet/runtime/blob/main/src/libraries/System.Private.CoreLib/src/System/Collections/Generic/), along with other utilities to accomodate their functionality.
 - The source code of `ArrayDictionary` is copied from [sebas77/Svelto.Common/SveltoDictionary](https://github.com/sebas77/Svelto.Common/blob/master/DataStructures/Dictionaries/SveltoDictionary.cs).
 
+## Dependencies
+
+- [org.nuget.system.runtime.compilerservices.unsafe@6.0.0](https://github.com/xoofx/UnityNuGet/blob/master/registry.json)
 
 # Installation
 
