@@ -1,13 +1,5 @@
 {
   "dependencies": {
-    "com.laicasaane.collections.pooled": {
-      "version": "file:com.laicasaane.collections.pooled",
-      "depth": 0,
-      "source": "embedded",
-      "dependencies": {
-        "org.nuget.system.runtime.compilerservices.unsafe": "6.0.0"
-      }
-    },
     "com.unity.ext.nunit": {
       "version": "1.0.6",
       "depth": 1,
@@ -16,7 +8,7 @@
       "url": "https://packages.unity.com"
     },
     "com.unity.ide.rider": {
-      "version": "3.0.15",
+      "version": "3.0.16",
       "depth": 0,
       "source": "registry",
       "dependencies": {
@@ -67,6 +59,14 @@
       "dependencies": {
         "com.unity.modules.ui": "1.0.0",
         "com.unity.modules.imgui": "1.0.0"
+      }
+    },
+    "com.zbase.collections.pooled": {
+      "version": "file:ZBase.Collections.Pooled",
+      "depth": 0,
+      "source": "embedded",
+      "dependencies": {
+        "org.nuget.system.runtime.compilerservices.unsafe": "6.0.0"
       }
     },
     "org.nuget.system.runtime.compilerservices.unsafe": {

@@ -1,0 +1,20 @@
+{
+    "name": "com.zbase.collections.pooled",
+    "displayName": "ZBase.Collections.Pooled",
+    "version": "2.7.1",
+    "unity": "2021.3",
+    "documentationUrl": "https://github.com/Zitga-Tech/ZBase.Collections.Pooled/blob/main/README.md",
+    "dependencies": {
+        "org.nuget.system.runtime.compilerservices.unsafe": "6.0.0"
+    },
+    "scopedRegistries": [
+        {
+            "name": "package.openupm.com",
+            "url": "https://package.openupm.com",
+            "scopes": [
+            "com.openupm",
+            "org.nuget.system.runtime.compilerservices.unsafe"
+            ]
+        }
+    ]
+}
