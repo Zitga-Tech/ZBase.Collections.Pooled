@@ -23,19 +23,19 @@ namespace ZBase.Collections.Pooled.Generic
             => Create(0, pool);
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal static ValueArray<T> Create(in ReadOnlySpan<T> array)
+        public static ValueArray<T> Create(in ReadOnlySpan<T> array)
             => new ValueArray<T>(array, array.Length, ArrayPool<T>.Shared);
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal static ValueArray<T> Create(in ReadOnlySpan<T> array, ArrayPool<T> pool)
+        public static ValueArray<T> Create(in ReadOnlySpan<T> array, ArrayPool<T> pool)
             => new ValueArray<T>(array, array.Length, pool);
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal static ValueArray<T> Create(in ReadOnlySpan<T> array, int length)
+        public static ValueArray<T> Create(in ReadOnlySpan<T> array, int length)
             => new ValueArray<T>(array, length, ArrayPool<T>.Shared);
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal static ValueArray<T> Create(in ReadOnlySpan<T> array, int length, ArrayPool<T> pool)
+        public static ValueArray<T> Create(in ReadOnlySpan<T> array, int length, ArrayPool<T> pool)
             => new ValueArray<T>(array, length, pool);
     }
 }
