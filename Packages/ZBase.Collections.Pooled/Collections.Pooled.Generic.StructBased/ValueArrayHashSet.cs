@@ -162,6 +162,12 @@ namespace ZBase.Collections.Pooled.Generic
             get => _freeEntryIndex;
         }
 
+        public bool IsValid
+        {
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            get => _entries != null && _buckets != null;
+        }
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public Enumerator GetEnumerator()
             => new Enumerator(this);

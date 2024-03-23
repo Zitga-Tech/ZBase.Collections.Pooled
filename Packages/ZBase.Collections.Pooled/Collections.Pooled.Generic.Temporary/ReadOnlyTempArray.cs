@@ -28,6 +28,12 @@ namespace ZBase.Collections.Pooled.Generic
             get => _array.Length;
         }
 
+        public bool IsValid
+        {
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            get => _array.IsValid;
+        }
+
         /// <summary>
         /// Copies this List into array, which must be of a compatible array type.
         /// </summary>

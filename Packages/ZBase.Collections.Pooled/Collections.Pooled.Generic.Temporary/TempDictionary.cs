@@ -182,6 +182,12 @@ namespace ZBase.Collections.Pooled.Generic
             get => _count - _freeCount;
         }
 
+        public bool IsValid
+        {
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            get => _entries != null && _buckets != null;
+        }
+
         public TempDictionaryKeyCollection<TKey, TValue> Keys => new TempDictionaryKeyCollection<TKey, TValue>(this);
 
         public TempDictionaryValueCollection<TKey, TValue> Values => new TempDictionaryValueCollection<TKey, TValue>(this);

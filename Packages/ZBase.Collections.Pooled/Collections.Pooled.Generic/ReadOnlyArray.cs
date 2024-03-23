@@ -32,6 +32,12 @@ namespace ZBase.Collections.Pooled.Generic
             get => _array?.Length ?? 0;
         }
 
+        public bool IsValid
+        {
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            get => _array != null;
+        }
+
         /// <summary>
         /// Copies this List into array, which must be of a compatible array type.
         /// </summary>

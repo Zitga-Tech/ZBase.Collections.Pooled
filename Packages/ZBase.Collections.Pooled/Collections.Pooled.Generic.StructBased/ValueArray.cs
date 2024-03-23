@@ -54,6 +54,12 @@ namespace ZBase.Collections.Pooled.Generic
             get => _array.Length;
         }
 
+        public bool IsValid
+        {
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            get => _array != null;
+        }
+
         public ref T this[int index]
         {
             [MethodImpl(MethodImplOptions.AggressiveInlining)]

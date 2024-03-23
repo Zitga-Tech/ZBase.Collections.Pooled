@@ -139,6 +139,12 @@ namespace ZBase.Collections.Pooled.Generic
             get => _size;
         }
 
+        public bool IsValid
+        {
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            get => _items != null;
+        }
+
         // Sets or Gets the element at the given index.
         public T this[int index]
         {

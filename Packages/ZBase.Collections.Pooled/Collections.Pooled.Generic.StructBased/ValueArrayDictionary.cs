@@ -201,6 +201,12 @@ namespace ZBase.Collections.Pooled.Generic
             get => _freeEntryIndex;
         }
 
+        public bool IsValid
+        {
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            get => _entries != null && _values != null && _buckets != null;
+        }
+
         public ValueArrayDictionaryKeyCollection<TKey, TValue> Keys
         {
             [MethodImpl(MethodImplOptions.AggressiveInlining)]

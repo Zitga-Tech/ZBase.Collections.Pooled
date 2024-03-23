@@ -414,6 +414,12 @@ namespace ZBase.Collections.Pooled.Generic
             get => _count - _freeCount;
         }
 
+        public bool IsValid
+        {
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            get => _entries != null && _buckets != null;
+        }
+
         bool ICollection<T>.IsReadOnly => false;
 
         #endregion

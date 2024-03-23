@@ -146,6 +146,12 @@ namespace ZBase.Collections.Pooled.Generic
             get => _size;
         }
 
+        public bool IsValid
+        {
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            get => _items != null;
+        }
+
         // Is this List read-only?
         bool ICollection<T>.IsReadOnly => false;
 

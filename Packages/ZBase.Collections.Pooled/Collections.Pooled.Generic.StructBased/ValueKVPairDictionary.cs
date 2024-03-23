@@ -15,6 +15,18 @@ namespace ZBase.Collections.Pooled.Generic
             _dictionary = dictionary;
         }
 
+        public int Count
+        {
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            get => _dictionary.Count;
+        }
+
+        public bool IsValid
+        {
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            get => _dictionary.IsValid;
+        }
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public Enumerator GetEnumerator()
             => new Enumerator(_dictionary);

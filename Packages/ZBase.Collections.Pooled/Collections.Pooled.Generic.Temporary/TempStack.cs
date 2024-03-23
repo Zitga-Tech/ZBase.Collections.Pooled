@@ -82,6 +82,12 @@ namespace ZBase.Collections.Pooled.Generic
             get { return _size; }
         }
 
+        public bool IsValid
+        {
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            get => _array != null;
+        }
+
         // Removes all Objects from the Stack.
         public void Clear()
         {
