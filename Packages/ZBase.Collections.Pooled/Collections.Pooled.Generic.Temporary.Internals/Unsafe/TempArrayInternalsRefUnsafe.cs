@@ -113,9 +113,5 @@ namespace ZBase.Collections.Pooled.Generic.Internals.Unsafe
             array = source._array;
             length = source._length;
         }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static TempArray<T> Create<T>(T[] array, int length, ArrayPool<T> pool)
-            => TempArray<T>.Create(array, length, pool);
     }
 }
