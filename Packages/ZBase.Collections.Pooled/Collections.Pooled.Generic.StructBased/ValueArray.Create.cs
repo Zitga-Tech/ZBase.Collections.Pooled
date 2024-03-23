@@ -38,4 +38,23 @@ namespace ZBase.Collections.Pooled.Generic
         public static ValueArray<T> Create(in ReadOnlySpan<T> array, int length, ArrayPool<T> pool)
             => new ValueArray<T>(array, length, pool);
     }
+
+    public static class ValueArray
+    {
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static ValueArray<T> Create<T>(T[] array)
+            => ValueArray<T>.Create(array, array.Length, ArrayPool<T>.Shared);
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static ValueArray<T> Create<T>(T[] array, ArrayPool<T> pool)
+            => ValueArray<T>.Create(array, array.Length, pool);
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static ValueArray<T> Create<T>(T[] array, int length)
+            => ValueArray<T>.Create(array, length, ArrayPool<T>.Shared);
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static ValueArray<T> Create<T>(T[] array, int length, ArrayPool<T> pool)
+            => ValueArray<T>.Create(array, length, pool);
+    }
 }
