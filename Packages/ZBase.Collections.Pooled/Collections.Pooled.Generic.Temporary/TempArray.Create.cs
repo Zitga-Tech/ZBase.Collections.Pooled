@@ -38,4 +38,23 @@ namespace ZBase.Collections.Pooled.Generic
         public static TempArray<T> Create(in ReadOnlySpan<T> array, int length, ArrayPool<T> pool)
             => new TempArray<T>(array, length, pool);
     }
+
+    public static class TempArray
+    {
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static TempArray<T> Create<T>(T[] array)
+            => TempArray<T>.Create(array, array.Length, ArrayPool<T>.Shared);
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static TempArray<T> Create<T>(T[] array, ArrayPool<T> pool)
+            => TempArray<T>.Create(array, array.Length, pool);
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static TempArray<T> Create<T>(T[] array, int length)
+            => TempArray<T>.Create(array, length, ArrayPool<T>.Shared);
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static TempArray<T> Create<T>(T[] array, int length, ArrayPool<T> pool)
+            => TempArray<T>.Create(array, length, pool);
+    }
 }
