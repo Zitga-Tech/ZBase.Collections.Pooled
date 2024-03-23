@@ -41,9 +41,7 @@ namespace ZBase.Collections.Pooled.Generic.Internals
         /// <remarks>
         /// Afterward <paramref name="source"/> will be disposed.
         /// </remarks>
-        public static TempListInternals<T> TakeOwnership<T>(
-                ref TempList<T> source
-            )
+        public static TempListInternals<T> TakeOwnership<T>(ref TempList<T> source)
         {
             var internals = new TempListInternals<T>(source);
 
@@ -51,6 +49,18 @@ namespace ZBase.Collections.Pooled.Generic.Internals
             source.Dispose();
 
             return internals;
+        }
+
+        public static TempArray<T> ToTempArray<T>(ref TempList<T> source)
+        {
+            var internals = TakeOwnership(ref source);
+
+            return new TempArray<T>
+            {
+                _array = internals.Items,
+                _length = internals.Size,
+                _pool = internals.Pool,
+            };
         }
     }
 }
