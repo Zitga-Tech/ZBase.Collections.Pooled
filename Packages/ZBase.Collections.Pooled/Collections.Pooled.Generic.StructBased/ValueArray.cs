@@ -29,17 +29,25 @@ namespace ZBase.Collections.Pooled.Generic
 
             _length = length;
             _pool = pool ?? ArrayPool<T>.Shared;
-            _array = _length == 0 ? s_emptyArray : pool.Rent(length);
+            _array = _length == 0 ? s_emptyArray : _pool.Rent(length);
         }
 
-        internal ValueArray(T[] array, int length, ArrayPool<T> pool)
+        internal ValueArray(in ReadOnlySpan<T> array, int length, ArrayPool<T> pool)
         {
             if (length < 0)
                 ThrowHelper.ThrowLengthArgumentOutOfRange_ArgumentOutOfRange_NeedNonNegNum();
 
-            _array = array ?? s_emptyArray;
-            _length = array == null ? 0 : length;
             _pool = pool ?? ArrayPool<T>.Shared;
+            _length = length;
+            _array = _pool.Rent(length);
+
+            if (array.IsEmpty)
+            {
+                return;
+            }
+
+            var minLength = Math.Min(array.Length, length);
+            array[..minLength].CopyTo(_array);
         }
 
         public int Length

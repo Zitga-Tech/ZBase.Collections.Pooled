@@ -1,4 +1,5 @@
-﻿using System.Buffers;
+﻿using System;
+using System.Buffers;
 using System.Runtime.CompilerServices;
 
 namespace ZBase.Collections.Pooled.Generic
@@ -6,12 +7,12 @@ namespace ZBase.Collections.Pooled.Generic
     partial struct ValueArray<T>
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static ValueArray<T> Create(int minLength)
-            => new ValueArray<T>(minLength, ArrayPool<T>.Shared);
+        public static ValueArray<T> Create(int length)
+            => new ValueArray<T>(length, ArrayPool<T>.Shared);
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static ValueArray<T> Create(int minLength, ArrayPool<T> pool)
-            => new ValueArray<T>(minLength, pool);
+        public static ValueArray<T> Create(int length, ArrayPool<T> pool)
+            => new ValueArray<T>(length, pool);
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static ValueArray<T> Empty()
@@ -22,7 +23,19 @@ namespace ZBase.Collections.Pooled.Generic
             => Create(0, pool);
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal static ValueArray<T> Create(T[] array, int length, ArrayPool<T> pool)
+        internal static ValueArray<T> Create(in ReadOnlySpan<T> array)
+            => new ValueArray<T>(array, array.Length, ArrayPool<T>.Shared);
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        internal static ValueArray<T> Create(in ReadOnlySpan<T> array, ArrayPool<T> pool)
+            => new ValueArray<T>(array, array.Length, pool);
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        internal static ValueArray<T> Create(in ReadOnlySpan<T> array, int length)
+            => new ValueArray<T>(array, length, ArrayPool<T>.Shared);
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        internal static ValueArray<T> Create(in ReadOnlySpan<T> array, int length, ArrayPool<T> pool)
             => new ValueArray<T>(array, length, pool);
     }
 }

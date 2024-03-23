@@ -1,4 +1,5 @@
-﻿using System.Buffers;
+﻿using System;
+using System.Buffers;
 using System.Runtime.CompilerServices;
 
 namespace ZBase.Collections.Pooled.Generic
@@ -6,12 +7,12 @@ namespace ZBase.Collections.Pooled.Generic
     partial struct TempArray<T>
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static TempArray<T> Create(int minLength)
-            => new TempArray<T>(minLength, ArrayPool<T>.Shared);
+        public static TempArray<T> Create(int length)
+            => new TempArray<T>(length, ArrayPool<T>.Shared);
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static TempArray<T> Create(int minLength, ArrayPool<T> pool)
-            => new TempArray<T>(minLength, pool);
+        public static TempArray<T> Create(int length, ArrayPool<T> pool)
+            => new TempArray<T>(length, pool);
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static TempArray<T> Empty()
@@ -22,7 +23,19 @@ namespace ZBase.Collections.Pooled.Generic
             => Create(0, pool);
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal static TempArray<T> Create(T[] array, int length, ArrayPool<T> pool)
+        internal static TempArray<T> Create(in ReadOnlySpan<T> array)
+            => new TempArray<T>(array, array.Length, ArrayPool<T>.Shared);
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        internal static TempArray<T> Create(in ReadOnlySpan<T> array, ArrayPool<T> pool)
+            => new TempArray<T>(array, array.Length, pool);
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        internal static TempArray<T> Create(in ReadOnlySpan<T> array, int length)
+            => new TempArray<T>(array, length, ArrayPool<T>.Shared);
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        internal static TempArray<T> Create(in ReadOnlySpan<T> array, int length, ArrayPool<T> pool)
             => new TempArray<T>(array, length, pool);
     }
 }
