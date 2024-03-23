@@ -41,9 +41,7 @@ namespace ZBase.Collections.Pooled.Generic.Internals
         /// <remarks>
         /// Afterward <paramref name="source"/> will be disposed.
         /// </remarks>
-        public static ValueListInternals<T> TakeOwnership<T>(
-                ref ValueList<T> source
-            )
+        public static ValueListInternals<T> TakeOwnership<T>(ref ValueList<T> source)
         {
             var internals = new ValueListInternals<T>(source);
 
@@ -51,6 +49,18 @@ namespace ZBase.Collections.Pooled.Generic.Internals
             source.Dispose();
 
             return internals;
+        }
+
+        public static ValueArray<T> ToValueArray<T>(ref ValueList<T> source)
+        {
+            var internals = TakeOwnership(ref source);
+
+            return new ValueArray<T>
+            {
+                _array = internals.Items,
+                _length = internals.Size,
+                _pool = internals.Pool,
+            };
         }
     }
 }
